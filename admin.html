@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BloxAether | Painel Admin</title>
+    <title>Painel Admin | BloxAether</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Rajdhani:wght@600;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -21,397 +21,175 @@
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Rajdhani', sans-serif; }
         body { background: var(--bg-dark); color: var(--text-light); min-height: 100vh; padding: 20px; }
         
-        .container { max-width: 1000px; margin: 0 auto; }
-        h1, h2 { font-family: 'Orbitron', sans-serif; color: #fff; }
-        
-        .header-admin { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--purple-glow); padding-bottom: 15px; margin-bottom: 25px; flex-wrap: wrap; gap: 10px; }
-        
-        /* DASHBOARD ESTATÍSTICAS */
-        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 25px; }
-        .stat-card { background: var(--card-bg); border: 1px solid var(--purple-glow); padding: 15px; border-radius: 8px; text-align: center; }
-        .stat-card h3 { font-size: 1.8rem; color: var(--accent-cyan); }
-        .stat-card p { font-size: 0.9rem; color: var(--text-muted); }
+        header { display: flex; justify-content: space-between; align-items: center; padding: 15px 0; border-bottom: 1px solid rgba(176,38,255,0.2); margin-bottom: 30px; }
+        .logo { font-family: 'Orbitron', sans-serif; font-size: 1.8rem; color: #fff; text-shadow: 0 0 10px var(--purple-glow); }
+        .logo span { color: var(--purple-glow); }
 
-        .card-admin { background: var(--card-bg); border: 1px solid rgba(138,43,226,0.3); border-radius: 10px; padding: 20px; margin-bottom: 20px; }
-        
-        form { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-        .full-width { grid-column: 1 / -1; }
-        
-        label { font-weight: bold; font-size: 0.9rem; color: var(--accent-cyan); display: block; margin-bottom: 4px; }
-        input, select, textarea { width: 100%; padding: 10px; background: #0a0518; border: 1px solid var(--purple-glow); border-radius: 6px; color: #fff; font-size: 1rem; }
-        
-        .btn { padding: 10px 18px; background: linear-gradient(90deg, #8a2be2, var(--purple-glow)); border: none; color: #fff; font-family: 'Orbitron'; font-weight: bold; cursor: pointer; border-radius: 6px; transition: 0.3s; }
-        .btn:hover { opacity: 0.9; box-shadow: 0 0 10px var(--purple-glow); }
-        .btn-danger { background: var(--sold-out); }
-        .btn-success { background: var(--available); color: #000; }
-        .btn-outline { background: transparent; border: 1px solid var(--accent-cyan); color: var(--accent-cyan); }
+        .container { max-width: 1100px; margin: 0 auto; }
 
-        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
-        th, td { padding: 12px; text-align: left; border-bottom: 1px solid rgba(255,255,255,0.08); }
-        th { font-family: 'Orbitron'; color: var(--accent-cyan); font-size: 0.9rem; }
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 15px; }
+        .stat-card { background: var(--card-bg); border: 1px solid var(--purple-glow); border-radius: 10px; padding: 20px; text-align: center; }
+        .stat-number { font-family: 'Orbitron'; font-size: 2rem; color: var(--accent-cyan); text-shadow: 0 0 10px var(--accent-cyan); margin-bottom: 5px; }
+        .stat-label { color: var(--text-muted); font-size: 0.95rem; text-transform: uppercase; letter-spacing: 1px; }
+
+        .btn-reset { background: rgba(255, 42, 109, 0.15); border: 1px solid var(--sold-out); color: var(--sold-out); padding: 10px 20px; border-radius: 6px; font-family: 'Orbitron'; cursor: pointer; font-size: 0.9rem; transition: 0.3s; display: block; margin: 0 auto 30px auto; font-weight: bold; }
+        .btn-reset:hover { background: var(--sold-out); color: #fff; box-shadow: 0 0 12px var(--sold-out); }
+
+        .admin-section { background: var(--card-bg); border: 1px solid rgba(138,43,226,0.3); border-radius: 10px; padding: 25px; margin-bottom: 30px; }
+        .admin-section h2 { font-family: 'Orbitron'; color: #fff; margin-bottom: 20px; border-bottom: 1px solid var(--purple-glow); padding-bottom: 10px; }
+
+        .form-group { display: flex; flex-direction: column; gap: 8px; margin-bottom: 15px; }
+        .form-group label { color: var(--accent-cyan); font-weight: bold; }
+        .form-group input, .form-group textarea { padding: 10px; background: #0a0518; border: 1px solid var(--purple-glow); border-radius: 6px; color: #fff; font-size: 1rem; }
+
+        .btn-submit { padding: 12px; background: linear-gradient(90deg, #8a2be2, var(--purple-glow)); border: none; color: #fff; font-family: 'Orbitron'; font-weight: bold; cursor: pointer; border-radius: 6px; width: 100%; margin-top: 10px; }
         
-        .badge { padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: bold; }
-        .available { background: rgba(0,255,135,0.2); color: var(--available); border: 1px solid var(--available); }
-        .sold { background: rgba(255,42,109,0.2); color: var(--sold-out); border: 1px solid var(--sold-out); }
+        .product-list-admin { display: flex; flex-direction: column; gap: 10px; }
+        .product-item-admin { background: #0a0518; border: 1px solid rgba(176,38,255,0.2); padding: 15px; border-radius: 6px; display: flex; justify-content: space-between; align-items: center; }
+        
+        .btn-action { padding: 6px 12px; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; font-family: 'Orbitron'; font-size: 0.8rem; }
+        .btn-toggle { background: var(--purple-main); color: #fff; }
+        .btn-delete { background: var(--sold-out); color: #fff; }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <div class="header-admin">
-            <div>
-                <h1>Painel Administrativo</h1>
-                <p style="color: var(--text-muted);">BloxAether Control Center</p>
-            </div>
-            <div style="display:flex; gap:10px;">
-                <button class="btn btn-outline" onclick="exportBackup()">📥 Exportar Backup</button>
-                <button class="btn btn-outline" onclick="document.getElementById('importFile').click()">📤 Importar Backup</button>
-                <input type="file" id="importFile" style="display:none;" onchange="importBackup(event)">
-                <a href="index.html" target="_blank"><button class="btn">👁️ Ver Loja</button></a>
-            </div>
-        </div>
+        <header>
+            <div class="logo">BloxAether <span>Painel Admin</span></div>
+            <a href="index.html" style="color: var(--accent-cyan); text-decoration: none; font-weight: bold;">← Voltar para a Loja</a>
+        </header>
 
-        <!-- RELATÓRIO DE VENDAS -->
         <div class="stats-grid">
             <div class="stat-card">
-                <h3 id="statTotalValue">R$ 0,00</h3>
-                <p>Faturamento Total Estimado</p>
+                <div class="stat-number" id="statRevenue">R$ 0,00</div>
+                <div class="stat-label">Faturamento Total Estimado</div>
             </div>
             <div class="stat-card">
-                <h3 id="statSellsCount">0</h3>
-                <p>Contas Vendidas</p>
+                <div class="stat-number" id="statSold">0</div>
+                <div class="stat-label">Contas Vendidas</div>
             </div>
             <div class="stat-card">
-                <h3 id="statTotalStock">0</h3>
-                <p>Contas no Estoque</p>
+                <div class="stat-number" id="statStock">0</div>
+                <div class="stat-label">Contas no Estoque</div>
             </div>
         </div>
 
-        <!-- ALERTA GLOBAL DA LOJA -->
-        <div class="card-admin">
-            <h2>📢 Banner de Aviso da Loja</h2>
-            <div style="display:flex; gap:10px; margin-top:10px;">
-                <input type="text" id="alertTextInput" placeholder="Ex: 🔥 PROMOÇÃO DE CARNVAL - 20% OFF EM TODAS AS CONTAS!">
-                <button class="btn" onclick="saveGlobalAlert()">Salvar Aviso</button>
-                <button class="btn btn-danger" onclick="clearGlobalAlert()">Remover</button>
+        <!-- BOTÃO DE RESETAR MÉTRICAS -->
+        <button class="btn-reset" onclick="resetSalesStats()">🔄 Resetar Métricas de Vendas</button>
+
+        <div class="admin-section">
+            <h2>📢 Banner de Aviso Global</h2>
+            <div class="form-group">
+                <label>Texto do Aviso:</label>
+                <input type="text" id="alertInput" placeholder="Ex: 🔥 PROMOÇÃO DE CARNAVAL - 20% OFF!">
             </div>
+            <button class="btn-submit" onclick="saveGlobalAlert()">Salvar Aviso Global</button>
         </div>
 
-        <!-- FORMULÁRIO DE CONTA -->
-        <div class="card-admin">
-            <h2 id="formTitle">➕ Cadastrar Nova Conta</h2>
-            <form id="productForm" onsubmit="handleFormSubmit(event)" style="margin-top:15px;">
-                <input type="hidden" id="pId">
-                
-                <div>
-                    <label>Título da Conta</label>
-                    <input type="text" id="pTitle" placeholder="Ex: CONTA #06 - Dough V2" required>
+        <div class="admin-section">
+            <h2>➕ Cadastrar Nova Conta</h2>
+            <form onsubmit="addProduct(event)">
+                <div class="form-group">
+                    <label>Título da Conta:</label>
+                    <input type="text" id="pTitle" required>
                 </div>
-                
-                <div>
-                    <label>Nível (Level)</label>
-                    <input type="number" id="pLevel" placeholder="Ex: 2650" required>
+                <div class="form-group">
+                    <label>Nível (Level):</label>
+                    <input type="number" id="pLevel" required>
                 </div>
-
-                <div>
-                    <label>Preço (R$)</label>
-                    <input type="number" step="0.01" id="pPrice" placeholder="Ex: 25.00" required>
+                <div class="form-group">
+                    <label>Preço (R$):</label>
+                    <input type="number" step="0.01" id="pPrice" required>
                 </div>
-
-                <div>
-                    <label>Status</label>
-                    <select id="pStatus">
-                        <option value="available">DISPONÍVEL</option>
-                        <option value="sold">ESGOTADO / VENDIDO</option>
-                    </select>
+                <div class="form-group">
+                    <label>Especificações (separadas por vírgula):</label>
+                    <textarea id="pSpecs" rows="3"></textarea>
                 </div>
-
-                <div class="full-width">
-                    <label>Especificações (Separadas por vírgula)</label>
-                    <textarea id="pSpecs" rows="3" placeholder="Nível: 2650, Fruta: Dough V2, Estilo: Godhuman, Arma: CDK"></textarea>
-                </div>
-
-                <div class="full-width">
-                    <label>Links de Imagens (Separados por vírgula)</label>
-                    <input type="text" id="pImages" placeholder="https://imgur.com/foto1.jpg, https://imgur.com/foto2.jpg">
-                </div>
-
-                <div class="full-width" style="display:flex; gap:10px;">
-                    <button type="submit" class="btn btn-success" id="btnSave">Salvar Conta</button>
-                    <button type="button" class="btn btn-danger" onclick="resetForm()" id="btnCancel" style="display:none;">Cancelar Edição</button>
-                </div>
+                <button type="submit" class="btn-submit">Cadastrar Conta</button>
             </form>
         </div>
 
-        <!-- GERENCIADOR DE CUPONS -->
-        <div class="card-admin">
-            <h2>🏷️ Gerenciador de Cupons</h2>
-            <div style="display:flex; gap:10px; margin-top:10px; margin-bottom:15px;">
-                <input type="text" id="cCode" placeholder="CÓDIGO (Ex: FÉRIAS10)" style="text-transform:uppercase;">
-                <input type="number" id="cDiscount" placeholder="Desconto % (Ex: 10)" style="width:150px;">
-                <button class="btn" onclick="addCoupon()">Criar Cupom</button>
-            </div>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Código</th>
-                        <th>Desconto</th>
-                        <th>Ações</th>
-                    </tr>
-                </thead>
-                <tbody id="couponsTable"></tbody>
-            </table>
-        </div>
-
-        <!-- GERENCIADOR DE ESTOQUE -->
-        <div class="card-admin">
-            <h2>📦 Estoque Atual</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Título</th>
-                        <th>Nível</th>
-                        <th>Preço</th>
-                        <th>Status</th>
-                        <th>Ações</th>
-                    </tr>
-                </thead>
-                <tbody id="inventoryTable"></tbody>
-            </table>
-        </div>
-
-        <!-- AVALIAÇÕES DE CLIENTES -->
-        <div class="card-admin">
-            <h2>⭐ Moderar Avaliações</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Nome</th>
-                        <th>Comentário</th>
-                        <th>Ações</th>
-                    </tr>
-                </thead>
-                <tbody id="reviewsTable"></tbody>
-            </table>
+        <div class="admin-section">
+            <h2>📦 Gerenciar Estoque Atual</h2>
+            <div class="product-list-admin" id="adminProductList"></div>
         </div>
     </div>
 
     <script>
-        const defaultProducts = [
-            { id: 1, title: "CONTA #00 - Dough V1 + Shark Anchor", level: 2611, price: 35.00, status: "available", fav: false, specs: ["Nível: 2611 (Sea 3)", "Estilo: Dragon Talon", "Fruta: Dough V1", "Arma: Shark Anchor"] },
-            { id: 2, title: "CONTA #04 - Gravity V2 (Craft CDK)", level: 2650, price: 28.00, status: "available", fav: false, specs: ["Nível: 2650", "Estilo: Dragon Talon", "Fruta: Gravity V2", "Armas: CDK"] },
-            { id: 3, title: "CONTA #01 - Starter Sea 2 + Shizu", level: 1745, price: 15.00, status: "available", fav: false, specs: ["Nível: 1745 (Sea 2)", "Fruta: Creation", "Arma: Shizu"] },
-            { id: 4, title: "CONTA #05 - Light All Skills + Angel V2", level: 1212, price: 12.00, status: "available", fav: false, specs: ["Nível: 1212 (Sea 2)", "Fruta: Light", "Angel V2"] }
-        ];
+        function loadAdminData() {
+            const sales = JSON.parse(localStorage.getItem('app_sales_stats')) || { totalValue: 0, count: 0 };
+            const products = JSON.parse(localStorage.getItem('app_products_v3')) || [];
 
-        function loadAdmin() {
-            let products = JSON.parse(localStorage.getItem('app_products')) || defaultProducts;
-            let coupons = JSON.parse(localStorage.getItem('app_coupons')) || [{ code: 'PRIMEIRACOMPRA', discount: 10 }];
-            let reviews = JSON.parse(localStorage.getItem('app_reviews')) || [];
-            let sales = JSON.parse(localStorage.getItem('app_sales_stats')) || { totalValue: 0, count: 0 };
+            document.getElementById('statRevenue').innerText = `R$ ${parseFloat(sales.totalValue).toFixed(2).replace('.', ',')}`;
+            document.getElementById('statSold').innerText = sales.count;
+            document.getElementById('statStock').innerText = products.filter(p => p.status === 'available').length;
 
-            // CARREGAR ESTATÍSTICAS
-            document.getElementById('statTotalValue').innerText = `R$ ${sales.totalValue.toFixed(2).replace('.', ',')}`;
-            document.getElementById('statSellsCount').innerText = sales.count;
-            document.getElementById('statTotalStock').innerText = products.length;
+            const currentAlert = localStorage.getItem('app_global_alert') || '';
+            document.getElementById('alertInput').value = currentAlert;
 
-            // CARREGAR AVISO GLOBAL
-            document.getElementById('alertTextInput').value = localStorage.getItem('app_global_alert') || '';
+            const listEl = document.getElementById('adminProductList');
+            listEl.innerHTML = '';
 
-            // CARREGAR TABELA DE ESTOQUE
-            const table = document.getElementById('inventoryTable');
-            table.innerHTML = '';
             products.forEach(p => {
-                table.innerHTML += `
-                    <tr>
-                        <td>#${p.id}</td>
-                        <td><strong>${p.title}</strong></td>
-                        <td>${p.level}</td>
-                        <td>R$ ${parseFloat(p.price).toFixed(2).replace('.', ',')}</td>
-                        <td><span class="badge ${p.status === 'available' ? 'available' : 'sold'}">${p.status === 'available' ? 'DISPONÍVEL' : 'ESGOTADO'}</span></td>
-                        <td>
-                            <button class="btn btn-outline" style="padding:4px 8px; font-size:0.8rem;" onclick="editProduct(${p.id})">✏️ Editar</button>
-                            <button class="btn btn-danger" style="padding:4px 8px; font-size:0.8rem;" onclick="deleteProduct(${p.id})">🗑️ Excluir</button>
-                        </td>
-                    </tr>
-                `;
-            });
-
-            // CARREGAR TABELA DE CUPONS
-            const cTable = document.getElementById('couponsTable');
-            cTable.innerHTML = '';
-            coupons.forEach((c, idx) => {
-                cTable.innerHTML += `
-                    <tr>
-                        <td><strong>${c.code}</strong></td>
-                        <td>${c.discount}% OFF</td>
-                        <td><button class="btn btn-danger" style="padding:4px 8px; font-size:0.8rem;" onclick="deleteCoupon(${idx})">🗑️ Remover</button></td>
-                    </tr>
-                `;
-            });
-
-            // CARREGAR TABELA DE AVALIAÇÕES
-            const rTable = document.getElementById('reviewsTable');
-            rTable.innerHTML = '';
-            reviews.forEach((r, idx) => {
-                rTable.innerHTML += `
-                    <tr>
-                        <td><strong>${r.name}</strong></td>
-                        <td>${r.comment}</td>
-                        <td><button class="btn btn-danger" style="padding:4px 8px; font-size:0.8rem;" onclick="deleteReview(${idx})">🗑️ Remover</button></td>
-                    </tr>
+                listEl.innerHTML += `
+                    <div class="product-item-admin">
+                        <div>
+                            <strong style="color: #fff;">${p.title}</strong>
+                            <div style="color: var(--text-muted); font-size: 0.85rem;">R$ ${parseFloat(p.price).toFixed(2).replace('.', ',')}</div>
+                        </div>
+                        <div style="display: flex; gap: 8px;">
+                            <button class="btn-action btn-toggle" onclick="toggleProductStatus(${p.id})">${p.status === 'available' ? 'Esgotado' : 'Disponível'}</button>
+                            <button class="btn-action btn-delete" onclick="deleteProduct(${p.id})">Excluir</button>
+                        </div>
+                    </div>
                 `;
             });
         }
 
-        function handleFormSubmit(e) {
-            e.preventDefault();
-            let products = JSON.parse(localStorage.getItem('app_products')) || defaultProducts;
-            const id = document.getElementById('pId').value;
-            
-            const title = document.getElementById('pTitle').value;
-            const level = parseInt(document.getElementById('pLevel').value);
-            const price = parseFloat(document.getElementById('pPrice').value);
-            const status = document.getElementById('pStatus').value;
-            const specsStr = document.getElementById('pSpecs').value;
-            const imagesStr = document.getElementById('pImages').value;
-
-            const specs = specsStr ? specsStr.split(',').map(s => s.trim()) : [];
-            const images = imagesStr ? imagesStr.split(',').map(i => i.trim()) : [];
-
-            if (id) {
-                // EDITAR
-                const index = products.findIndex(p => p.id == id);
-                if (index !== -1) {
-                    products[index] = { ...products[index], title, level, price, status, specs, images };
-                }
-            } else {
-                // CRIAR NOVO
-                const newId = products.length > 0 ? Math.max(...products.map(p => p.id)) + 1 : 1;
-                products.push({ id: newId, title, level, price, status, fav: false, specs, images });
+        function resetSalesStats() {
+            if (confirm("Deseja zerar as métricas de faturamento e vendas para R$ 0,00?")) {
+                localStorage.setItem('app_sales_stats', JSON.stringify({ totalValue: 0, count: 0 }));
+                loadAdminData();
             }
-
-            localStorage.setItem('app_products', JSON.stringify(products));
-            resetForm();
-            loadAdmin();
-        }
-
-        function editProduct(id) {
-            let products = JSON.parse(localStorage.getItem('app_products')) || defaultProducts;
-            const p = products.find(prod => prod.id === id);
-            if (!p) return;
-
-            document.getElementById('pId').value = p.id;
-            document.getElementById('pTitle').value = p.title;
-            document.getElementById('pLevel').value = p.level;
-            document.getElementById('pPrice').value = p.price;
-            document.getElementById('pStatus').value = p.status;
-            document.getElementById('pSpecs').value = Array.isArray(p.specs) ? p.specs.join(', ') : p.specs;
-            document.getElementById('pImages').value = p.images ? p.images.join(', ') : '';
-
-            document.getElementById('formTitle').innerText = `✏️ Editando: ${p.title}`;
-            document.getElementById('btnSave').innerText = "Atualizar Conta";
-            document.getElementById('btnCancel').style.display = "inline-block";
-        }
-
-        function deleteProduct(id) {
-            if (confirm("Tem certeza que deseja excluir esta conta?")) {
-                let products = JSON.parse(localStorage.getItem('app_products')) || defaultProducts;
-                products = products.filter(p => p.id !== id);
-                localStorage.setItem('app_products', JSON.stringify(products));
-                loadAdmin();
-            }
-        }
-
-        function resetForm() {
-            document.getElementById('pId').value = '';
-            document.getElementById('productForm').reset();
-            document.getElementById('formTitle').innerText = "➕ Cadastrar Nova Conta";
-            document.getElementById('btnSave').innerText = "Salvar Conta";
-            document.getElementById('btnCancel').style.display = "none";
         }
 
         function saveGlobalAlert() {
-            const val = document.getElementById('alertTextInput').value;
-            localStorage.setItem('app_global_alert', val);
+            localStorage.setItem('app_global_alert', document.getElementById('alertInput').value.trim());
             alert("Aviso salvo!");
         }
 
-        function clearGlobalAlert() {
-            localStorage.removeItem('app_global_alert');
-            document.getElementById('alertTextInput').value = '';
-            alert("Aviso removido!");
+        function addProduct(e) {
+            e.preventDefault();
+            const products = JSON.parse(localStorage.getItem('app_products_v3')) || [];
+            products.push({
+                id: Date.now(),
+                title: document.getElementById('pTitle').value,
+                level: document.getElementById('pLevel').value,
+                price: parseFloat(document.getElementById('pPrice').value),
+                status: "available",
+                fav: false,
+                specs: document.getElementById('pSpecs').value.split(','),
+                images: []
+            });
+            localStorage.setItem('app_products_v3', JSON.stringify(products));
+            loadAdminData();
         }
 
-        // GERENCIAR CUPONS
-        function addCoupon() {
-            const code = document.getElementById('cCode').value.trim().toUpperCase();
-            const discount = parseInt(document.getElementById('cDiscount').value);
-
-            if(!code || !discount) return alert("Preencha o código e a porcentagem!");
-
-            let coupons = JSON.parse(localStorage.getItem('app_coupons')) || [];
-            coupons.push({ code, discount });
-            localStorage.setItem('app_coupons', JSON.stringify(coupons));
-            
-            document.getElementById('cCode').value = '';
-            document.getElementById('cDiscount').value = '';
-            loadAdmin();
+        function toggleProductStatus(id) {
+            const products = JSON.parse(localStorage.getItem('app_products_v3')) || [];
+            const p = products.find(prod => prod.id === id);
+            if (p) { p.status = p.status === 'available' ? 'sold' : 'available'; localStorage.setItem('app_products_v3', JSON.stringify(products)); loadAdminData(); }
         }
 
-        function deleteCoupon(idx) {
-            let coupons = JSON.parse(localStorage.getItem('app_coupons')) || [];
-            coupons.splice(idx, 1);
-            localStorage.setItem('app_coupons', JSON.stringify(coupons));
-            loadAdmin();
+        function deleteProduct(id) {
+            let products = JSON.parse(localStorage.getItem('app_products_v3')) || [];
+            products = products.filter(prod => prod.id !== id);
+            localStorage.setItem('app_products_v3', JSON.stringify(products));
+            loadAdminData();
         }
 
-        function deleteReview(idx) {
-            let reviews = JSON.parse(localStorage.getItem('app_reviews')) || [];
-            reviews.splice(idx, 1);
-            localStorage.setItem('app_reviews', JSON.stringify(reviews));
-            loadAdmin();
-        }
-
-        // BACKUP (EXPORTAR E IMPORTAR JSON)
-        function exportBackup() {
-            const data = {
-                products: JSON.parse(localStorage.getItem('app_products')),
-                coupons: JSON.parse(localStorage.getItem('app_coupons')),
-                reviews: JSON.parse(localStorage.getItem('app_reviews')),
-                sales: JSON.parse(localStorage.getItem('app_sales_stats'))
-            };
-
-            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-            const a = document.createElement('a');
-            a.href = URL.createObjectURL(blob);
-            a.download = `backup_bloxaether_${Date.now()}.json`;
-            a.click();
-        }
-
-        function importBackup(e) {
-            const file = e.target.files[0];
-            if (!file) return;
-
-            const reader = new FileReader();
-            reader.onload = function(event) {
-                try {
-                    const data = JSON.parse(event.target.result);
-                    if (data.products) localStorage.setItem('app_products', JSON.stringify(data.products));
-                    if (data.coupons) localStorage.setItem('app_coupons', JSON.stringify(data.coupons));
-                    if (data.reviews) localStorage.setItem('app_reviews', JSON.stringify(data.reviews));
-                    if (data.sales) localStorage.setItem('app_sales_stats', JSON.stringify(data.sales));
-                    alert("Backup importado com sucesso!");
-                    loadAdmin();
-                } catch (err) {
-                    alert("Erro ao ler arquivo de backup.");
-                }
-            };
-            reader.readAsText(file);
-        }
-
-        loadAdmin();
+        loadAdminData();
     </script>
 </body>
 </html>

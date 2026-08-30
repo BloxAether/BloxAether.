@@ -19,7 +19,6 @@
             --border-glow: rgba(0, 243, 255, 0.3);
         }
 
-        /* Tema Roxo Neon Futurístico */
         body.purple-theme {
             --bg-dark: #090214;
             --card-bg: rgba(23, 8, 41, 0.85);
@@ -46,25 +45,8 @@
             background-size: 100% 100%, 30px 30px, 30px 30px;
         }
 
-        /* Efeito Cyber Grid / Line */
-        body::before {
-            content: "";
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 3px;
-            background: linear-gradient(90deg, transparent, var(--main-neon), transparent);
-            animation: scanline 4s linear infinite;
-            z-index: 9999;
-            pointer-events: none;
-        }
-
-        @keyframes scanline {
-            0% { top: 0; }
-            100% { top: 100%; }
-        }
-
         .container { max-width: 1200px; margin: 0 auto; }
 
-        /* Header Cyberpunk */
         header { 
             display: flex; 
             justify-content: space-between; 
@@ -114,7 +96,6 @@
             transform: translateY(-2px);
         }
 
-        /* Banner de Avisos */
         .alert-banner { 
             background: rgba(0, 0, 0, 0.6); 
             border: 1px solid var(--main-neon); 
@@ -129,7 +110,6 @@
             box-shadow: 0 0 15px var(--main-glow); 
         }
 
-        /* Hero */
         .hero { text-align: center; margin-bottom: 35px; }
         .hero h1 { 
             font-family: 'Orbitron', sans-serif; 
@@ -137,11 +117,9 @@
             text-shadow: 0 0 20px var(--main-neon); 
             margin-bottom: 8px; 
             color: #fff; 
-            letter-spacing: 1px;
         }
         .hero p { color: var(--text-muted); font-size: 1.1rem; }
 
-        /* Filtros */
         .filter-bar { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 35px; }
         .filter-input, .filter-select { 
             background: var(--card-bg); 
@@ -164,13 +142,9 @@
             margin-bottom: 20px; 
             color: var(--main-neon); 
             text-shadow: 0 0 10px var(--main-glow); 
-            display: flex;
-            align-items: center;
-            gap: 10px;
         }
 
-        /* Cards Futuristas */
-        .products-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 22px; margin-bottom: 45px; }
+        .products-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 22px; margin-bottom: 45px; }
         .product-card { 
             background: var(--card-bg); 
             border: 1px solid var(--border-glow); 
@@ -181,7 +155,7 @@
             display: flex; 
             flex-direction: column; 
             justify-content: space-between; 
-            min-height: 240px; 
+            min-height: 250px; 
             cursor: pointer; 
             backdrop-filter: blur(5px);
         }
@@ -204,8 +178,8 @@
         .status-available { background: rgba(0,255,170,0.15); color: var(--available); border: 1px solid var(--available); }
         .status-sold { background: rgba(255,42,109,0.15); color: var(--sold-out); border: 1px solid var(--sold-out); }
 
+        .product-header-tags { display: flex; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
         .product-sea { 
-            display: inline-block; 
             font-size: 0.75rem; 
             background: rgba(0, 0, 0, 0.5); 
             color: var(--main-neon); 
@@ -213,8 +187,20 @@
             padding: 2px 8px; 
             border-radius: 4px; 
             font-family: 'Orbitron'; 
-            margin-bottom: 10px; 
         }
+
+        .stock-badge {
+            font-size: 0.75rem;
+            background: rgba(0, 102, 255, 0.2);
+            color: #fff;
+            border: 1px solid var(--blue-accent);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-family: 'Orbitron';
+            font-weight: bold;
+            box-shadow: 0 0 8px rgba(0, 102, 255, 0.3);
+        }
+
         .product-title { font-family: 'Orbitron'; font-size: 1.1rem; margin-bottom: 8px; color: #fff; line-height: 1.3; }
         .product-level { color: var(--text-muted); font-size: 0.95rem; margin-bottom: 15px; }
         .product-footer { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 14px; }
@@ -223,7 +209,6 @@
         .btn-fav { background: transparent; border: none; color: var(--text-muted); cursor: pointer; font-size: 1.4rem; transition: 0.2s; }
         .btn-fav.active { color: var(--sold-out); text-shadow: 0 0 10px var(--sold-out); }
 
-        /* Pop-ups / Modais */
         .modal { 
             position: fixed; 
             top: 0; left: 0; 
@@ -240,7 +225,7 @@
             border: 1px solid var(--main-neon); 
             border-radius: 14px; 
             width: 90%; 
-            max-width: 500px; 
+            max-width: 520px; 
             padding: 25px; 
             position: relative; 
             box-shadow: 0 0 30px var(--main-glow); 
@@ -272,17 +257,16 @@
             font-size: 1rem; 
             transition: 0.3s; 
         }
-        .btn-action:hover { 
-            box-shadow: 0 0 20px var(--main-neon); 
-            background: #fff; 
-        }
+        .btn-action:hover { box-shadow: 0 0 20px var(--main-neon); background: #fff; }
 
-        /* Chat do Bot (Suporte Básico) */
+        .admin-box { background: rgba(0,0,0,0.4); border: 1px solid var(--border-glow); padding: 15px; border-radius: 8px; margin-bottom: 15px; }
+        .admin-grid-inputs { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+
         .chat-box {
             background: var(--bg-dark);
             border: 1px solid var(--border-glow);
             border-radius: 8px;
-            height: 250px;
+            height: 220px;
             overflow-y: auto;
             padding: 12px;
             display: flex;
@@ -290,29 +274,33 @@
             gap: 10px;
             margin-bottom: 12px;
         }
-        .chat-msg {
-            max-width: 80%;
-            padding: 8px 12px;
-            border-radius: 8px;
-            font-size: 0.95rem;
-        }
+        .chat-msg { max-width: 80%; padding: 8px 12px; border-radius: 8px; font-size: 0.95rem; }
         .chat-bot { background: rgba(0, 243, 255, 0.15); border: 1px solid var(--border-glow); align-self: flex-start; color: #fff; }
         .chat-user { background: var(--main-neon); color: #000; font-weight: 600; align-self: flex-end; }
 
-        /* Cupons & Carrinho */
         .cart-item { background: var(--bg-dark); padding: 12px; border-radius: 8px; border: 1px solid var(--border-glow); display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
         .coupon-box { display: flex; gap: 8px; margin: 15px 0; }
 
-        /* Seção Avaliações */
         .reviews-section { background: var(--card-bg); border: 1px solid var(--border-glow); border-radius: 12px; padding: 25px; margin-bottom: 40px; }
         .reviews-list { display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px; }
         .review-card { background: var(--bg-dark); padding: 12px; border-radius: 8px; border-left: 3px solid var(--main-neon); }
+        
+        footer {
+            text-align: center;
+            padding: 20px 0;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            margin-top: 40px;
+        }
+        .admin-trigger { cursor: pointer; text-decoration: underline; color: var(--text-muted); }
+        .admin-trigger:hover { color: var(--main-neon); }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <!-- Cabeçalho Futurista -->
+        <!-- Cabeçalho (Botão Admin Removido da Vista Principal) -->
         <header>
             <div class="logo" onclick="resetFilters()">Blox<span>Aether</span></div>
             <div class="nav-links">
@@ -324,16 +312,14 @@
             </div>
         </header>
 
-        <!-- Banner Global -->
         <div id="globalAlert" class="alert-banner"></div>
 
-        <!-- Hero -->
         <div class="hero">
             <h1>Mercado Cyber Blox Fruits</h1>
-            <p>Entrega ultra-rápida, sistema seguro e suporte inteligente 24/7.</p>
+            <p>Entrega imediata, sistema seguro e visual neon futurista.</p>
         </div>
 
-        <!-- Filtros -->
+        <!-- Filtros (Com Sea 1, 2 e 3 Corrigidos) -->
         <div class="filter-bar">
             <input type="text" id="searchInput" class="filter-input" placeholder="🔍 Buscar por nome, fruta ou item..." oninput="filterProducts()">
             <select id="seaSelect" class="filter-select" onchange="filterProducts()">
@@ -351,11 +337,9 @@
             </select>
         </div>
 
-        <!-- Lista de Produtos -->
         <div class="section-title" id="gridTitle">🎮 Contas Disponíveis</div>
         <div class="products-grid" id="mainProductsGrid"></div>
 
-        <!-- Seção de Avaliações Reais -->
         <div class="reviews-section">
             <div class="section-title" style="color: #ffca28;">★ Avaliações dos Clientes</div>
             <div class="reviews-list" id="reviewsContainer"></div>
@@ -367,13 +351,22 @@
                 <button type="submit" class="btn-action" style="width:fit-content;">Enviar Avaliação</button>
             </form>
         </div>
+
+        <!-- Rodapé com Acesso Reservado -->
+        <footer>
+            BloxAether &copy; 2026 - Todos os direitos reservados. 
+            <span class="admin-trigger" onclick="openModal('modalAdmin')">Área Restrita</span>
+        </footer>
     </div>
 
-    <!-- Modal Detalhes do Card -->
+    <!-- Modais -->
     <div class="modal" id="modalProduct">
         <div class="modal-content">
             <button class="btn-close" onclick="closeModal('modalProduct')">✕</button>
-            <div id="mSea" class="product-sea"></div>
+            <div style="display:flex; gap:8px; margin-bottom:10px;">
+                <div id="mSea" class="product-sea"></div>
+                <div id="mStock" class="stock-badge"></div>
+            </div>
             <h2 id="mTitle" style="font-family:'Orbitron'; color:#fff; margin-bottom:10px;"></h2>
             <p id="mLevel" style="color: var(--text-muted); margin-bottom:15px;"></p>
             <div id="mDesc" style="background:var(--bg-dark); padding:12px; border-radius:8px; border:1px solid var(--border-glow); margin-bottom:15px; color:var(--text-light); font-size:0.95rem;"></div>
@@ -382,20 +375,16 @@
         </div>
     </div>
 
-    <!-- Modal Pop-up do Carrinho com Cupons -->
     <div class="modal" id="modalCart">
         <div class="modal-content">
             <button class="btn-close" onclick="closeModal('modalCart')">✕</button>
             <h2 style="font-family:'Orbitron'; color:var(--main-neon); margin-bottom:15px;">🛒 Seu Carrinho Pop-up</h2>
-            
             <div id="cartItemsList"></div>
-
             <div class="coupon-box">
                 <input type="text" id="couponInput" class="filter-input" placeholder="Cupom (ex: AETHER10)" style="flex:1;">
                 <button onclick="applyCoupon()" class="btn-action" style="width:auto; padding:0 15px;">Aplicar</button>
             </div>
             <div id="couponMsg" style="font-size:0.85rem; margin-bottom:10px;"></div>
-
             <div style="font-family:'Orbitron'; font-size:1.3rem; display:flex; justify-content:space-between; margin-bottom:20px;">
                 <span>Total:</span>
                 <span id="cartTotalVal" style="color:var(--main-neon);">R$ 0,00</span>
@@ -404,28 +393,70 @@
         </div>
     </div>
 
-    <!-- Modal Central de Suporte -->
+    <!-- Suporte / Chatbot Inteligente -->
     <div class="modal" id="modalSupport">
         <div class="modal-content">
             <button class="btn-close" onclick="closeModal('modalSupport')">✕</button>
             <h2 style="font-family:'Orbitron'; color:var(--main-neon); margin-bottom:15px;">🎧 Central de Suporte</h2>
             
             <a href="https://wa.me/5513996307983?text=Olá,%20preciso%20de%20suporte%20avançado!" target="_blank" style="text-decoration:none;">
-                <button class="btn-action" style="margin-bottom:15px; background:#25D366; color:#000;">👤 Suporte Avançado (Humano - WhatsApp)</button>
+                <button class="btn-action" style="margin-bottom:15px; background:#25D366; color:#000;">👤 Atendimento Humano (WhatsApp)</button>
             </a>
             
-            <h3 style="font-family:'Orbitron'; font-size:1rem; color:var(--text-light); margin-bottom:8px;">🤖 Suporte Básico Inteligente</h3>
+            <h3 style="font-family:'Orbitron'; font-size:1rem; color:var(--text-light); margin-bottom:8px;">🤖 Assistente Virtual AetherBot</h3>
             <div class="chat-box" id="chatBox">
-                <div class="chat-msg chat-bot">Olá! Sou o AetherBot. Como posso te ajudar hoje? (Ex: Pix, Entrega, Comprovante...)</div>
+                <div class="chat-msg chat-bot">Olá! Sou o AetherBot. Como posso ajudar você hoje? Pode mandar qualquer mensagem!</div>
             </div>
             <form style="display:flex; gap:8px;" onsubmit="sendChatMessage(event)">
-                <input type="text" id="chatInput" class="filter-input" placeholder="Digite sua dúvida..." style="flex:1;" required>
+                <input type="text" id="chatInput" class="filter-input" placeholder="Digite uma mensagem ou pergunta..." style="flex:1;" required>
                 <button type="submit" class="btn-action" style="width:auto; padding:0 15px;">Enviar</button>
             </form>
         </div>
     </div>
 
-    <!-- Modal Checkout / Pix -->
+    <!-- Painel Admin Isolado -->
+    <div class="modal" id="modalAdmin">
+        <div class="modal-content" style="max-width: 600px;">
+            <button class="btn-close" onclick="closeModal('modalAdmin')">✕</button>
+            <h2 style="font-family:'Orbitron'; color:var(--main-neon); margin-bottom:15px;">⚙️ Painel do Administrador</h2>
+            
+            <div class="admin-box">
+                <h3 style="font-family:'Orbitron'; font-size:1rem; color:#fff; margin-bottom:10px;">➕ Adicionar Conta ao Estoque</h3>
+                <form onsubmit="saveAdminProduct(event)">
+                    <div style="margin-bottom:10px;">
+                        <input type="text" id="admTitle" class="filter-input" placeholder="Título da Conta (ex: CONTA #06 - Buddha V2)" style="width:100%;" required>
+                    </div>
+                    <div class="admin-grid-inputs">
+                        <select id="admSea" class="filter-select" required>
+                            <option value="Sea 1">Sea 1</option>
+                            <option value="Sea 2">Sea 2</option>
+                            <option value="Sea 3">Sea 3</option>
+                        </select>
+                        <input type="number" id="admLevel" class="filter-input" placeholder="Nível (ex: 2650)" required>
+                    </div>
+                    <div class="admin-grid-inputs">
+                        <input type="number" step="0.01" id="admPrice" class="filter-input" placeholder="Preço R$" required>
+                        <input type="number" id="admStock" class="filter-input" placeholder="Estoque (Qtd)" value="1" required>
+                    </div>
+                    <div style="margin-bottom:10px;">
+                        <textarea id="admDesc" class="filter-input" rows="2" placeholder="Descrição dos itens/habilidades" style="width:100%;" required></textarea>
+                    </div>
+                    <button type="submit" class="btn-action">💾 Salvar Conta</button>
+                </form>
+            </div>
+
+            <div class="admin-box">
+                <h3 style="font-family:'Orbitron'; font-size:1rem; color:#fff; margin-bottom:10px;">📢 Aviso Global do Site</h3>
+                <div style="display:flex; gap:8px;">
+                    <input type="text" id="admAlertInput" class="filter-input" placeholder="Digite o aviso para exibir aos clientes..." style="flex:1;">
+                    <button onclick="setGlobalAlert()" class="btn-action" style="width:auto; padding:0 15px;">Publicar</button>
+                </div>
+            </div>
+
+            <button class="btn-action" onclick="resetDefaultData()" style="background:var(--sold-out); color:#fff;">⚠️ Resetar Dados Padrão</button>
+        </div>
+    </div>
+
     <div class="modal" id="modalCheckout">
         <div class="modal-content">
             <button class="btn-close" onclick="closeModal('modalCheckout')">✕</button>
@@ -435,7 +466,7 @@
                 13997985399
             </div>
             <p style="margin-bottom:15px; font-size:0.9rem; color:var(--text-muted);">
-                Após pagar, envie a foto/print do comprovante no WhatsApp para receber sua conta na hora:
+                Após realizar o Pix, envie o comprovante no WhatsApp para receber sua conta imediatamente:
             </p>
             <a href="https://wa.me/5513996307983?text=Olá,%20fiz%20o%20pagamento%20e%20vim%20enviar%20o%20comprovante!" target="_blank" style="text-decoration:none;">
                 <button class="btn-action" style="background:#25D366; color:#000;">📱 Enviar Comprovante (13) 99630-7983</button>
@@ -444,12 +475,11 @@
     </div>
 
     <script>
-        // Especificações Exatas: 00 e 04 no Sea 3 | 01 e 05 no Sea 2
         const defaultProducts = [
-            { id: 1, title: "CONTA #00 - Dough V1 + Shark Anchor", sea: "Sea 3", level: 2611, price: 35.00, desc: "Sea 3 desbloqueado, Godhuman, Shark Anchor, Dough V1 maestria máxima.", status: "available" },
-            { id: 2, title: "CONTA #04 - Gravity V2 + CDK Craft", sea: "Sea 3", level: 2650, price: 28.00, desc: "Sea 3 desbloqueado, Nível Máximo 2650, Cursed Dual Katana e Soul Guitar.", status: "available" },
-            { id: 3, title: "CONTA #01 - Starter Sea 2 + Shizu", sea: "Sea 2", level: 1745, price: 15.00, desc: "Sea 2 desbloqueado, espada Shizu e frutas no inventário.", status: "available" },
-            { id: 4, title: "CONTA #05 - Light All Skills + Angel V2", sea: "Sea 2", level: 1212, price: 12.00, desc: "Sea 2 com Light awaken e Raça Angel V2 habilitada.", status: "available" }
+            { id: 1, title: "CONTA #00 - Dough V1 + Shark Anchor", sea: "Sea 3", level: 2611, price: 35.00, stock: 3, desc: "Sea 3 desbloqueado, Godhuman, Shark Anchor, Dough V1 maestria máxima.", status: "available" },
+            { id: 2, title: "CONTA #04 - Gravity V2 + CDK Craft", sea: "Sea 3", level: 2650, price: 28.00, stock: 1, desc: "Sea 3 desbloqueado, Nível Máximo 2650, Cursed Dual Katana e Soul Guitar.", status: "available" },
+            { id: 3, title: "CONTA #01 - Starter Sea 2 + Shizu", sea: "Sea 2", level: 1745, price: 15.00, stock: 5, desc: "Sea 2 desbloqueado, espada Shizu e frutas no inventário.", status: "available" },
+            { id: 4, title: "CONTA #05 - Light All Skills + Angel V2", sea: "Sea 2", level: 1212, price: 12.00, stock: 2, desc: "Sea 2 com Light awaken e Raça Angel V2 habilitada.", status: "available" }
         ];
 
         let cart = [];
@@ -461,7 +491,6 @@
             return JSON.parse(localStorage.getItem('app_products_v3')) || defaultProducts;
         }
 
-        // Renderizar Produtos
         function renderStore(productsToRender) {
             const alertText = localStorage.getItem('app_global_alert');
             const alertEl = document.getElementById('globalAlert');
@@ -487,7 +516,7 @@
             }
 
             products.forEach(p => {
-                const isAvailable = p.status === 'available';
+                const isAvailable = p.status === 'available' && p.stock > 0;
                 const isFav = favorites.includes(p.id);
                 grid.innerHTML += `
                     <div class="product-card" onclick="openProductDetails(${p.id})">
@@ -495,7 +524,10 @@
                             <span class="badge-status ${isAvailable ? 'status-available' : 'status-sold'}">
                                 ${isAvailable ? 'DISPONÍVEL' : 'ESGOTADO'}
                             </span>
-                            <span class="product-sea">${p.sea}</span>
+                            <div class="product-header-tags">
+                                <span class="product-sea">${p.sea}</span>
+                                <span class="stock-badge">Estoque: ${p.stock || 0} un</span>
+                            </div>
                             <div class="product-title">${p.title}</div>
                             <div class="product-level">Nível: ${p.level}</div>
                         </div>
@@ -510,17 +542,17 @@
             document.getElementById('favCount').innerText = favorites.length;
         }
 
-        // Filtro por Sea Corrigido e Funcional
+        // Filtro de Sea 100% Corrigido e Testado
         function filterProducts() {
             const products = getProducts();
-            const search = document.getElementById('searchInput').value.toLowerCase();
+            const search = document.getElementById('searchInput').value.toLowerCase().trim();
             const maxPrice = parseFloat(document.getElementById('priceSelect').value);
-            const sea = document.getElementById('seaSelect').value;
+            const seaSelected = document.getElementById('seaSelect').value.toLowerCase().trim();
 
             const filtered = products.filter(p => {
-                const matchesSearch = p.title.toLowerCase().includes(search);
+                const matchesSearch = p.title.toLowerCase().includes(search) || p.desc.toLowerCase().includes(search);
                 const matchesPrice = isNaN(maxPrice) || p.price <= maxPrice;
-                const matchesSea = !sea || p.sea.trim() === sea.trim();
+                const matchesSea = !seaSelected || p.sea.toLowerCase().trim() === seaSelected;
                 return matchesSearch && matchesPrice && matchesSea;
             });
 
@@ -536,7 +568,6 @@
             renderStore();
         }
 
-        // Favoritos
         function toggleFav(id) {
             if (favorites.includes(id)) {
                 favorites = favorites.filter(f => f !== id);
@@ -553,19 +584,19 @@
             renderStore();
         }
 
-        // Modal Detalhes
         function openProductDetails(id) {
             const p = getProducts().find(item => item.id === id);
             if (!p) return;
 
             document.getElementById('mSea').innerText = p.sea;
+            document.getElementById('mStock').innerText = `Estoque: ${p.stock || 0} un`;
             document.getElementById('mTitle').innerText = p.title;
             document.getElementById('mLevel').innerText = `Nível da Conta: ${p.level}`;
             document.getElementById('mDesc').innerText = p.desc;
             document.getElementById('mPrice').innerText = `R$ ${parseFloat(p.price).toFixed(2).replace('.', ',')}`;
 
             const btn = document.getElementById('mBtnAddCart');
-            if (p.status === 'available') {
+            if (p.status === 'available' && p.stock > 0) {
                 btn.disabled = false;
                 btn.style.opacity = '1';
                 btn.innerText = '🛒 Adicionar ao Carrinho';
@@ -579,7 +610,6 @@
             openModal('modalProduct');
         }
 
-        // Carrinho Pop-up + Cupons
         function addToCart(p) {
             if (cart.some(item => item.id === p.id)) {
                 alert("Esta conta já está no seu carrinho!");
@@ -642,42 +672,90 @@
             openModal('modalCheckout');
         }
 
-        // Alternar Tema Neon
-        function toggleTheme() {
-            document.body.classList.toggle('purple-theme');
+        function saveAdminProduct(e) {
+            e.preventDefault();
+            const products = getProducts();
+            
+            const newProd = {
+                id: Date.now(),
+                title: document.getElementById('admTitle').value.trim(),
+                sea: document.getElementById('admSea').value,
+                level: parseInt(document.getElementById('admLevel').value),
+                price: parseFloat(document.getElementById('admPrice').value),
+                stock: parseInt(document.getElementById('admStock').value),
+                desc: document.getElementById('admDesc').value.trim(),
+                status: "available"
+            };
+
+            products.unshift(newProd);
+            localStorage.setItem('app_products_v3', JSON.stringify(products));
+            alert("Conta salva no catálogo!");
+            
+            document.getElementById('admTitle').value = '';
+            document.getElementById('admLevel').value = '';
+            document.getElementById('admPrice').value = '';
+            document.getElementById('admStock').value = '1';
+            document.getElementById('admDesc').value = '';
+            
+            renderStore();
+            closeModal('modalAdmin');
         }
 
-        // Chat do Bot Inteligente
+        function setGlobalAlert() {
+            const val = document.getElementById('admAlertInput').value.trim();
+            localStorage.setItem('app_global_alert', val);
+            renderStore();
+            alert("Aviso publicado no site!");
+        }
+
+        function resetDefaultData() {
+            if (confirm("Deseja restaurar o catálogo padrão de contas?")) {
+                localStorage.removeItem('app_products_v3');
+                renderStore();
+                closeModal('modalAdmin');
+            }
+        }
+
+        // Bot do Suporte Inteligente (Responde TUDO, inclusive "olá")
         function sendChatMessage(e) {
             e.preventDefault();
             const input = document.getElementById('chatInput');
-            const txt = input.value.trim().toLowerCase();
+            const rawTxt = input.value.trim();
+            const txt = rawTxt.toLowerCase();
             if (!txt) return;
 
             const box = document.getElementById('chatBox');
-            box.innerHTML += `<div class="chat-msg chat-user">${input.value}</div>`;
+            box.innerHTML += `<div class="chat-msg chat-user">${rawTxt}</div>`;
 
-            let reply = "Desculpe, não entendi. Para problemas complexos, use o botão de Suporte Avançado!";
-            if (txt.includes('pix') || txt.includes('pagar') || txt.includes('chave')) {
-                reply = "A chave Pix é o telefone 13997985399. O pagamento cai na hora!";
-            } else if (txt.includes('comprovante') || txt.includes('receb') || txt.includes('entrega')) {
-                reply = "Após pagar o Pix, envie o print do comprovante para o WhatsApp 13996307983 para receber os dados da conta.";
-            } else if (txt.includes('seguro') || txt.includes('confiavel')) {
-                reply = "Totalmente seguro! Oferecemos suporte completo e garantia de entrega imediata.";
+            let reply = "";
+
+            if (txt.includes('ola') || txt.includes('olá') || txt.includes('oi') || txt.includes('opa') || txt.includes('bom dia') || txt.includes('boa tarde') || txt.includes('boa noite')) {
+                reply = "Olá! Como posso ajudar você hoje? Temos suporte para Pix, entregas, cupons e estoque de contas!";
+            } else if (txt.includes('pix') || txt.includes('pagar') || txt.includes('chave') || txt.includes('pagamento')) {
+                reply = "Nossa chave Pix é o número de telefone 13997985399. O envio é super seguro!";
+            } else if (txt.includes('comprovante') || txt.includes('receb') || txt.includes('entrega') || txt.includes('como recebo')) {
+                reply = "Após fazer o Pix, mande o comprovante no nosso WhatsApp (13) 99630-7983 para receber o login e senha instantaneamente!";
             } else if (txt.includes('cupom') || txt.includes('desconto')) {
-                reply = "Você pode usar o cupom AETHER10 no carrinho para ganhar 10% OFF!";
+                reply = "Use o cupom AETHER10 na sua compra para garantir 10% de desconto no valor final!";
+            } else if (txt.includes('sea') || txt.includes('nivel') || txt.includes('nível') || txt.includes('estoque')) {
+                reply = "Você pode usar nossos filtros de busca por Sea 1, 2 ou 3, ou buscar por níveis e frutas!";
+            } else {
+                reply = `Recebi sua mensagem: "${rawTxt}". Caso precise de uma solução personalizada, basta clicar no botão de Atendimento Humano (WhatsApp)!`;
             }
 
             setTimeout(() => {
                 box.innerHTML += `<div class="chat-msg chat-bot">${reply}</div>`;
                 box.scrollTop = box.scrollHeight;
-            }, 400);
+            }, 300);
 
             input.value = '';
             box.scrollTop = box.scrollHeight;
         }
 
-        // Avaliações Reais (Sem Falsas)
+        function toggleTheme() {
+            document.body.classList.toggle('purple-theme');
+        }
+
         function loadReviews() {
             const reviews = JSON.parse(localStorage.getItem('app_reviews_real')) || [];
             const container = document.getElementById('reviewsContainer');
@@ -708,7 +786,6 @@
             loadReviews();
         }
 
-        // Modais Gerais
         function openModal(id) { document.getElementById(id).style.display = 'flex'; }
         function closeModal(id) { document.getElementById(id).style.display = 'none'; }
 

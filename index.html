@@ -55,7 +55,8 @@
         .product-level { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 15px; }
         .product-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 15px; }
         .product-price { font-family: 'Orbitron'; font-size: 1.4rem; color: var(--text-light); }
-        .btn-fav { background: transparent; border: none; color: var(--purple-glow); cursor: pointer; font-size: 1.2rem; }
+        .btn-fav { background: transparent; border: none; color: var(--purple-glow); cursor: pointer; font-size: 1.2rem; transition: transform 0.2s; }
+        .btn-fav.active { color: #ff2a6d; transform: scale(1.2); }
 
         .reviews-section { background: var(--card-bg); border: 1px solid rgba(138,43,226,0.3); border-radius: 10px; padding: 25px; margin-bottom: 40px; }
         .reviews-list { color: var(--text-muted); font-style: italic; margin-bottom: 20px; }
@@ -70,11 +71,11 @@
         <header>
             <div class="logo">BloxAether</div>
             <div class="nav-links">
-                <a href="#">🎮 Todas as Contas</a>
-                <a href="#">❤️ Favoritados (<span id="favCount">0</span>)</a>
-                <a href="#">🎧 Suporte</a>
-                <button class="nav-btn btn-theme">🎨 Tema</button>
-                <button class="nav-btn btn-cart">🛒 Carrinho (0)</button>
+                <a href="#" onclick="renderStore()">🎮 Todas as Contas</a>
+                <a href="#" onclick="showFavorites()">❤️ Favoritados (<span id="favCount">0</span>)</a>
+                <a href="#" onclick="alert('Suporte via Discord ou WhatsApp ativo!')">🎧 Suporte</a>
+                <button class="nav-btn btn-theme" onclick="alert('Alternar Tema')">🎨 Tema</button>
+                <button class="nav-btn btn-cart" onclick="alert('Seu carrinho está vazio!')">🛒 Carrinho (0)</button>
             </div>
         </header>
 
@@ -95,6 +96,8 @@
             </select>
             <select id="priceSelect" class="filter-select" onchange="filterProducts()">
                 <option value="">💰 Qualquer Preço</option>
+                <option value="15">Até R$ 15</option>
+                <option value="30">Até R$ 30</option>
                 <option value="50">Até R$ 50</option>
                 <option value="100">Até R$ 100</option>
             </select>
@@ -118,11 +121,13 @@
 
     <script>
         const defaultProducts = [
-            { id: 1, title: "CONTA #00 - Dough V1 + Shark Anchor", level: 2611, price: 35.00, status: "available", fav: false },
-            { id: 2, title: "CONTA #04 - Gravity V2 (Craft CDK)", level: 2650, price: 28.00, status: "available", fav: false },
-            { id: 3, title: "CONTA #01 - Starter Sea 2 + Shizu", level: 1745, price: 15.00, status: "available", fav: false },
-            { id: 4, title: "CONTA #05 - Light All Skills + Angel V2", level: 1212, price: 12.00, status: "available", fav: false }
+            { id: 1, title: "CONTA #00 - Dough V1 + Shark Anchor", level: 2611, price: 35.00, status: "available" },
+            { id: 2, title: "CONTA #04 - Gravity V2 (Craft CDK)", level: 2650, price: 28.00, status: "available" },
+            { id: 3, title: "CONTA #01 - Starter Sea 2 + Shizu", level: 1745, price: 15.00, status: "available" },
+            { id: 4, title: "CONTA #05 - Light All Skills + Angel V2", level: 1212, price: 12.00, status: "available" }
         ];
+
+        let favorites = JSON.parse(localStorage.getItem('app_favorites')) || [];
 
         function renderStore(productsToRender) {
             const alertText = localStorage.getItem('app_global_alert');
@@ -147,6 +152,7 @@
 
             products.forEach(p => {
                 const isAvailable = p.status === 'available';
+                const isFav = favorites.includes(p.id);
                 grid.innerHTML += `
                     <div class="product-card">
                         <div>
@@ -158,11 +164,34 @@
                         </div>
                         <div class="product-footer">
                             <div class="product-price">R$ ${parseFloat(p.price).toFixed(2).replace('.', ',')}</div>
-                            <button class="btn-fav" onclick="toggleFav(${p.id})">♥</button>
+                            <button class="btn-fav ${isFav ? 'active' : ''}" onclick="toggleFav(${p.id})">♥</button>
                         </div>
                     </div>
                 `;
             });
+
+            updateFavCounter();
+        }
+
+        function toggleFav(id) {
+            const index = favorites.indexOf(id);
+            if (index === -1) {
+                favorites.push(id);
+            } else {
+                favorites.splice(index, 1);
+            }
+            localStorage.setItem('app_favorites', JSON.stringify(favorites));
+            filterProducts();
+        }
+
+        function updateFavCounter() {
+            document.getElementById('favCount').innerText = favorites.length;
+        }
+
+        function showFavorites() {
+            let products = JSON.parse(localStorage.getItem('app_products_v3')) || defaultProducts;
+            const favProducts = products.filter(p => favorites.includes(p.id));
+            renderStore(favProducts);
         }
 
         function filterProducts() {

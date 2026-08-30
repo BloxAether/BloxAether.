@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel Admin | BloxAether</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Rajdhani:wght@600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #05020a;
+            --card-bg: #100720;
+            --purple-glow: #b026ff;
+            --accent-cyan: #00f3ff;
+            --text-light: #e0d6ff;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Rajdhani', sans-serif; }
+        body { background: var(--bg-dark); color: var(--text-light); padding: 30px; }
+        
+        h1, h2 { font-family: 'Orbitron'; color: #fff; margin-bottom: 20px; }
+        .section { background: var(--card-bg); border: 1px solid rgba(176,38,255,0.3); border-radius: 10px; padding: 20px; margin-bottom: 30px; }
+        
+        .form-row { display: flex; gap: 10px; margin-bottom: 15px; flex-wrap: wrap; }
+        input, select { padding: 10px; background: #1a0f35; border: 1px solid var(--purple-glow); border-radius: 6px; color: #fff; flex: 1; }
+        
+        button { padding: 10px 20px; background: var(--purple-glow); border: none; color: #fff; font-family: 'Orbitron'; font-weight: bold; cursor: pointer; border-radius: 6px; }
+        button:hover { box-shadow: 0 0 10px var(--purple-glow); }
+        .btn-danger { background: #ff2a6d; }
+        .btn-reset { background: #ff9900; color: #000; }
+
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        th, td { padding: 12px; border-bottom: 1px solid rgba(255,255,255,0.1); text-align: left; }
+        th { font-family: 'Orbitron'; color: var(--accent-cyan); }
+    </style>
+</head>
+<body>
+
+    <h1>⚙️ Painel de Controle (Admin)</h1>
+
+    <!-- BANNER GLOBAL -->
+    <div class="section">
+        <h2>📢 Banner de Aviso Global</h2>
+        <div class="form-row">
+            <input type="text" id="alertInput" placeholder="Digite um aviso para aparecer no topo da loja...">
+            <button onclick="saveAlert()">Publicar Aviso</button>
+            <button class="btn-danger" onclick="clearAlert()">Remover Aviso</button>
+        </div>
+    </div>
+
+    <!-- CADASTRAR PRODUTO -->
+    <div class="section">
+        <h2>➕ Adicionar Novo Produto</h2>
+        <form onsubmit="addProduct(event)" class="form-row">
+            <input type="text" id="pTitle" placeholder="Título da Conta" required>
+            <input type="number" id="pLevel" placeholder="Nível" required>
+            <input type="number" step="0.01" id="pPrice" placeholder="Preço (R$)" required>
+            <input type="text" id="pSpecs" placeholder="Specs (separadas por vírgula)" required>
+            <select id="pStatus">
+                <option value="available">Disponível</option>
+                <option value="sold">Esgotado</option>
+            </select>
+            <button type="submit">Cadastrar</button>
+        </form>
+    </div>
+
+    <!-- GERENCIAR ESTOQUE -->
+    <div class="section">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+            <h2>📦 Gerenciar Estoque e Preços</h2>
+            <button class="btn-reset" onclick="resetToDefault()">🔄 Restaurar as 4 Contas Padrão</button>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Título</th>
+                    <th>Nível</th>
+                    <th>Preço (R$)</th>
+                    <th>Status</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody id="adminTable"></tbody>
+        </table>
+    </div>
+
+    <script>
+        const defaultProducts = [
+            {
+                id: 1,
+                title: "CONTA #00 - Dough V1 + Shark Anchor",
+                level: 2611,
+                price: 35.00,
+                status: "available",
+                fav: false,
+                specs: ["Nível: 2611 (Sea 3)", "Estilo: Dragon Talon", "Fruta: Dough V1 (Not All Skills)", "Arma: Shark Anchor", "Recursos: 37M Beli & 56k Frags", "Extras: Angel V2 + 6 Frutas Lendárias"]
+            },
+            {
+                id: 2,
+                title: "CONTA #04 - Gravity V2 (Craft CDK)",
+                level: 2650,
+                price: 28.00,
+                status: "available",
+                fav: false,
+                specs: ["Nível: 2650", "Estilo: Dragon Talon", "Fruta: Gravity V2 (All Skills)", "Armas: 5 Espadas Lendárias (Craft CDK)", "Inventário: 1 Fruta Mítica + 2 Lendárias"]
+            },
+            {
+                id: 3,
+                title: "CONTA #01 - Starter Sea 2 + Shizu",
+                level: 1745,
+                price: 15.00,
+                status: "available",
+                fav: false,
+                specs: ["Nível: 1745 (Sea 2)", "Estilo: Sharkman Karate V1", "Fruta: Creation Mast 1", "Arma: 3 Espadas Lendárias (com Shizu)", "Recursos: 1M Beli", "Raça: Human V1"]
+            },
+            {
+                id: 4,
+                title: "CONTA #05 - Light All Skills + Angel V2",
+                level: 1212,
+                price: 12.00,
+                status: "available",
+                fav: false,
+                specs: ["Nível: 1212 (Sea 2)", "Estilo: Electric Mast 1 V1", "Fruta: Light (All Skills)", "Arma: 1 Espada Lendária", "Recursos: 5M Beli & 6k Frags", "Extras: 1 Fruta Lendária + Angel V2"]
+            }
+        ];
+
+        function getProducts() {
+            const data = localStorage.getItem('app_products');
+            if (!data || JSON.parse(data).length < 4) {
+                localStorage.setItem('app_products', JSON.stringify(defaultProducts));
+                return defaultProducts;
+            }
+            return JSON.parse(data);
+        }
+
+        function resetToDefault() {
+            localStorage.setItem('app_products', JSON.stringify(defaultProducts));
+            renderAdminTable();
+            alert("Estoque restaurado com as 4 contas completas!");
+        }
+
+        function saveProducts(products) {
+            localStorage.setItem('app_products', JSON.stringify(products));
+            renderAdminTable();
+        }
+
+        function renderAdminTable() {
+            const products = getProducts();
+            const tbody = document.getElementById('adminTable');
+            tbody.innerHTML = '';
+
+            products.forEach(p => {
+                tbody.innerHTML += `
+                    <tr>
+                        <td><strong>${p.title}</strong></td>
+                        <td>${p.level}</td>
+                        <td>
+                            <input type="number" step="0.01" value="${p.price}" 
+                                style="width: 90px; padding: 5px;" 
+                                onchange="updatePrice(${p.id}, this.value)">
+                        </td>
+                        <td>
+                            <button style="background: ${p.status === 'available' ? '#00ff87' : '#ff2a6d'}; color: #000;"
+                                onclick="toggleStatus(${p.id})">
+                                ${p.status === 'available' ? 'Disponível' : 'Esgotado'}
+                            </button>
+                        </td>
+                        <td>
+                            <button class="btn-danger" onclick="deleteProduct(${p.id})">Excluir</button>
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        function updatePrice(id, newPrice) {
+            const products = getProducts();
+            const prod = products.find(p => p.id === id);
+            if (prod) {
+                prod.price = parseFloat(newPrice);
+                saveProducts(products);
+            }
+        }
+
+        function toggleStatus(id) {
+            const products = getProducts();
+            const prod = products.find(p => p.id === id);
+            if (prod) {
+                prod.status = prod.status === 'available' ? 'sold' : 'available';
+                saveProducts(products);
+            }
+        }
+
+        function addProduct(e) {
+            e.preventDefault();
+            const products = getProducts();
+            const specsRaw = document.getElementById('pSpecs').value;
+            const newProd = {
+                id: Date.now(),
+                title: document.getElementById('pTitle').value,
+                level: document.getElementById('pLevel').value,
+                price: parseFloat(document.getElementById('pPrice').value),
+                status: document.getElementById('pStatus').value,
+                fav: false,
+                specs: specsRaw.split(',').map(s => s.trim())
+            };
+            products.push(newProd);
+            saveProducts(products);
+            e.target.reset();
+        }
+
+        function deleteProduct(id) {
+            let products = getProducts();
+            products = products.filter(p => p.id !== id);
+            saveProducts(products);
+        }
+
+        function saveAlert() {
+            const val = document.getElementById('alertInput').value;
+            localStorage.setItem('app_global_alert', val);
+            alert("Aviso publicado na loja!");
+        }
+
+        function clearAlert() {
+            localStorage.removeItem('app_global_alert');
+            document.getElementById('alertInput').value = '';
+            alert("Aviso removido!");
+        }
+
+        renderAdminTable();
+    </script>
+</body>
+</html>

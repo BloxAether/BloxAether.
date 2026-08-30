@@ -3,230 +3,415 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Painel Admin | BloxAether</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Rajdhani:wght@600;700&display=swap" rel="stylesheet">
+    <title>BloxAether | Painel Admin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Rajdhani:wght@600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-dark: #05020a;
-            --card-bg: #100720;
+            --bg-dark: #0a0518;
+            --card-bg: #140b29;
             --purple-glow: #b026ff;
+            --purple-main: #8a2be2;
             --accent-cyan: #00f3ff;
             --text-light: #e0d6ff;
+            --text-muted: #a093c4;
+            --sold-out: #ff2a6d;
+            --available: #00ff87;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Rajdhani', sans-serif; }
-        body { background: var(--bg-dark); color: var(--text-light); padding: 30px; }
+        body { background: var(--bg-dark); color: var(--text-light); min-height: 100vh; padding: 20px; }
         
-        h1, h2 { font-family: 'Orbitron'; color: #fff; margin-bottom: 20px; }
-        .section { background: var(--card-bg); border: 1px solid rgba(176,38,255,0.3); border-radius: 10px; padding: 20px; margin-bottom: 30px; }
+        .container { max-width: 1000px; margin: 0 auto; }
+        h1, h2 { font-family: 'Orbitron', sans-serif; color: #fff; }
         
-        .form-row { display: flex; gap: 10px; margin-bottom: 15px; flex-wrap: wrap; }
-        input, select { padding: 10px; background: #1a0f35; border: 1px solid var(--purple-glow); border-radius: 6px; color: #fff; flex: 1; }
+        .header-admin { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--purple-glow); padding-bottom: 15px; margin-bottom: 25px; flex-wrap: wrap; gap: 10px; }
         
-        button { padding: 10px 20px; background: var(--purple-glow); border: none; color: #fff; font-family: 'Orbitron'; font-weight: bold; cursor: pointer; border-radius: 6px; }
-        button:hover { box-shadow: 0 0 10px var(--purple-glow); }
-        .btn-danger { background: #ff2a6d; }
-        .btn-reset { background: #ff9900; color: #000; }
+        /* DASHBOARD ESTATÍSTICAS */
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 25px; }
+        .stat-card { background: var(--card-bg); border: 1px solid var(--purple-glow); padding: 15px; border-radius: 8px; text-align: center; }
+        .stat-card h3 { font-size: 1.8rem; color: var(--accent-cyan); }
+        .stat-card p { font-size: 0.9rem; color: var(--text-muted); }
+
+        .card-admin { background: var(--card-bg); border: 1px solid rgba(138,43,226,0.3); border-radius: 10px; padding: 20px; margin-bottom: 20px; }
+        
+        form { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .full-width { grid-column: 1 / -1; }
+        
+        label { font-weight: bold; font-size: 0.9rem; color: var(--accent-cyan); display: block; margin-bottom: 4px; }
+        input, select, textarea { width: 100%; padding: 10px; background: #0a0518; border: 1px solid var(--purple-glow); border-radius: 6px; color: #fff; font-size: 1rem; }
+        
+        .btn { padding: 10px 18px; background: linear-gradient(90deg, #8a2be2, var(--purple-glow)); border: none; color: #fff; font-family: 'Orbitron'; font-weight: bold; cursor: pointer; border-radius: 6px; transition: 0.3s; }
+        .btn:hover { opacity: 0.9; box-shadow: 0 0 10px var(--purple-glow); }
+        .btn-danger { background: var(--sold-out); }
+        .btn-success { background: var(--available); color: #000; }
+        .btn-outline { background: transparent; border: 1px solid var(--accent-cyan); color: var(--accent-cyan); }
 
         table { width: 100%; border-collapse: collapse; margin-top: 15px; }
-        th, td { padding: 12px; border-bottom: 1px solid rgba(255,255,255,0.1); text-align: left; }
-        th { font-family: 'Orbitron'; color: var(--accent-cyan); }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid rgba(255,255,255,0.08); }
+        th { font-family: 'Orbitron'; color: var(--accent-cyan); font-size: 0.9rem; }
+        
+        .badge { padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: bold; }
+        .available { background: rgba(0,255,135,0.2); color: var(--available); border: 1px solid var(--available); }
+        .sold { background: rgba(255,42,109,0.2); color: var(--sold-out); border: 1px solid var(--sold-out); }
     </style>
 </head>
 <body>
 
-    <h1>⚙️ Painel de Controle (Admin)</h1>
-
-    <!-- BANNER GLOBAL -->
-    <div class="section">
-        <h2>📢 Banner de Aviso Global</h2>
-        <div class="form-row">
-            <input type="text" id="alertInput" placeholder="Digite um aviso para aparecer no topo da loja...">
-            <button onclick="saveAlert()">Publicar Aviso</button>
-            <button class="btn-danger" onclick="clearAlert()">Remover Aviso</button>
+    <div class="container">
+        <div class="header-admin">
+            <div>
+                <h1>Painel Administrativo</h1>
+                <p style="color: var(--text-muted);">BloxAether Control Center</p>
+            </div>
+            <div style="display:flex; gap:10px;">
+                <button class="btn btn-outline" onclick="exportBackup()">📥 Exportar Backup</button>
+                <button class="btn btn-outline" onclick="document.getElementById('importFile').click()">📤 Importar Backup</button>
+                <input type="file" id="importFile" style="display:none;" onchange="importBackup(event)">
+                <a href="index.html" target="_blank"><button class="btn">👁️ Ver Loja</button></a>
+            </div>
         </div>
-    </div>
 
-    <!-- CADASTRAR PRODUTO -->
-    <div class="section">
-        <h2>➕ Adicionar Novo Produto</h2>
-        <form onsubmit="addProduct(event)" class="form-row">
-            <input type="text" id="pTitle" placeholder="Título da Conta" required>
-            <input type="number" id="pLevel" placeholder="Nível" required>
-            <input type="number" step="0.01" id="pPrice" placeholder="Preço (R$)" required>
-            <input type="text" id="pSpecs" placeholder="Specs (separadas por vírgula)" required>
-            <select id="pStatus">
-                <option value="available">Disponível</option>
-                <option value="sold">Esgotado</option>
-            </select>
-            <button type="submit">Cadastrar</button>
-        </form>
-    </div>
-
-    <!-- GERENCIAR ESTOQUE -->
-    <div class="section">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-            <h2>📦 Gerenciar Estoque e Preços</h2>
-            <button class="btn-reset" onclick="resetToDefault()">🔄 Restaurar as 4 Contas Padrão</button>
+        <!-- RELATÓRIO DE VENDAS -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <h3 id="statTotalValue">R$ 0,00</h3>
+                <p>Faturamento Total Estimado</p>
+            </div>
+            <div class="stat-card">
+                <h3 id="statSellsCount">0</h3>
+                <p>Contas Vendidas</p>
+            </div>
+            <div class="stat-card">
+                <h3 id="statTotalStock">0</h3>
+                <p>Contas no Estoque</p>
+            </div>
         </div>
-        <table>
-            <thead>
-                <tr>
-                    <th>Título</th>
-                    <th>Nível</th>
-                    <th>Preço (R$)</th>
-                    <th>Status</th>
-                    <th>Ações</th>
-                </tr>
-            </thead>
-            <tbody id="adminTable"></tbody>
-        </table>
+
+        <!-- ALERTA GLOBAL DA LOJA -->
+        <div class="card-admin">
+            <h2>📢 Banner de Aviso da Loja</h2>
+            <div style="display:flex; gap:10px; margin-top:10px;">
+                <input type="text" id="alertTextInput" placeholder="Ex: 🔥 PROMOÇÃO DE CARNVAL - 20% OFF EM TODAS AS CONTAS!">
+                <button class="btn" onclick="saveGlobalAlert()">Salvar Aviso</button>
+                <button class="btn btn-danger" onclick="clearGlobalAlert()">Remover</button>
+            </div>
+        </div>
+
+        <!-- FORMULÁRIO DE CONTA -->
+        <div class="card-admin">
+            <h2 id="formTitle">➕ Cadastrar Nova Conta</h2>
+            <form id="productForm" onsubmit="handleFormSubmit(event)" style="margin-top:15px;">
+                <input type="hidden" id="pId">
+                
+                <div>
+                    <label>Título da Conta</label>
+                    <input type="text" id="pTitle" placeholder="Ex: CONTA #06 - Dough V2" required>
+                </div>
+                
+                <div>
+                    <label>Nível (Level)</label>
+                    <input type="number" id="pLevel" placeholder="Ex: 2650" required>
+                </div>
+
+                <div>
+                    <label>Preço (R$)</label>
+                    <input type="number" step="0.01" id="pPrice" placeholder="Ex: 25.00" required>
+                </div>
+
+                <div>
+                    <label>Status</label>
+                    <select id="pStatus">
+                        <option value="available">DISPONÍVEL</option>
+                        <option value="sold">ESGOTADO / VENDIDO</option>
+                    </select>
+                </div>
+
+                <div class="full-width">
+                    <label>Especificações (Separadas por vírgula)</label>
+                    <textarea id="pSpecs" rows="3" placeholder="Nível: 2650, Fruta: Dough V2, Estilo: Godhuman, Arma: CDK"></textarea>
+                </div>
+
+                <div class="full-width">
+                    <label>Links de Imagens (Separados por vírgula)</label>
+                    <input type="text" id="pImages" placeholder="https://imgur.com/foto1.jpg, https://imgur.com/foto2.jpg">
+                </div>
+
+                <div class="full-width" style="display:flex; gap:10px;">
+                    <button type="submit" class="btn btn-success" id="btnSave">Salvar Conta</button>
+                    <button type="button" class="btn btn-danger" onclick="resetForm()" id="btnCancel" style="display:none;">Cancelar Edição</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- GERENCIADOR DE CUPONS -->
+        <div class="card-admin">
+            <h2>🏷️ Gerenciador de Cupons</h2>
+            <div style="display:flex; gap:10px; margin-top:10px; margin-bottom:15px;">
+                <input type="text" id="cCode" placeholder="CÓDIGO (Ex: FÉRIAS10)" style="text-transform:uppercase;">
+                <input type="number" id="cDiscount" placeholder="Desconto % (Ex: 10)" style="width:150px;">
+                <button class="btn" onclick="addCoupon()">Criar Cupom</button>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Código</th>
+                        <th>Desconto</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody id="couponsTable"></tbody>
+            </table>
+        </div>
+
+        <!-- GERENCIADOR DE ESTOQUE -->
+        <div class="card-admin">
+            <h2>📦 Estoque Atual</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Título</th>
+                        <th>Nível</th>
+                        <th>Preço</th>
+                        <th>Status</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody id="inventoryTable"></tbody>
+            </table>
+        </div>
+
+        <!-- AVALIAÇÕES DE CLIENTES -->
+        <div class="card-admin">
+            <h2>⭐ Moderar Avaliações</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nome</th>
+                        <th>Comentário</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody id="reviewsTable"></tbody>
+            </table>
+        </div>
     </div>
 
     <script>
         const defaultProducts = [
-            {
-                id: 1,
-                title: "CONTA #00 - Dough V1 + Shark Anchor",
-                level: 2611,
-                price: 35.00,
-                status: "available",
-                fav: false,
-                specs: ["Nível: 2611 (Sea 3)", "Estilo: Dragon Talon", "Fruta: Dough V1 (Not All Skills)", "Arma: Shark Anchor", "Recursos: 37M Beli & 56k Frags", "Extras: Angel V2 + 6 Frutas Lendárias"]
-            },
-            {
-                id: 2,
-                title: "CONTA #04 - Gravity V2 (Craft CDK)",
-                level: 2650,
-                price: 28.00,
-                status: "available",
-                fav: false,
-                specs: ["Nível: 2650", "Estilo: Dragon Talon", "Fruta: Gravity V2 (All Skills)", "Armas: 5 Espadas Lendárias (Craft CDK)", "Inventário: 1 Fruta Mítica + 2 Lendárias"]
-            },
-            {
-                id: 3,
-                title: "CONTA #01 - Starter Sea 2 + Shizu",
-                level: 1745,
-                price: 15.00,
-                status: "available",
-                fav: false,
-                specs: ["Nível: 1745 (Sea 2)", "Estilo: Sharkman Karate V1", "Fruta: Creation Mast 1", "Arma: 3 Espadas Lendárias (com Shizu)", "Recursos: 1M Beli", "Raça: Human V1"]
-            },
-            {
-                id: 4,
-                title: "CONTA #05 - Light All Skills + Angel V2",
-                level: 1212,
-                price: 12.00,
-                status: "available",
-                fav: false,
-                specs: ["Nível: 1212 (Sea 2)", "Estilo: Electric Mast 1 V1", "Fruta: Light (All Skills)", "Arma: 1 Espada Lendária", "Recursos: 5M Beli & 6k Frags", "Extras: 1 Fruta Lendária + Angel V2"]
-            }
+            { id: 1, title: "CONTA #00 - Dough V1 + Shark Anchor", level: 2611, price: 35.00, status: "available", fav: false, specs: ["Nível: 2611 (Sea 3)", "Estilo: Dragon Talon", "Fruta: Dough V1", "Arma: Shark Anchor"] },
+            { id: 2, title: "CONTA #04 - Gravity V2 (Craft CDK)", level: 2650, price: 28.00, status: "available", fav: false, specs: ["Nível: 2650", "Estilo: Dragon Talon", "Fruta: Gravity V2", "Armas: CDK"] },
+            { id: 3, title: "CONTA #01 - Starter Sea 2 + Shizu", level: 1745, price: 15.00, status: "available", fav: false, specs: ["Nível: 1745 (Sea 2)", "Fruta: Creation", "Arma: Shizu"] },
+            { id: 4, title: "CONTA #05 - Light All Skills + Angel V2", level: 1212, price: 12.00, status: "available", fav: false, specs: ["Nível: 1212 (Sea 2)", "Fruta: Light", "Angel V2"] }
         ];
 
-        function getProducts() {
-            const data = localStorage.getItem('app_products');
-            if (!data || JSON.parse(data).length < 4) {
-                localStorage.setItem('app_products', JSON.stringify(defaultProducts));
-                return defaultProducts;
-            }
-            return JSON.parse(data);
-        }
+        function loadAdmin() {
+            let products = JSON.parse(localStorage.getItem('app_products')) || defaultProducts;
+            let coupons = JSON.parse(localStorage.getItem('app_coupons')) || [{ code: 'PRIMEIRACOMPRA', discount: 10 }];
+            let reviews = JSON.parse(localStorage.getItem('app_reviews')) || [];
+            let sales = JSON.parse(localStorage.getItem('app_sales_stats')) || { totalValue: 0, count: 0 };
 
-        function resetToDefault() {
-            localStorage.setItem('app_products', JSON.stringify(defaultProducts));
-            renderAdminTable();
-            alert("Estoque restaurado com as 4 contas completas!");
-        }
+            // CARREGAR ESTATÍSTICAS
+            document.getElementById('statTotalValue').innerText = `R$ ${sales.totalValue.toFixed(2).replace('.', ',')}`;
+            document.getElementById('statSellsCount').innerText = sales.count;
+            document.getElementById('statTotalStock').innerText = products.length;
 
-        function saveProducts(products) {
-            localStorage.setItem('app_products', JSON.stringify(products));
-            renderAdminTable();
-        }
+            // CARREGAR AVISO GLOBAL
+            document.getElementById('alertTextInput').value = localStorage.getItem('app_global_alert') || '';
 
-        function renderAdminTable() {
-            const products = getProducts();
-            const tbody = document.getElementById('adminTable');
-            tbody.innerHTML = '';
-
+            // CARREGAR TABELA DE ESTOQUE
+            const table = document.getElementById('inventoryTable');
+            table.innerHTML = '';
             products.forEach(p => {
-                tbody.innerHTML += `
+                table.innerHTML += `
                     <tr>
+                        <td>#${p.id}</td>
                         <td><strong>${p.title}</strong></td>
                         <td>${p.level}</td>
+                        <td>R$ ${parseFloat(p.price).toFixed(2).replace('.', ',')}</td>
+                        <td><span class="badge ${p.status === 'available' ? 'available' : 'sold'}">${p.status === 'available' ? 'DISPONÍVEL' : 'ESGOTADO'}</span></td>
                         <td>
-                            <input type="number" step="0.01" value="${p.price}" 
-                                style="width: 90px; padding: 5px;" 
-                                onchange="updatePrice(${p.id}, this.value)">
+                            <button class="btn btn-outline" style="padding:4px 8px; font-size:0.8rem;" onclick="editProduct(${p.id})">✏️ Editar</button>
+                            <button class="btn btn-danger" style="padding:4px 8px; font-size:0.8rem;" onclick="deleteProduct(${p.id})">🗑️ Excluir</button>
                         </td>
-                        <td>
-                            <button style="background: ${p.status === 'available' ? '#00ff87' : '#ff2a6d'}; color: #000;"
-                                onclick="toggleStatus(${p.id})">
-                                ${p.status === 'available' ? 'Disponível' : 'Esgotado'}
-                            </button>
-                        </td>
-                        <td>
-                            <button class="btn-danger" onclick="deleteProduct(${p.id})">Excluir</button>
-                        </td>
+                    </tr>
+                `;
+            });
+
+            // CARREGAR TABELA DE CUPONS
+            const cTable = document.getElementById('couponsTable');
+            cTable.innerHTML = '';
+            coupons.forEach((c, idx) => {
+                cTable.innerHTML += `
+                    <tr>
+                        <td><strong>${c.code}</strong></td>
+                        <td>${c.discount}% OFF</td>
+                        <td><button class="btn btn-danger" style="padding:4px 8px; font-size:0.8rem;" onclick="deleteCoupon(${idx})">🗑️ Remover</button></td>
+                    </tr>
+                `;
+            });
+
+            // CARREGAR TABELA DE AVALIAÇÕES
+            const rTable = document.getElementById('reviewsTable');
+            rTable.innerHTML = '';
+            reviews.forEach((r, idx) => {
+                rTable.innerHTML += `
+                    <tr>
+                        <td><strong>${r.name}</strong></td>
+                        <td>${r.comment}</td>
+                        <td><button class="btn btn-danger" style="padding:4px 8px; font-size:0.8rem;" onclick="deleteReview(${idx})">🗑️ Remover</button></td>
                     </tr>
                 `;
             });
         }
 
-        function updatePrice(id, newPrice) {
-            const products = getProducts();
-            const prod = products.find(p => p.id === id);
-            if (prod) {
-                prod.price = parseFloat(newPrice);
-                saveProducts(products);
-            }
-        }
-
-        function toggleStatus(id) {
-            const products = getProducts();
-            const prod = products.find(p => p.id === id);
-            if (prod) {
-                prod.status = prod.status === 'available' ? 'sold' : 'available';
-                saveProducts(products);
-            }
-        }
-
-        function addProduct(e) {
+        function handleFormSubmit(e) {
             e.preventDefault();
-            const products = getProducts();
-            const specsRaw = document.getElementById('pSpecs').value;
-            const newProd = {
-                id: Date.now(),
-                title: document.getElementById('pTitle').value,
-                level: document.getElementById('pLevel').value,
-                price: parseFloat(document.getElementById('pPrice').value),
-                status: document.getElementById('pStatus').value,
-                fav: false,
-                specs: specsRaw.split(',').map(s => s.trim())
-            };
-            products.push(newProd);
-            saveProducts(products);
-            e.target.reset();
+            let products = JSON.parse(localStorage.getItem('app_products')) || defaultProducts;
+            const id = document.getElementById('pId').value;
+            
+            const title = document.getElementById('pTitle').value;
+            const level = parseInt(document.getElementById('pLevel').value);
+            const price = parseFloat(document.getElementById('pPrice').value);
+            const status = document.getElementById('pStatus').value;
+            const specsStr = document.getElementById('pSpecs').value;
+            const imagesStr = document.getElementById('pImages').value;
+
+            const specs = specsStr ? specsStr.split(',').map(s => s.trim()) : [];
+            const images = imagesStr ? imagesStr.split(',').map(i => i.trim()) : [];
+
+            if (id) {
+                // EDITAR
+                const index = products.findIndex(p => p.id == id);
+                if (index !== -1) {
+                    products[index] = { ...products[index], title, level, price, status, specs, images };
+                }
+            } else {
+                // CRIAR NOVO
+                const newId = products.length > 0 ? Math.max(...products.map(p => p.id)) + 1 : 1;
+                products.push({ id: newId, title, level, price, status, fav: false, specs, images });
+            }
+
+            localStorage.setItem('app_products', JSON.stringify(products));
+            resetForm();
+            loadAdmin();
+        }
+
+        function editProduct(id) {
+            let products = JSON.parse(localStorage.getItem('app_products')) || defaultProducts;
+            const p = products.find(prod => prod.id === id);
+            if (!p) return;
+
+            document.getElementById('pId').value = p.id;
+            document.getElementById('pTitle').value = p.title;
+            document.getElementById('pLevel').value = p.level;
+            document.getElementById('pPrice').value = p.price;
+            document.getElementById('pStatus').value = p.status;
+            document.getElementById('pSpecs').value = Array.isArray(p.specs) ? p.specs.join(', ') : p.specs;
+            document.getElementById('pImages').value = p.images ? p.images.join(', ') : '';
+
+            document.getElementById('formTitle').innerText = `✏️ Editando: ${p.title}`;
+            document.getElementById('btnSave').innerText = "Atualizar Conta";
+            document.getElementById('btnCancel').style.display = "inline-block";
         }
 
         function deleteProduct(id) {
-            let products = getProducts();
-            products = products.filter(p => p.id !== id);
-            saveProducts(products);
+            if (confirm("Tem certeza que deseja excluir esta conta?")) {
+                let products = JSON.parse(localStorage.getItem('app_products')) || defaultProducts;
+                products = products.filter(p => p.id !== id);
+                localStorage.setItem('app_products', JSON.stringify(products));
+                loadAdmin();
+            }
         }
 
-        function saveAlert() {
-            const val = document.getElementById('alertInput').value;
+        function resetForm() {
+            document.getElementById('pId').value = '';
+            document.getElementById('productForm').reset();
+            document.getElementById('formTitle').innerText = "➕ Cadastrar Nova Conta";
+            document.getElementById('btnSave').innerText = "Salvar Conta";
+            document.getElementById('btnCancel').style.display = "none";
+        }
+
+        function saveGlobalAlert() {
+            const val = document.getElementById('alertTextInput').value;
             localStorage.setItem('app_global_alert', val);
-            alert("Aviso publicado na loja!");
+            alert("Aviso salvo!");
         }
 
-        function clearAlert() {
+        function clearGlobalAlert() {
             localStorage.removeItem('app_global_alert');
-            document.getElementById('alertInput').value = '';
+            document.getElementById('alertTextInput').value = '';
             alert("Aviso removido!");
         }
 
-        renderAdminTable();
+        // GERENCIAR CUPONS
+        function addCoupon() {
+            const code = document.getElementById('cCode').value.trim().toUpperCase();
+            const discount = parseInt(document.getElementById('cDiscount').value);
+
+            if(!code || !discount) return alert("Preencha o código e a porcentagem!");
+
+            let coupons = JSON.parse(localStorage.getItem('app_coupons')) || [];
+            coupons.push({ code, discount });
+            localStorage.setItem('app_coupons', JSON.stringify(coupons));
+            
+            document.getElementById('cCode').value = '';
+            document.getElementById('cDiscount').value = '';
+            loadAdmin();
+        }
+
+        function deleteCoupon(idx) {
+            let coupons = JSON.parse(localStorage.getItem('app_coupons')) || [];
+            coupons.splice(idx, 1);
+            localStorage.setItem('app_coupons', JSON.stringify(coupons));
+            loadAdmin();
+        }
+
+        function deleteReview(idx) {
+            let reviews = JSON.parse(localStorage.getItem('app_reviews')) || [];
+            reviews.splice(idx, 1);
+            localStorage.setItem('app_reviews', JSON.stringify(reviews));
+            loadAdmin();
+        }
+
+        // BACKUP (EXPORTAR E IMPORTAR JSON)
+        function exportBackup() {
+            const data = {
+                products: JSON.parse(localStorage.getItem('app_products')),
+                coupons: JSON.parse(localStorage.getItem('app_coupons')),
+                reviews: JSON.parse(localStorage.getItem('app_reviews')),
+                sales: JSON.parse(localStorage.getItem('app_sales_stats'))
+            };
+
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = `backup_bloxaether_${Date.now()}.json`;
+            a.click();
+        }
+
+        function importBackup(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                try {
+                    const data = JSON.parse(event.target.result);
+                    if (data.products) localStorage.setItem('app_products', JSON.stringify(data.products));
+                    if (data.coupons) localStorage.setItem('app_coupons', JSON.stringify(data.coupons));
+                    if (data.reviews) localStorage.setItem('app_reviews', JSON.stringify(data.reviews));
+                    if (data.sales) localStorage.setItem('app_sales_stats', JSON.stringify(data.sales));
+                    alert("Backup importado com sucesso!");
+                    loadAdmin();
+                } catch (err) {
+                    alert("Erro ao ler arquivo de backup.");
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        loadAdmin();
     </script>
 </body>
 </html>

@@ -43,7 +43,6 @@
 
         .container { max-width: 1200px; margin: 20px auto; padding: 0 20px; width: 100%; flex: 1; }
         
-        /* BARRA DE FILTROS E BUSCA */
         .filter-bar { display: flex; gap: 10px; margin-top: 20px; flex-wrap: wrap; }
         .filter-bar input, .filter-bar select { padding: 10px; background: var(--card-bg); border: 1px solid var(--purple-glow); border-radius: 6px; color: #fff; flex: 1; min-width: 150px; }
 
@@ -66,7 +65,6 @@
         .btn-buy { width: 100%; padding: 10px; background: linear-gradient(90deg, #8a2be2, var(--purple-glow)); border: none; color: #fff; font-family: 'Orbitron'; font-weight: bold; cursor: pointer; border-radius: 6px; margin-top: 10px; }
         .btn-disabled { width: 100%; padding: 10px; background: #222; border: none; color: #666; font-family: 'Orbitron'; cursor: not-allowed; border-radius: 6px; margin-top: 10px; }
 
-        /* AVALIAÇÕES */
         .reviews-section { background: var(--card-bg); border: 1px solid rgba(138,43,226,0.3); border-radius: 10px; padding: 25px; margin-top: 50px; }
         .reviews-section h2 { font-family: 'Orbitron'; color: #fff; margin-bottom: 20px; }
         .review-card { border-bottom: 1px solid rgba(255,255,255,0.08); padding: 12px 0; }
@@ -75,12 +73,10 @@
         .review-form { margin-top: 20px; display: flex; flex-direction: column; gap: 10px; }
         .review-form input, .review-form textarea { padding: 10px; background: #0a0518; border: 1px solid var(--purple-glow); border-radius: 6px; color: #fff; }
 
-        /* MODAIS */
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); backdrop-filter: blur(5px); display: none; justify-content: center; align-items: center; z-index: 1000; }
         .modal-content { background: var(--card-bg); border: 1px solid var(--purple-glow); border-radius: 12px; width: 90%; max-width: 500px; padding: 25px; position: relative; max-height: 90vh; overflow-y: auto; }
         .close-modal { position: absolute; top: 15px; right: 15px; background: none; border: none; color: #fff; font-size: 1.5rem; cursor: pointer; }
 
-        /* GALERIA DE IMAGENS */
         .gallery-container { display: flex; gap: 8px; overflow-x: auto; margin-bottom: 15px; padding-bottom: 5px; }
         .gallery-img { width: 80px; height: 60px; object-fit: cover; border-radius: 4px; border: 1px solid var(--purple-glow); cursor: pointer; flex-shrink: 0; }
         .gallery-img.active { border-color: var(--accent-cyan); box-shadow: 0 0 8px var(--accent-cyan); }
@@ -88,10 +84,8 @@
 
         .pix-area { text-align: center; margin-top: 15px; display: none; }
         .pix-code { background: #0a0518; padding: 12px; border: 1px dashed var(--accent-cyan); word-break: break-all; margin: 10px 0; border-radius: 6px; font-size: 1.1rem; color: var(--accent-cyan); font-family: monospace; font-weight: bold; }
-        
         .whatsapp-claim-box { background: rgba(37, 211, 102, 0.1); border: 1px solid #25D366; border-radius: 8px; padding: 12px; margin-top: 15px; text-align: center; }
 
-        /* CHATBOT */
         .chat-box { height: 240px; overflow-y: auto; background: #0a0518; padding: 12px; border-radius: 8px; border: 1px solid rgba(176,38,255,0.3); margin-bottom: 15px; display: flex; flex-direction: column; gap: 10px; }
         .chat-msg { padding: 10px 14px; border-radius: 8px; max-width: 85%; font-size: 0.95rem; line-height: 1.4; }
         .msg-bot { background: rgba(176,38,255,0.25); border: 1px solid var(--purple-glow); align-self: flex-start; color: #fff; }
@@ -127,7 +121,6 @@
             <p style="color: var(--text-muted);">Segurança, entrega imediata e suporte dedicado.</p>
         </section>
 
-        <!-- BUSCA E FILTROS -->
         <div class="filter-bar">
             <input type="text" id="searchInput" placeholder="🔍 Buscar por nome, fruta ou item..." oninput="loadStore()">
             <select id="seaFilter" onchange="loadStore()">
@@ -161,31 +154,26 @@
         </section>
     </div>
 
-    <!-- MODAL DETALHES -->
+    <!-- MODAIS -->
     <div class="modal-overlay" id="detailsModal">
         <div class="modal-content">
             <button class="close-modal" onclick="closeModal('detailsModal')">&times;</button>
             <h2 id="mTitle" style="font-family:'Orbitron'; color:#fff; margin-bottom:15px; border-bottom: 1px solid var(--purple-glow); padding-bottom: 8px;"></h2>
-            
             <img id="mMainImg" class="main-img" src="" alt="Preview da Conta">
             <div id="mGallery" class="gallery-container"></div>
-
             <p style="font-weight: bold; color: var(--accent-cyan); margin-bottom: 8px;">📋 Especificações da Conta:</p>
             <div id="mSpecs" style="margin-bottom: 20px;"></div>
-            
             <div class="price" id="mPrice"></div>
             <button id="mBuyBtn" class="btn-buy">Adicionar ao Carrinho</button>
         </div>
     </div>
 
-    <!-- MODAL CARRINHO -->
     <div class="modal-overlay" id="cartModal">
         <div class="modal-content">
             <button class="close-modal" onclick="closeModal('cartModal')">&times;</button>
             <h2 style="font-family:'Orbitron'; color:#fff; margin-bottom:15px;">Seu Carrinho</h2>
             <div id="cartItems" style="max-height: 200px; overflow-y: auto; margin-bottom: 15px;"></div>
             
-            <!-- CAMPO DE CUPOM -->
             <div style="display:flex; gap:8px; margin-bottom:15px;">
                 <input type="text" id="couponInput" placeholder="Cupom de Desconto" style="flex:1; padding:8px; background:#0a0518; border:1px solid var(--purple-glow); border-radius:6px; color:#fff; text-transform:uppercase;">
                 <button onclick="applyCoupon()" class="btn-buy" style="margin:0; width:auto; padding:0 12px; background:var(--accent-cyan); color:#000;">Aplicar</button>
@@ -217,119 +205,50 @@
         </div>
     </div>
 
-    <!-- MODAL SUPORTE -->
     <div class="modal-overlay" id="supportModal">
         <div class="modal-content">
             <button class="close-modal" onclick="closeModal('supportModal')">&times;</button>
             <h2 style="font-family:'Orbitron'; color:#fff; margin-bottom:10px;">🤖 Assistente Virtual</h2>
-            
             <div class="quick-topics">
                 <button class="topic-btn" onclick="askTopic('Como funciona a entrega?')">📦 Entrega</button>
                 <button class="topic-btn" onclick="askTopic('Como faço para pagar via PIX?')">💳 Pagamento PIX</button>
                 <button class="topic-btn" onclick="askTopic('As contas têm garantia?')">🛡️ Garantia</button>
-                <button class="topic-btn" onclick="askTopic('Quais contas estão no catálogo?')">🎮 Contas</button>
             </div>
-
             <div class="chat-box" id="chatBox">
-                <div class="chat-msg msg-bot">Olá! Sou o assistente da BloxAether. Digite sua dúvida abaixo ou clique em um dos tópicos rápidos!</div>
+                <div class="chat-msg msg-bot">Olá! Sou o assistente da BloxAether. Digite sua dúvida abaixo ou selecione um tópico!</div>
             </div>
-
             <div style="display:flex; gap:8px; margin-bottom:15px;">
-                <input type="text" id="userInput" placeholder="Digite sua pergunta aqui..." onkeypress="handleEnter(event)" style="flex:1; padding:10px; background:#0a0518; border:1px solid var(--purple-glow); border-radius:6px; color:#fff;">
+                <input type="text" id="userInput" placeholder="Digite sua pergunta..." onkeypress="handleEnter(event)" style="flex:1; padding:10px; background:#0a0518; border:1px solid var(--purple-glow); border-radius:6px; color:#fff;">
                 <button onclick="sendBotMsg()" class="btn-buy" style="margin:0; width:auto; padding: 0 15px;">Enviar</button>
             </div>
-
-            <hr style="border-color: rgba(255,255,255,0.1); margin-bottom:12px;">
-            <p style="font-size:0.85rem; color:var(--text-muted); text-align:center; margin-bottom:8px;">Ainda tem dúvidas ou prefere atendimento direto?</p>
-            <a href="https://wa.me/5513996307983" target="_blank" style="text-decoration:none;">
-                <button class="btn-buy" style="background:#25D366; color:#fff;">📱 Atendimento WhatsApp (13 99630-7983)</button>
-            </a>
         </div>
     </div>
 
     <script>
         const defaultProducts = [
-            {
-                id: 1,
-                title: "CONTA #00 - Dough V1 + Shark Anchor",
-                level: 2611,
-                price: 35.00,
-                status: "available",
-                fav: false,
-                specs: ["Nível: 2611 (Sea 3)", "Estilo: Dragon Talon", "Fruta: Dough V1 (Not All Skills)", "Arma: Shark Anchor", "Recursos: 37M Beli & 56k Frags", "Extras: Angel V2 + 6 Frutas Lendárias"],
-                images: ["https://via.placeholder.com/400x200/140b29/00f3ff?text=Conta+%2300+-+Sea+3", "https://via.placeholder.com/400x200/140b29/b026ff?text=Dough+V1+Dethalles"]
-            },
-            {
-                id: 2,
-                title: "CONTA #04 - Gravity V2 (Craft CDK)",
-                level: 2650,
-                price: 28.00,
-                status: "available",
-                fav: false,
-                specs: ["Nível: 2650", "Estilo: Dragon Talon", "Fruta: Gravity V2 (All Skills)", "Armas: 5 Espadas Lendárias (Craft CDK)", "Inventário: 1 Fruta Mítica + 2 Lendárias"],
-                images: ["https://via.placeholder.com/400x200/140b29/00f3ff?text=Conta+%2304+-+CDK"]
-            },
-            {
-                id: 3,
-                title: "CONTA #01 - Starter Sea 2 + Shizu",
-                level: 1745,
-                price: 15.00,
-                status: "available",
-                fav: false,
-                specs: ["Nível: 1745 (Sea 2)", "Estilo: Sharkman Karate V1", "Fruta: Creation Mast 1", "Arma: 3 Espadas Lendárias (com Shizu)", "Recursos: 1M Beli", "Raça: Human V1"],
-                images: ["https://via.placeholder.com/400x200/140b29/00f3ff?text=Conta+%2301+-+Sea+2"]
-            },
-            {
-                id: 4,
-                title: "CONTA #05 - Light All Skills + Angel V2",
-                level: 1212,
-                price: 12.00,
-                status: "available",
-                fav: false,
-                specs: ["Nível: 1212 (Sea 2)", "Estilo: Electric Mast 1 V1", "Fruta: Light (All Skills)", "Arma: 1 Espada Lendária", "Recursos: 5M Beli & 6k Frags", "Extras: 1 Fruta Lendária + Angel V2"],
-                images: ["https://via.placeholder.com/400x200/140b29/00f3ff?text=Conta+%2305+-+Angel+V2"]
-            }
+            { id: 1, title: "CONTA #00 - Dough V1 + Shark Anchor", level: 2611, price: 35.00, status: "available", fav: false, specs: ["Nível: 2611 (Sea 3)", "Estilo: Dragon Talon", "Fruta: Dough V1", "Arma: Shark Anchor"], images: [] },
+            { id: 2, title: "CONTA #04 - Gravity V2 (Craft CDK)", level: 2650, price: 28.00, status: "available", fav: false, specs: ["Nível: 2650", "Estilo: Dragon Talon", "Fruta: Gravity V2", "Armas: CDK"], images: [] },
+            { id: 3, title: "CONTA #01 - Starter Sea 2 + Shizu", level: 1745, price: 15.00, status: "available", fav: false, specs: ["Nível: 1745 (Sea 2)", "Fruta: Creation", "Arma: Shizu"], images: [] },
+            { id: 4, title: "CONTA #05 - Light All Skills + Angel V2", level: 1212, price: 12.00, status: "available", fav: false, specs: ["Nível: 1212 (Sea 2)", "Fruta: Light", "Raça: Angel V2"], images: [] }
         ];
 
         let cart = [];
         let currentTab = 'all';
         let discountPercent = 0;
 
-        function toggleTheme() {
-            document.body.classList.toggle('cyan-theme');
-        }
-
+        function toggleTheme() { document.body.classList.toggle('cyan-theme'); }
         function switchTab(tab) {
             currentTab = tab;
             document.getElementById('nav-all').classList.toggle('active', tab === 'all');
             document.getElementById('nav-favs').classList.toggle('active', tab === 'favs');
-            
             document.getElementById('sectionTitle').innerText = tab === 'all' ? '🎮 Todas as Contas' : '❤️ Contas Favoritadas';
             loadStore();
         }
 
         function loadStore() {
-            let products = JSON.parse(localStorage.getItem('app_products_v3'));
-            if (!products || products.length === 0) {
-                products = defaultProducts;
-                localStorage.setItem('app_products_v3', JSON.stringify(defaultProducts));
-            }
+            let products = JSON.parse(localStorage.getItem('app_products_v3')) || defaultProducts;
+            document.getElementById('fav-count').innerText = products.filter(p => p.fav).length;
 
-            const favCount = products.filter(p => p.fav).length;
-            document.getElementById('fav-count').innerText = favCount;
-
-            const alertMsg = localStorage.getItem('app_global_alert');
-            const reviews = JSON.parse(localStorage.getItem('app_reviews')) || [];
-
-            const alertBanner = document.getElementById('globalAlert');
-            if (alertMsg) {
-                alertBanner.innerText = alertMsg;
-                alertBanner.style.display = 'block';
-            } else {
-                alertBanner.style.display = 'none';
-            }
-
-            // BUSCA E FILTROS
             const searchVal = document.getElementById('searchInput').value.toLowerCase();
             const seaVal = document.getElementById('seaFilter').value;
             const priceVal = document.getElementById('priceFilter').value;
@@ -338,68 +257,36 @@
 
             displayProducts = displayProducts.filter(p => {
                 const titleMatch = p.title.toLowerCase().includes(searchVal);
-                const specMatch = p.specs && p.specs.some(s => s.toLowerCase().includes(searchVal));
                 const seaMatch = seaVal === 'all' || (p.specs && p.specs.some(s => s.includes(seaVal)));
                 const priceMatch = priceVal === 'all' || parseFloat(p.price) <= parseFloat(priceVal);
-
-                return (titleMatch || specMatch) && seaMatch && priceMatch;
+                return titleMatch && seaMatch && priceMatch;
             });
 
             const grid = document.getElementById('storeGrid');
             grid.innerHTML = '';
 
-            if (displayProducts.length === 0) {
-                grid.innerHTML = '<div class="empty-favs">Nenhuma conta encontrada com os filtros selecionados.</div>';
-            } else {
-                displayProducts.forEach(p => {
-                    grid.innerHTML += `
-                        <div class="card" onclick="openDetails(${p.id})">
-                            <div>
-                                <div class="card-header">
-                                    <span class="badge ${p.status === 'available' ? 'available' : 'sold'}">
-                                        ${p.status === 'available' ? 'DISPONÍVEL' : 'ESGOTADO'}
-                                    </span>
-                                </div>
-                                <h3>${p.title}</h3>
-                                <p style="color: var(--text-muted);">Nível: ${p.level}</p>
-                            </div>
-                            <div>
-                                <div class="price">R$ ${parseFloat(p.price).toFixed(2).replace('.', ',')}</div>
-                                <span class="fav-icon ${p.fav ? 'active' : ''}" onclick="toggleFav(event, ${p.id})">♥</span>
-                            </div>
+            displayProducts.forEach(p => {
+                grid.innerHTML += `
+                    <div class="card" onclick="openDetails(${p.id})">
+                        <div>
+                            <div class="card-header"><span class="badge ${p.status === 'available' ? 'available' : 'sold'}">${p.status === 'available' ? 'DISPONÍVEL' : 'ESGOTADO'}</span></div>
+                            <h3>${p.title}</h3>
+                            <p style="color: var(--text-muted);">Nível: ${p.level}</p>
                         </div>
-                    `;
-                });
-            }
-
-            const revList = document.getElementById('reviewsList');
-            if (reviews.length > 0) {
-                revList.innerHTML = '';
-                reviews.forEach(r => {
-                    revList.innerHTML += `
-                        <div class="review-card">
-                            <div class="review-header">
-                                <span>${r.name}</span>
-                                <span class="stars">${r.stars}</span>
-                            </div>
-                            <p style="color: var(--text-muted); font-size: 0.95rem;">${r.comment}</p>
+                        <div>
+                            <div class="price">R$ ${parseFloat(p.price).toFixed(2).replace('.', ',')}</div>
+                            <span class="fav-icon ${p.fav ? 'active' : ''}" onclick="toggleFav(event, ${p.id})">♥</span>
                         </div>
-                    `;
-                });
-            } else {
-                revList.innerHTML = '<p style="color: var(--text-muted); font-style: italic;">Nenhuma avaliação enviada ainda. Seja o primeiro a avaliar!</p>';
-            }
+                    </div>
+                `;
+            });
         }
 
         function toggleFav(e, id) {
             e.stopPropagation();
             const products = JSON.parse(localStorage.getItem('app_products_v3')) || defaultProducts;
             const p = products.find(prod => prod.id === id);
-            if (p) {
-                p.fav = !p.fav;
-                localStorage.setItem('app_products_v3', JSON.stringify(products));
-                loadStore();
-            }
+            if (p) { p.fav = !p.fav; localStorage.setItem('app_products_v3', JSON.stringify(products)); loadStore(); }
         }
 
         function openDetails(id) {
@@ -409,52 +296,15 @@
 
             document.getElementById('mTitle').innerText = p.title;
             document.getElementById('mPrice').innerText = `R$ ${parseFloat(p.price).toFixed(2).replace('.', ',')}`;
+            document.getElementById('mSpecs').innerHTML = p.specs.map(s => `<div class="spec-item">❖ ${s}</div>`).join('');
             
-            const specsArray = Array.isArray(p.specs) ? p.specs : (p.specs ? p.specs.split(',') : [`Nível: ${p.level}`]);
-            document.getElementById('mSpecs').innerHTML = specsArray.map(s => `<div class="spec-item">❖ ${s.trim()}</div>`).join('');
-
-            // GALERIA DE IMAGENS
-            const mainImg = document.getElementById('mMainImg');
-            const gallery = document.getElementById('mGallery');
-            gallery.innerHTML = '';
-
-            if (p.images && p.images.length > 0) {
-                mainImg.src = p.images[0];
-                mainImg.style.display = 'block';
-                p.images.forEach((imgUrl, idx) => {
-                    gallery.innerHTML += `<img src="${imgUrl}" class="gallery-img ${idx === 0 ? 'active' : ''}" onclick="changeMainImg('${imgUrl}', this)">`;
-                });
-            } else {
-                mainImg.style.display = 'none';
-            }
-
             const buyBtn = document.getElementById('mBuyBtn');
-            if(p.status === 'available') {
-                buyBtn.className = "btn-buy";
-                buyBtn.innerText = "Adicionar ao Carrinho";
-                buyBtn.disabled = false;
-                buyBtn.onclick = () => { addToCart(p); closeModal('detailsModal'); };
-            } else {
-                buyBtn.className = "btn-disabled";
-                buyBtn.innerText = "Indisponível";
-                buyBtn.disabled = true;
-            }
-
+            buyBtn.onclick = () => { addToCart(p); closeModal('detailsModal'); };
             document.getElementById('detailsModal').style.display = 'flex';
         }
 
-        function changeMainImg(url, el) {
-            document.getElementById('mMainImg').src = url;
-            document.querySelectorAll('.gallery-img').forEach(img => img.classList.remove('active'));
-            el.classList.add('active');
-        }
-
         function addToCart(product) {
-            if (!cart.some(item => item.id === product.id)) {
-                cart.push(product);
-                updateCart();
-                openCartModal();
-            }
+            if (!cart.some(item => item.id === product.id)) { cart.push(product); updateCart(); openCartModal(); }
         }
 
         function updateCart() {
@@ -465,56 +315,33 @@
 
             cart.forEach(item => {
                 total += parseFloat(item.price);
-                container.innerHTML += `
-                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; border-bottom:1px solid rgba(255,255,255,0.05); padding-bottom:5px;">
-                        <div>
-                            <strong>${item.title}</strong>
-                            <div style="font-size:0.8rem; color:var(--text-muted);">R$ ${parseFloat(item.price).toFixed(2).replace('.', ',')}</div>
-                        </div>
-                        <button style="background:none; border:none; color:var(--sold-out); cursor:pointer; font-size:1.2rem;" onclick="removeFromCart(${item.id})">&times;</button>
-                    </div>
-                `;
+                container.innerHTML += `<div style="display:flex; justify-content:space-between; margin-bottom:8px;"><span>${item.title}</span><button onclick="removeFromCart(${item.id})">&times;</button></div>`;
             });
 
-            if (discountPercent > 0) {
-                total = total * (1 - discountPercent / 100);
-            }
-
+            if (discountPercent > 0) total *= (1 - discountPercent / 100);
             document.getElementById('cartTotal').innerText = `R$ ${total.toFixed(2).replace('.', ',')}`;
         }
 
         function applyCoupon() {
             const code = document.getElementById('couponInput').value.trim().toUpperCase();
-            const coupons = JSON.parse(localStorage.getItem('app_coupons')) || [{ code: 'PRIMEIRACOMPRA', discount: 10 }];
-            const coupon = coupons.find(c => c.code === code);
-            const msgEl = document.getElementById('couponMsg');
-
-            if (coupon) {
-                discountPercent = coupon.discount;
-                msgEl.style.color = 'var(--available)';
-                msgEl.innerText = `Cupom aplicado! ${coupon.discount}% de desconto.`;
+            if (code === 'PRIMEIRACOMPRA') {
+                discountPercent = 10;
+                document.getElementById('couponMsg').innerText = "Cupom de 10% aplicado!";
                 updateCart();
-            } else {
-                msgEl.style.color = 'var(--sold-out)';
-                msgEl.innerText = 'Cupom inválido ou expirado!';
             }
         }
 
-        function removeFromCart(id) {
-            cart = cart.filter(i => i.id !== id);
-            updateCart();
-        }
-
+        function removeFromCart(id) { cart = cart.filter(i => i.id !== id); updateCart(); }
         function openCartModal() { document.getElementById('cartModal').style.display = 'flex'; }
+        function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+        function copyPix() { navigator.clipboard.writeText('13997985399'); alert("Chave PIX copiada!"); }
 
         function generatePix() {
-            if (cart.length === 0) return alert("Seu carrinho está vazio!");
-            
             const sales = JSON.parse(localStorage.getItem('app_sales_stats')) || { totalValue: 0, count: 0 };
-            let currentTotal = cart.reduce((acc, item) => acc + parseFloat(item.price), 0);
-            if (discountPercent > 0) currentTotal *= (1 - discountPercent / 100);
+            let total = cart.reduce((acc, item) => acc + parseFloat(item.price), 0);
+            if (discountPercent > 0) total *= (1 - discountPercent / 100);
 
-            sales.totalValue += currentTotal;
+            sales.totalValue += total;
             sales.count += cart.length;
             localStorage.setItem('app_sales_stats', JSON.stringify(sales));
 
@@ -522,86 +349,6 @@
             document.getElementById('checkoutBtnArea').style.display = 'none';
         }
 
-        function copyPix() {
-            const code = document.getElementById('pixKey').innerText;
-            navigator.clipboard.writeText(code);
-            alert("Chave PIX copiada!");
-        }
-
-        function closeModal(id) {
-            document.getElementById(id).style.display = 'none';
-            if (id === 'cartModal') {
-                document.getElementById('pixArea').style.display = 'none';
-                document.getElementById('checkoutBtnArea').style.display = 'block';
-            }
-        }
-
-        /* SUPORTE CHATBOT */
-        function openSupportModal() { document.getElementById('supportModal').style.display = 'flex'; }
-
-        function handleEnter(e) {
-            if (e.key === 'Enter') sendBotMsg();
-        }
-
-        function askTopic(topicText) {
-            document.getElementById('userInput').value = topicText;
-            sendBotMsg();
-        }
-
-        function sendBotMsg() {
-            const input = document.getElementById('userInput');
-            const txt = input.value.trim();
-            if(!txt) return;
-
-            const box = document.getElementById('chatBox');
-            box.innerHTML += `<div class="chat-msg msg-user">${txt}</div>`;
-            input.value = '';
-
-            setTimeout(() => {
-                const reply = getBotAnswer(txt.toLowerCase());
-                box.innerHTML += `<div class="chat-msg msg-bot">${reply}</div>`;
-                box.scrollTop = box.scrollHeight;
-            }, 400);
-        }
-
-        function getBotAnswer(query) {
-            if (query.includes("entrega") || query.includes("receber") || query.includes("passo")) {
-                return "📦 <strong>Como funciona a entrega:</strong><br>Após realizar o PIX para a chave <code>13997985399</code>, envie o comprovante no nosso WhatsApp (13 99630-7983). Enviamos os dados de acesso da conta imediatamente!";
-            }
-            if (query.includes("pix") || query.includes("pagar") || query.includes("pagamento") || query.includes("chave")) {
-                return "💳 <strong>Pagamento via PIX:</strong><br>Nossa chave PIX oficial (telefone) é: <code>13997985399</code>. Você também pode adicionar a conta ao carrinho e clicar em 'Finalizar Compra' para ver o código!";
-            }
-            if (query.includes("garantia") || query.includes("segur") || query.includes("confiavel") || query.includes("troca")) {
-                return "🛡️ <strong>Garantia e Segurança:</strong><br>Todas as contas são 100% verificadas, sem e-mail vinculado ou com e-mail alterável. Você tem garantia de acesso e troca imediata em caso de qualquer inconsistência no login.";
-            }
-            if (query.includes("conta") || query.includes("catalogo") || query.includes("preço") || query.includes("opções")) {
-                return "🎮 <strong>Contas no catálogo atual:</strong><br>• <strong>CONTA #00:</strong> Dough V1 + Shark Anchor (R$ 35,00)<br>• <strong>CONTA #04:</strong> Gravity V2 + CDK (R$ 28,00)<br>• <strong>CONTA #01:</strong> Starter Sea 2 + Shizu (R$ 15,00)<br>• <strong>CONTA #05:</strong> Light All Skills + Angel V2 (R$ 12,00)";
-            }
-            if (query.includes("desconto") || query.includes("cupom") || query.includes("barato")) {
-                return "🏷️ <strong>Descontos:</strong><br>Use o cupom <code>PRIMEIRACOMPRA</code> no seu carrinho para ganhar 10% de desconto!";
-            }
-            if (query.includes("oi") || query.includes("olá") || query.includes("boa") || query.includes("salve")) {
-                return "👋 Olá! Como posso ajudar você hoje? Pergunte sobre nossas contas, métodos de pagamento, entrega ou garantias!";
-            }
-
-            return "💡 Não entendi completamente sua pergunta, mas posso responder sobre <strong>entrega</strong>, <strong>pagamento PIX</strong>, <strong>garantias</strong> e <strong>detalhes das contas</strong>! Se preferir, fale com o suporte humano no botão verde abaixo.";
-        }
-
-        function addReview(e) {
-            e.preventDefault();
-            const name = document.getElementById('revName').value;
-            const comment = document.getElementById('revComment').value;
-            const reviews = JSON.parse(localStorage.getItem('app_reviews')) || [];
-            
-            reviews.unshift({ id: Date.now(), name, comment, stars: "★★★★★" });
-            localStorage.setItem('app_reviews', JSON.stringify(reviews));
-            
-            document.getElementById('revName').value = '';
-            document.getElementById('revComment').value = '';
-            loadStore();
-        }
-
-        window.addEventListener('storage', loadStore);
         loadStore();
     </script>
 </body>

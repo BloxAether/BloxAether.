@@ -29,23 +29,23 @@
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Rajdhani', sans-serif; }
-        body { background: var(--bg-dark); color: var(--text-light); min-height: 100vh; padding: 20px; transition: 0.3s; }
+        body { background: var(--bg-dark); color: var(--text-light); min-height: 100vh; padding: 20px; transition: background 0.3s, color 0.3s; }
 
         .container { max-width: 1200px; margin: 0 auto; }
 
         /* Header */
-        header { display: flex; justify-content: space-between; align-items: center; padding: 15px 0; border-bottom: 1px solid rgba(176,38,255,0.2); margin-bottom: 25px; }
-        .logo { font-family: 'Orbitron', sans-serif; font-size: 1.8rem; color: var(--text-light); text-shadow: 0 0 10px var(--purple-glow); cursor: pointer; }
-        .nav-links { display: flex; gap: 12px; align-items: center; }
-        .nav-links a, .nav-btn { color: var(--text-light); text-decoration: none; font-weight: bold; font-size: 0.95rem; cursor: pointer; background: transparent; border: 1px solid transparent; padding: 8px 14px; border-radius: 6px; transition: 0.3s; }
-        .nav-links a:hover, .nav-btn:hover { color: var(--accent-cyan); border-color: rgba(0,243,255,0.3); }
-        .btn-theme { border: 1px solid var(--accent-cyan); color: var(--accent-cyan); }
-        .btn-cart { border: 1px solid var(--purple-glow); background: rgba(176,38,255,0.15); }
+        header { display: flex; justify-content: space-between; align-items: center; padding: 15px 0; border-bottom: 1px solid rgba(176,38,255,0.2); margin-bottom: 25px; flex-wrap: wrap; gap: 15px; }
+        .logo { font-family: 'Orbitron', sans-serif; font-size: 1.8rem; color: var(--text-light); text-shadow: 0 0 10px var(--purple-glow); cursor: pointer; user-select: none; }
+        .nav-links { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+        .nav-links button, .nav-links a { color: var(--text-light); text-decoration: none; font-weight: bold; font-size: 0.95rem; cursor: pointer; background: transparent; border: 1px solid transparent; padding: 8px 14px; border-radius: 6px; transition: 0.3s; }
+        .nav-links button:hover, .nav-links a:hover { color: var(--accent-cyan); border-color: rgba(0,243,255,0.3); }
+        .btn-theme { border: 1px solid var(--accent-cyan) !important; color: var(--accent-cyan) !important; }
+        .btn-cart { border: 1px solid var(--purple-glow) !important; background: rgba(176,38,255,0.15) !important; }
 
-        /* Banner de Aviso */
+        /* Banner de Aviso Global */
         .alert-banner { background: rgba(176,38,255,0.15); border: 1px solid var(--purple-glow); color: var(--text-light); text-align: center; padding: 12px; border-radius: 8px; margin-bottom: 25px; font-weight: bold; font-family: 'Orbitron'; display: none; }
 
-        /* Hero */
+        /* Hero Header */
         .hero { text-align: center; margin-bottom: 30px; }
         .hero h1 { font-family: 'Orbitron', sans-serif; font-size: 2.5rem; text-shadow: 0 0 15px var(--purple-glow); margin-bottom: 5px; }
         .hero p { color: var(--text-muted); }
@@ -55,7 +55,7 @@
         .filter-input, .filter-select { background: var(--card-bg); border: 1px solid rgba(176,38,255,0.4); border-radius: 6px; padding: 10px 15px; color: var(--text-light); font-size: 0.95rem; outline: none; }
         .filter-input:focus, .filter-select:focus { border-color: var(--accent-cyan); box-shadow: 0 0 8px var(--accent-cyan); }
 
-        /* Títulos */
+        /* Títulos de Seções */
         .section-title { font-family: 'Orbitron'; font-size: 1.4rem; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
 
         /* Grid de Produtos */
@@ -72,20 +72,20 @@
         .product-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 15px; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 10px; }
         .product-price { font-family: 'Orbitron'; font-size: 1.4rem; color: var(--accent-cyan); font-weight: bold; }
         
-        .btn-fav { background: transparent; border: none; color: var(--purple-glow); cursor: pointer; font-size: 1.4rem; transition: 0.2s; }
+        .btn-fav { background: transparent; border: none; color: var(--text-muted); cursor: pointer; font-size: 1.4rem; transition: 0.2s; }
         .btn-fav.active { color: #ff2a6d; }
 
-        /* Avaliações */
+        /* Seção de Avaliações */
         .reviews-section { background: var(--card-bg); border: 1px solid rgba(138,43,226,0.3); border-radius: 10px; padding: 25px; margin-bottom: 40px; }
         .reviews-list { margin-bottom: 20px; display: flex; flex-direction: column; gap: 10px; }
         .review-card { background: rgba(0,0,0,0.2); padding: 12px; border-radius: 6px; border-left: 3px solid var(--accent-cyan); }
         .review-author { font-weight: bold; color: var(--accent-cyan); font-size: 0.95rem; }
         .review-text { color: var(--text-light); font-size: 0.9rem; margin-top: 4px; }
         .review-form { display: flex; flex-direction: column; gap: 12px; }
-        .review-input, .review-textarea { background: var(--bg-dark); border: 1px solid rgba(176,38,255,0.4); border-radius: 6px; padding: 10px; color: var(--text-light); font-size: 0.95rem; }
+        .review-input, .review-textarea { background: var(--bg-dark); border: 1px solid rgba(176,38,255,0.4); border-radius: 6px; padding: 10px; color: var(--text-light); font-size: 0.95rem; outline: none; }
         .btn-submit-review { width: fit-content; padding: 10px 20px; background: var(--purple-main); border: none; color: #fff; font-family: 'Orbitron'; font-weight: bold; border-radius: 6px; cursor: pointer; }
 
-        /* Drawer Carrinho */
+        /* Drawer do Carrinho */
         .cart-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.7); display: none; z-index: 999; }
         .cart-drawer { position: fixed; top: 0; right: -400px; width: 380px; height: 100vh; background: var(--card-bg); border-left: 2px solid var(--purple-glow); z-index: 1000; transition: 0.3s; padding: 25px; display: flex; flex-direction: column; justify-content: space-between; }
         .cart-drawer.open { right: 0; }
@@ -97,7 +97,7 @@
         .cart-total { font-family: 'Orbitron'; font-size: 1.3rem; display: flex; justify-content: space-between; margin-bottom: 15px; }
         .btn-checkout { width: 100%; padding: 12px; background: var(--available); color: #000; border: none; border-radius: 6px; font-family: 'Orbitron'; font-weight: bold; cursor: pointer; font-size: 1rem; }
 
-        /* Modal Genérico */
+        /* Modais */
         .modal { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.8); display: none; align-items: center; justify-content: center; z-index: 1001; }
         .modal-content { background: var(--card-bg); border: 1px solid var(--purple-glow); border-radius: 10px; width: 90%; max-width: 450px; padding: 25px; position: relative; }
         .btn-close-modal { position: absolute; top: 15px; right: 15px; background: transparent; border: none; color: var(--text-muted); font-size: 1.4rem; cursor: pointer; }
@@ -106,24 +106,28 @@
 <body>
 
     <div class="container">
+        <!-- Navegação Superior -->
         <header>
-            <div class="logo" onclick="window.location.reload()">BloxAether</div>
+            <div class="logo" onclick="resetFilters()">BloxAether</div>
             <div class="nav-links">
-                <a onclick="filterByFav(false)">🎮 Todas as Contas</a>
-                <a onclick="filterByFav(true)">❤️ Favoritados (<span id="favCount">0</span>)</a>
-                <a onclick="openModal('modalSupport')">🎧 Suporte</a>
-                <button class="nav-btn btn-theme" onclick="toggleTheme()">🎨 Tema</button>
-                <button class="nav-btn btn-cart" onclick="toggleCart(true)">🛒 Carrinho (<span id="cartCount">0</span>)</button>
+                <button onclick="filterByFav(false)">🎮 Todas as Contas</button>
+                <button onclick="filterByFav(true)">❤️ Favoritados (<span id="favCount">0</span>)</button>
+                <button onclick="openModal('modalSupport')">🎧 Suporte</button>
+                <button class="btn-theme" onclick="toggleTheme()">🎨 Tema</button>
+                <button class="btn-cart" onclick="toggleCart(true)">🛒 Carrinho (<span id="cartCount">0</span>)</button>
             </div>
         </header>
 
+        <!-- Banner de Aviso -->
         <div id="globalAlert" class="alert-banner"></div>
 
+        <!-- Hero Banner -->
         <div class="hero">
             <h1>Mercado de Contas Blox Fruits</h1>
             <p>Segurança, entrega imediata e suporte dedicado.</p>
         </div>
 
+        <!-- Barra de Filtros -->
         <div class="filter-bar">
             <input type="text" id="searchInput" class="filter-input" placeholder="🔍 Buscar por nome, fruta ou item..." oninput="filterProducts()">
             <select id="seaSelect" class="filter-select" onchange="filterProducts()">
@@ -134,15 +138,17 @@
             </select>
             <select id="priceSelect" class="filter-select" onchange="filterProducts()">
                 <option value="">💰 Qualquer Preço</option>
-                <option value="20">Até R$ 20</option>
+                <option value="15">Até R$ 15</option>
                 <option value="30">Até R$ 30</option>
                 <option value="50">Até R$ 50</option>
             </select>
         </div>
 
+        <!-- Lista de Produtos -->
         <div class="section-title" id="gridTitle">🎮 Todas as Contas</div>
         <div class="products-grid" id="mainProductsGrid"></div>
 
+        <!-- Seção de Avaliações -->
         <div class="reviews-section">
             <div class="section-title" style="color: #ffca28;">★ Avaliações dos Clientes</div>
             <div class="reviews-list" id="reviewsContainer"></div>
@@ -156,7 +162,7 @@
         </div>
     </div>
 
-    <!-- Gaveta do Carrinho -->
+    <!-- Slide/Drawer do Carrinho -->
     <div class="cart-overlay" id="cartOverlay" onclick="toggleCart(false)"></div>
     <div class="cart-drawer" id="cartDrawer">
         <div>
@@ -171,11 +177,11 @@
                 <span>Total:</span>
                 <span id="cartTotalVal" style="color: var(--accent-cyan);">R$ 0,00</span>
             </div>
-            <button class="btn-checkout" onclick="checkout()">Finalizar Compra</button>
+            <button class="btn-checkout" onclick="checkout()">Finalizar Compra via Pix</button>
         </div>
     </div>
 
-    <!-- Modal Detalhes do Produto -->
+    <!-- Modal Detalhes da Conta -->
     <div class="modal" id="modalProduct">
         <div class="modal-content">
             <button class="btn-close-modal" onclick="closeModal('modalProduct')">✕</button>
@@ -191,13 +197,14 @@
         <div class="modal-content">
             <button class="btn-close-modal" onclick="closeModal('modalSupport')">✕</button>
             <h2 style="font-family:'Orbitron'; color:var(--accent-cyan); margin-bottom:15px;">🎧 Central de Suporte</h2>
-            <p style="margin-bottom:15px;">Precisa de ajuda com sua compra? Entre em contato conosco:</p>
-            <a href="https://discord.gg" target="_blank" style="display:block; padding:12px; background:#5865F2; color:#fff; text-align:center; text-decoration:none; border-radius:6px; font-weight:bold; margin-bottom:10px;">Entrar no Discord</a>
-            <a href="https://wa.me" target="_blank" style="display:block; padding:12px; background:#25D366; color:#fff; text-align:center; text-decoration:none; border-radius:6px; font-weight:bold;">Atendimento via WhatsApp</a>
+            <p style="margin-bottom:15px; color:var(--text-light);">Precisa de ajuda ou dúvidas sobre uma conta? Atendimento rápido:</p>
+            <a href="https://discord.gg" target="_blank" style="display:block; padding:12px; background:#5865F2; color:#fff; text-align:center; text-decoration:none; border-radius:6px; font-weight:bold; margin-bottom:10px; font-family:'Orbitron';">Entrar no Discord</a>
+            <a href="https://wa.me" target="_blank" style="display:block; padding:12px; background:#25D366; color:#fff; text-align:center; text-decoration:none; border-radius:6px; font-weight:bold; font-family:'Orbitron';">Atendimento no WhatsApp</a>
         </div>
     </div>
 
     <script>
+        // Dados Padrão (se não houver no LocalStorage)
         const defaultProducts = [
             { id: 1, title: "CONTA #00 - Dough V1 + Shark Anchor", level: 2611, price: 35.00, status: "available" },
             { id: 2, title: "CONTA #04 - Gravity V2 (Craft CDK)", level: 2650, price: 28.00, status: "available" },
@@ -213,8 +220,9 @@
             return JSON.parse(localStorage.getItem('app_products_v3')) || defaultProducts;
         }
 
+        // Renderização Principal
         function renderStore(productsToRender) {
-            // Aviso global
+            // Renderiza aviso global do admin
             const alertText = localStorage.getItem('app_global_alert');
             const alertEl = document.getElementById('globalAlert');
             if (alertText) {
@@ -234,7 +242,7 @@
             grid.innerHTML = '';
 
             if (products.length === 0) {
-                grid.innerHTML = '<p style="color:var(--text-muted); grid-column: 1/-1;">Nenhuma conta encontrada.</p>';
+                grid.innerHTML = '<p style="color:var(--text-muted); grid-column: 1/-1;">Nenhuma conta encontrada com esses filtros.</p>';
                 return;
             }
 
@@ -261,6 +269,7 @@
             document.getElementById('favCount').innerText = favorites.length;
         }
 
+        // Sistema de Busca e Filtros
         function filterProducts() {
             const products = getProducts();
             const search = document.getElementById('searchInput').value.toLowerCase();
@@ -277,6 +286,14 @@
             renderStore(filtered);
         }
 
+        function resetFilters() {
+            document.getElementById('searchInput').value = '';
+            document.getElementById('seaSelect').value = '';
+            document.getElementById('priceSelect').value = '';
+            filterByFav(false);
+        }
+
+        // Sistema de Favoritos
         function toggleFav(id) {
             if (favorites.includes(id)) {
                 favorites = favorites.filter(favId => favId !== id);
@@ -293,14 +310,14 @@
             renderStore();
         }
 
-        /* Modal e Carrinho */
+        // Modal Detalhes do Produto & Carrinho
         function openProductModal(id) {
             const products = getProducts();
             const p = products.find(item => item.id === id);
             if (!p) return;
 
             document.getElementById('mTitle').innerText = p.title;
-            document.getElementById('mLevel').innerText = `Nível de Conta: ${p.level}`;
+            document.getElementById('mLevel').innerText = `Nível da Conta: ${p.level}`;
             document.getElementById('mPrice').innerText = `R$ ${parseFloat(p.price).toFixed(2).replace('.', ',')}`;
 
             const btn = document.getElementById('mBtnAddCart');
@@ -312,7 +329,7 @@
             } else {
                 btn.disabled = true;
                 btn.style.opacity = '0.5';
-                btn.innerText = 'Produto Esgotado';
+                btn.innerText = 'Conta Esgotada';
             }
 
             openModal('modalProduct');
@@ -362,7 +379,7 @@
 
         function checkout() {
             if (cart.length === 0) return alert("Seu carrinho está vazio!");
-            alert("Redirecionando para o pagamento seguro via Pix...");
+            alert("Redirecionando para a chave Pix de pagamento seguro...");
         }
 
         function toggleTheme() {
@@ -372,10 +389,11 @@
         function openModal(id) { document.getElementById(id).style.display = 'flex'; }
         function closeModal(id) { document.getElementById(id).style.display = 'none'; }
 
-        /* Avaliações */
+        // Avaliações dos Clientes
         function loadReviews() {
             const reviews = JSON.parse(localStorage.getItem('app_reviews')) || [
-                { author: "Gabriel_Blox", text: "Conta entregue na hora, recomendo demais!" }
+                { author: "Gabriel_Blox", text: "Conta entregue na hora, recomendo demais!" },
+                { author: "Lucas_PvP", text: "Tudo certo! Frutas e status idênticos às fotos." }
             ];
             const container = document.getElementById('reviewsContainer');
             container.innerHTML = reviews.map(r => `
@@ -388,8 +406,10 @@
 
         function submitReview(e) {
             e.preventDefault();
-            const author = document.getElementById('revAuthor').value;
-            const text = document.getElementById('revText').value;
+            const author = document.getElementById('revAuthor').value.trim();
+            const text = document.getElementById('revText').value.trim();
+
+            if (!author || !text) return;
 
             const reviews = JSON.parse(localStorage.getItem('app_reviews')) || [];
             reviews.unshift({ author, text });
@@ -400,6 +420,7 @@
             loadReviews();
         }
 
+        // Inicialização
         window.onload = () => {
             renderStore();
             loadReviews();

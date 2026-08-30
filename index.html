@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BloxAether | Loja Oficial</title>
+    <title>BloxAether | Mercado de Contas Blox Fruits</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Rajdhani:wght@600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-dark: #0a0518;
-            --card-bg: #140b29;
+            --bg-dark: #070312;
+            --card-bg: #120924;
             --purple-glow: #b026ff;
             --purple-main: #8a2be2;
             --accent-cyan: #00f3ff;
@@ -18,338 +18,182 @@
             --available: #00ff87;
         }
 
-        body.cyan-theme {
-            --purple-glow: #00f3ff;
-            --purple-main: #00a8ff;
-            --accent-cyan: #b026ff;
-        }
-
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Rajdhani', sans-serif; }
-        body { background: var(--bg-dark); color: var(--text-light); min-height: 100vh; display: flex; flex-direction: column; }
-        
-        header { display: flex; justify-content: space-between; align-items: center; padding: 15px 5%; border-bottom: 1px solid rgba(176,38,255,0.2); background: rgba(10,5,24,0.95); position: sticky; top: 0; z-index: 100; flex-wrap: wrap; gap: 10px; }
-        .logo { font-family: 'Orbitron', sans-serif; font-size: 1.8rem; color: #fff; text-shadow: 0 0 10px var(--purple-glow); cursor: pointer; }
-        .logo span { color: var(--purple-glow); }
-        
-        nav { display: flex; gap: 15px; align-items: center; flex-wrap: wrap; }
-        nav button { background: none; border: none; color: var(--text-light); font-weight: 600; font-size: 1rem; cursor: pointer; transition: 0.3s; }
-        nav button:hover, nav button.active { color: var(--accent-cyan); text-shadow: 0 0 8px var(--accent-cyan); }
+        body { background: var(--bg-dark); color: var(--text-light); min-height: 100vh; padding: 20px; }
 
-        .header-actions { display: flex; gap: 10px; align-items: center; }
-        .cart-btn-header { background: rgba(176,38,255,0.2); border: 1px solid var(--purple-glow); padding: 8px 15px; border-radius: 6px; color: #fff; cursor: pointer; font-weight: bold; }
-        .theme-btn { background: none; border: 1px solid var(--accent-cyan); color: var(--accent-cyan); padding: 6px 10px; border-radius: 6px; cursor: pointer; }
+        .container { max-width: 1200px; margin: 0 auto; }
 
-        .alert-banner { background: var(--purple-glow); color: #fff; text-align: center; padding: 10px; font-weight: bold; display: none; }
+        /* Header */
+        header { display: flex; justify-content: space-between; align-items: center; padding: 15px 0; border-bottom: 1px solid rgba(176,38,255,0.2); margin-bottom: 25px; }
+        .logo { font-family: 'Orbitron', sans-serif; font-size: 1.8rem; color: #fff; text-shadow: 0 0 10px var(--purple-glow); }
+        .nav-links { display: flex; gap: 15px; align-items: center; }
+        .nav-links a, .nav-btn { color: var(--text-light); text-decoration: none; font-weight: bold; font-size: 0.95rem; cursor: pointer; background: transparent; border: 1px solid transparent; padding: 6px 12px; border-radius: 6px; transition: 0.3s; }
+        .nav-links a:hover, .nav-btn:hover { color: var(--accent-cyan); }
+        .btn-theme { border: 1px solid var(--accent-cyan); color: var(--accent-cyan); }
+        .btn-cart { border: 1px solid var(--purple-glow); background: rgba(176,38,255,0.1); }
+        .btn-admin { border: 1px solid var(--purple-glow); color: var(--accent-cyan) !important; font-weight: bold; }
+        .btn-admin:hover { background: rgba(176,38,255,0.2); box-shadow: 0 0 10px var(--purple-glow); }
 
-        .container { max-width: 1200px; margin: 20px auto; padding: 0 20px; width: 100%; flex: 1; }
-        
-        .filter-bar { display: flex; gap: 10px; margin-top: 20px; flex-wrap: wrap; }
-        .filter-bar input, .filter-bar select { padding: 10px; background: var(--card-bg); border: 1px solid var(--purple-glow); border-radius: 6px; color: #fff; flex: 1; min-width: 150px; }
+        /* Banner de Aviso */
+        .alert-banner { background: rgba(176,38,255,0.15); border: 1px solid var(--purple-glow); color: #fff; text-align: center; padding: 12px; border-radius: 8px; margin-bottom: 25px; font-weight: bold; font-family: 'Orbitron'; display: none; }
 
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 20px; margin-top: 20px; }
-        
-        .card { background: var(--card-bg); border: 1px solid rgba(138,43,226,0.3); border-radius: 10px; padding: 20px; position: relative; cursor: pointer; transition: 0.3s; display: flex; flex-direction: column; justify-content: space-between; }
-        .card:hover { transform: translateY(-4px); border-color: var(--purple-glow); box-shadow: 0 0 15px rgba(176,38,255,0.3); }
-        .card-header { display: flex; justify-content: flex-end; margin-bottom: 8px; }
-        .card h3 { font-family: 'Orbitron'; color: #fff; margin-bottom: 10px; font-size: 1.1rem; line-height: 1.3; }
-        
-        .badge { padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: bold; display: inline-block; }
-        .available { background: rgba(0,255,135,0.2); color: var(--available); border: 1px solid var(--available); }
-        .sold { background: rgba(255,42,109,0.2); color: var(--sold-out); border: 1px solid var(--sold-out); }
-        
-        .price { font-family: 'Orbitron'; font-size: 1.4rem; color: #fff; margin-top: 10px; }
-        
-        .fav-icon { position: absolute; bottom: 15px; right: 15px; font-size: 1.4rem; color: var(--text-muted); cursor: pointer; transition: 0.2s; }
-        .fav-icon.active { color: var(--sold-out); text-shadow: 0 0 8px var(--sold-out); }
+        /* Hero */
+        .hero { text-align: center; margin-bottom: 30px; }
+        .hero h1 { font-family: 'Orbitron', sans-serif; font-size: 2.5rem; text-shadow: 0 0 15px var(--purple-glow); margin-bottom: 5px; }
+        .hero p { color: var(--text-muted); }
 
-        .btn-buy { width: 100%; padding: 10px; background: linear-gradient(90deg, #8a2be2, var(--purple-glow)); border: none; color: #fff; font-family: 'Orbitron'; font-weight: bold; cursor: pointer; border-radius: 6px; margin-top: 10px; }
-        .btn-disabled { width: 100%; padding: 10px; background: #222; border: none; color: #666; font-family: 'Orbitron'; cursor: not-allowed; border-radius: 6px; margin-top: 10px; }
+        /* Filtros */
+        .filter-bar { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 30px; }
+        .filter-input, .filter-select { background: #0a0518; border: 1px solid rgba(176,38,255,0.4); border-radius: 6px; padding: 10px 15px; color: #fff; font-size: 0.95rem; outline: none; }
+        .filter-input:focus, .filter-select:focus { border-color: var(--accent-cyan); box-shadow: 0 0 8px var(--accent-cyan); }
 
-        .reviews-section { background: var(--card-bg); border: 1px solid rgba(138,43,226,0.3); border-radius: 10px; padding: 25px; margin-top: 50px; }
-        .reviews-section h2 { font-family: 'Orbitron'; color: #fff; margin-bottom: 20px; }
-        .review-card { border-bottom: 1px solid rgba(255,255,255,0.08); padding: 12px 0; }
-        .review-header { display: flex; justify-content: space-between; margin-bottom: 5px; font-weight: bold; }
-        .stars { color: #ffd700; }
-        .review-form { margin-top: 20px; display: flex; flex-direction: column; gap: 10px; }
-        .review-form input, .review-form textarea { padding: 10px; background: #0a0518; border: 1px solid var(--purple-glow); border-radius: 6px; color: #fff; }
+        /* Section Title */
+        .section-title { font-family: 'Orbitron'; font-size: 1.4rem; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
 
-        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); backdrop-filter: blur(5px); display: none; justify-content: center; align-items: center; z-index: 1000; }
-        .modal-content { background: var(--card-bg); border: 1px solid var(--purple-glow); border-radius: 12px; width: 90%; max-width: 500px; padding: 25px; position: relative; max-height: 90vh; overflow-y: auto; }
-        .close-modal { position: absolute; top: 15px; right: 15px; background: none; border: none; color: #fff; font-size: 1.5rem; cursor: pointer; }
+        /* Grid de Produtos */
+        .products-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; margin-bottom: 40px; }
+        .product-card { background: var(--card-bg); border: 1px solid rgba(138,43,226,0.3); border-radius: 10px; padding: 20px; position: relative; transition: 0.3s; display: flex; flex-direction: column; justify-content: space-between; min-height: 220px; }
+        .product-card:hover { border-color: var(--purple-glow); box-shadow: 0 0 15px rgba(176,38,255,0.3); }
 
-        .gallery-container { display: flex; gap: 8px; overflow-x: auto; margin-bottom: 15px; padding-bottom: 5px; }
-        .gallery-img { width: 80px; height: 60px; object-fit: cover; border-radius: 4px; border: 1px solid var(--purple-glow); cursor: pointer; flex-shrink: 0; }
-        .gallery-img.active { border-color: var(--accent-cyan); box-shadow: 0 0 8px var(--accent-cyan); }
-        .main-img { width: 100%; height: 180px; object-fit: cover; border-radius: 6px; border: 1px solid var(--purple-glow); margin-bottom: 10px; display: none; }
+        .badge-status { position: absolute; top: 15px; right: 15px; font-size: 0.75rem; padding: 4px 8px; border-radius: 4px; font-family: 'Orbitron'; font-weight: bold; }
+        .status-available { background: rgba(0,255,135,0.15); color: var(--available); border: 1px solid var(--available); }
+        .status-sold { background: rgba(255,42,109,0.15); color: var(--sold-out); border: 1px solid var(--sold-out); }
 
-        .pix-area { text-align: center; margin-top: 15px; display: none; }
-        .pix-code { background: #0a0518; padding: 12px; border: 1px dashed var(--accent-cyan); word-break: break-all; margin: 10px 0; border-radius: 6px; font-size: 1.1rem; color: var(--accent-cyan); font-family: monospace; font-weight: bold; }
-        .whatsapp-claim-box { background: rgba(37, 211, 102, 0.1); border: 1px solid #25D366; border-radius: 8px; padding: 12px; margin-top: 15px; text-align: center; }
+        .product-title { font-family: 'Orbitron'; font-size: 1.1rem; margin-top: 15px; margin-bottom: 10px; color: #fff; width: 80%; }
+        .product-level { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 15px; }
+        .product-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 15px; }
+        .product-price { font-family: 'Orbitron'; font-size: 1.4rem; color: var(--text-light); }
+        .btn-fav { background: transparent; border: none; color: var(--purple-glow); cursor: pointer; font-size: 1.2rem; }
 
-        .chat-box { height: 240px; overflow-y: auto; background: #0a0518; padding: 12px; border-radius: 8px; border: 1px solid rgba(176,38,255,0.3); margin-bottom: 15px; display: flex; flex-direction: column; gap: 10px; }
-        .chat-msg { padding: 10px 14px; border-radius: 8px; max-width: 85%; font-size: 0.95rem; line-height: 1.4; }
-        .msg-bot { background: rgba(176,38,255,0.25); border: 1px solid var(--purple-glow); align-self: flex-start; color: #fff; }
-        .msg-user { background: rgba(0,243,255,0.2); border: 1px solid var(--accent-cyan); align-self: flex-end; color: #fff; text-align: right; }
-        .quick-topics { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px; }
-        .topic-btn { background: rgba(176,38,255,0.15); border: 1px solid var(--purple-glow); color: var(--accent-cyan); padding: 5px 10px; border-radius: 15px; font-size: 0.8rem; cursor: pointer; transition: 0.2s; }
-        .topic-btn:hover { background: var(--purple-glow); color: #fff; }
-        
-        .spec-item { background: rgba(176,38,255,0.1); border-left: 3px solid var(--accent-cyan); padding: 8px 12px; margin-bottom: 6px; border-radius: 4px; color: #fff; }
-        .empty-favs { text-align: center; grid-column: 1 / -1; padding: 40px; color: var(--text-muted); font-size: 1.1rem; }
+        /* Avaliações */
+        .reviews-section { background: var(--card-bg); border: 1px solid rgba(138,43,226,0.3); border-radius: 10px; padding: 25px; margin-bottom: 40px; }
+        .reviews-list { color: var(--text-muted); font-style: italic; margin-bottom: 20px; }
+        .review-form { display: flex; flex-direction: column; gap: 12px; }
+        .review-input, .review-textarea { background: #0a0518; border: 1px solid rgba(176,38,255,0.4); border-radius: 6px; padding: 10px; color: #fff; font-size: 0.95rem; }
+        .btn-submit-review { width: fit-content; padding: 10px 20px; background: var(--purple-main); border: none; color: #fff; font-family: 'Orbitron'; font-weight: bold; border-radius: 6px; cursor: pointer; }
     </style>
 </head>
 <body>
 
-    <header>
-        <div class="logo" onclick="switchTab('all')">Blox<span>Aether</span></div>
-        <nav>
-            <button id="nav-all" class="active" onclick="switchTab('all')">🎮 Todas as Contas</button>
-            <button id="nav-favs" onclick="switchTab('favs')">❤️ Favoritados (<span id="fav-count">0</span>)</button>
-            <button onclick="openSupportModal()">🎧 Suporte</button>
-        </nav>
-        <div class="header-actions">
-            <button class="theme-btn" onclick="toggleTheme()" title="Alternar Tema">🎨 Tema</button>
-            <button class="cart-btn-header" onclick="openCartModal()">🛒 Carrinho (<span id="cart-count">0</span>)</button>
+    <div class="container">
+        <header>
+            <div class="logo">BloxAether</div>
+            <div class="nav-links">
+                <a href="#">🎮 Todas as Contas</a>
+                <a href="#">❤️ Favoritados (<span id="favCount">0</span>)</a>
+                <a href="#">🎧 Suporte</a>
+                <a href="admin.html" class="btn-admin">⚙️ Admin</a>
+                <button class="nav-btn btn-theme">🎨 Tema</button>
+                <button class="nav-btn btn-cart">🛒 Carrinho (0)</button>
+            </div>
+        </header>
+
+        <div id="globalAlert" class="alert-banner"></div>
+
+        <div class="hero">
+            <h1>Mercado de Contas Blox Fruits</h1>
+            <p>Segurança, entrega imediata e suporte dedicado.</p>
         </div>
-    </header>
 
-    <div class="alert-banner" id="globalAlert"></div>
-
-    <div class="container" id="inicio">
-        <section style="text-align: center; padding: 10px 0;">
-            <h1 style="font-family:'Orbitron'; font-size: 2.2rem; color: #fff;">Mercado de Contas Blox Fruits</h1>
-            <p style="color: var(--text-muted);">Segurança, entrega imediata e suporte dedicado.</p>
-        </section>
-
+        <!-- Filtros de Busca -->
         <div class="filter-bar">
-            <input type="text" id="searchInput" placeholder="🔍 Buscar por nome, fruta ou item..." oninput="loadStore()">
-            <select id="seaFilter" onchange="loadStore()">
-                <option value="all">🌊 Todos os Seas</option>
+            <input type="text" id="searchInput" class="filter-input" placeholder="🔍 Buscar por nome, fruta ou item..." oninput="filterProducts()">
+            <select id="seaSelect" class="filter-select" onchange="filterProducts()">
+                <option value="">🌊 Todos os Seas</option>
                 <option value="Sea 1">Sea 1</option>
                 <option value="Sea 2">Sea 2</option>
                 <option value="Sea 3">Sea 3</option>
             </select>
-            <select id="priceFilter" onchange="loadStore()">
-                <option value="all">💰 Qualquer Preço</option>
-                <option value="15">Até R$ 15,00</option>
-                <option value="30">Até R$ 30,00</option>
+            <select id="priceSelect" class="filter-select" onchange="filterProducts()">
+                <option value="">💰 Qualquer Preço</option>
+                <option value="50">Até R$ 50</option>
+                <option value="100">Até R$ 100</option>
             </select>
         </div>
 
-        <h2 id="sectionTitle" style="font-family:'Orbitron'; color: #fff; margin-top: 25px;">🎮 Todas as Contas</h2>
-        <main class="grid" id="storeGrid"></main>
+        <!-- Lista de Produtos -->
+        <div class="section-title">🎮 Todas as Contas</div>
+        <div class="products-grid" id="mainProductsGrid"></div>
 
-        <section class="reviews-section">
-            <h2>⭐ Avaliações dos Clientes</h2>
-            <div id="reviewsList">
-                <p style="color: var(--text-muted); font-style: italic;" id="noReviews">Nenhuma avaliação enviada ainda. Seja o primeiro a avaliar!</p>
-            </div>
+        <!-- Avaliações -->
+        <div class="reviews-section">
+            <div class="section-title" style="color: #ffca28;">★ Avaliações dos Clientes</div>
+            <div class="reviews-list">Nenhuma avaliação enviada ainda. Seja o primeiro a avaliar!</div>
             
-            <form class="review-form" onsubmit="addReview(event)">
-                <h4 style="color: var(--accent-cyan); margin-top: 15px;">Deixe sua avaliação</h4>
-                <input type="text" id="revName" placeholder="Seu Nome ou Nick" required>
-                <textarea id="revComment" rows="3" placeholder="Escreva sobre sua experiência de compra..." required></textarea>
-                <button type="submit" class="btn-buy" style="width: auto; align-self: flex-start;">Enviar Avaliação</button>
+            <form class="review-form" onsubmit="event.preventDefault(); alert('Obrigado pela avaliação!');">
+                <div style="color: var(--accent-cyan); font-weight: bold;">Deixe sua avaliação</div>
+                <input type="text" class="review-input" placeholder="Seu Nome ou Nick" required>
+                <textarea class="review-textarea" rows="3" placeholder="Escreva sobre sua experiência de compra..." required></textarea>
+                <button type="submit" class="btn-submit-review">Enviar Avaliação</button>
             </form>
-        </section>
-    </div>
-
-    <!-- MODAIS -->
-    <div class="modal-overlay" id="detailsModal">
-        <div class="modal-content">
-            <button class="close-modal" onclick="closeModal('detailsModal')">&times;</button>
-            <h2 id="mTitle" style="font-family:'Orbitron'; color:#fff; margin-bottom:15px; border-bottom: 1px solid var(--purple-glow); padding-bottom: 8px;"></h2>
-            <img id="mMainImg" class="main-img" src="" alt="Preview da Conta">
-            <div id="mGallery" class="gallery-container"></div>
-            <p style="font-weight: bold; color: var(--accent-cyan); margin-bottom: 8px;">📋 Especificações da Conta:</p>
-            <div id="mSpecs" style="margin-bottom: 20px;"></div>
-            <div class="price" id="mPrice"></div>
-            <button id="mBuyBtn" class="btn-buy">Adicionar ao Carrinho</button>
-        </div>
-    </div>
-
-    <div class="modal-overlay" id="cartModal">
-        <div class="modal-content">
-            <button class="close-modal" onclick="closeModal('cartModal')">&times;</button>
-            <h2 style="font-family:'Orbitron'; color:#fff; margin-bottom:15px;">Seu Carrinho</h2>
-            <div id="cartItems" style="max-height: 200px; overflow-y: auto; margin-bottom: 15px;"></div>
-            
-            <div style="display:flex; gap:8px; margin-bottom:15px;">
-                <input type="text" id="couponInput" placeholder="Cupom de Desconto" style="flex:1; padding:8px; background:#0a0518; border:1px solid var(--purple-glow); border-radius:6px; color:#fff; text-transform:uppercase;">
-                <button onclick="applyCoupon()" class="btn-buy" style="margin:0; width:auto; padding:0 12px; background:var(--accent-cyan); color:#000;">Aplicar</button>
-            </div>
-            <div id="couponMsg" style="font-size:0.85rem; margin-bottom:10px;"></div>
-
-            <div style="font-size: 1.2rem; font-family:'Orbitron'; font-weight:bold; margin-bottom: 15px;">
-                Total: <span id="cartTotal" style="color:var(--available);">R$ 0,00</span>
-            </div>
-            
-            <div id="checkoutBtnArea">
-                <button class="btn-buy" onclick="generatePix()">Finalizar Compra via PIX</button>
-            </div>
-
-            <div class="pix-area" id="pixArea">
-                <h4 style="color: var(--available);">Pagamento via PIX</h4>
-                <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 5px;">Chave PIX (Telefone):</p>
-                <div class="pix-code" id="pixKey">13997985399</div>
-                <button class="btn-buy" style="background: var(--accent-cyan); color: #000;" onclick="copyPix()">Copiar Chave PIX</button>
-
-                <div class="whatsapp-claim-box">
-                    <p style="font-size: 0.9rem; color: #fff; font-weight: bold;">📩 Envie o comprovante para receber a conta:</p>
-                    <p style="color: var(--accent-cyan); font-weight: bold; font-size: 1.1rem; margin: 4px 0;">(13) 99630-7983</p>
-                    <a href="https://wa.me/5513996307983?text=Olá!%20Realizei%20o%20pagamento%20via%20PIX%20e%20gostaria%20de%20receber%20minha%20conta." target="_blank" style="text-decoration:none;">
-                        <button class="btn-buy" style="background:#25D366; color:#fff; margin-top:8px;">📱 Mandar Comprovante no WhatsApp</button>
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal-overlay" id="supportModal">
-        <div class="modal-content">
-            <button class="close-modal" onclick="closeModal('supportModal')">&times;</button>
-            <h2 style="font-family:'Orbitron'; color:#fff; margin-bottom:10px;">🤖 Assistente Virtual</h2>
-            <div class="quick-topics">
-                <button class="topic-btn" onclick="askTopic('Como funciona a entrega?')">📦 Entrega</button>
-                <button class="topic-btn" onclick="askTopic('Como faço para pagar via PIX?')">💳 Pagamento PIX</button>
-                <button class="topic-btn" onclick="askTopic('As contas têm garantia?')">🛡️ Garantia</button>
-            </div>
-            <div class="chat-box" id="chatBox">
-                <div class="chat-msg msg-bot">Olá! Sou o assistente da BloxAether. Digite sua dúvida abaixo ou selecione um tópico!</div>
-            </div>
-            <div style="display:flex; gap:8px; margin-bottom:15px;">
-                <input type="text" id="userInput" placeholder="Digite sua pergunta..." onkeypress="handleEnter(event)" style="flex:1; padding:10px; background:#0a0518; border:1px solid var(--purple-glow); border-radius:6px; color:#fff;">
-                <button onclick="sendBotMsg()" class="btn-buy" style="margin:0; width:auto; padding: 0 15px;">Enviar</button>
-            </div>
         </div>
     </div>
 
     <script>
         const defaultProducts = [
-            { id: 1, title: "CONTA #00 - Dough V1 + Shark Anchor", level: 2611, price: 35.00, status: "available", fav: false, specs: ["Nível: 2611 (Sea 3)", "Estilo: Dragon Talon", "Fruta: Dough V1", "Arma: Shark Anchor"], images: [] },
-            { id: 2, title: "CONTA #04 - Gravity V2 (Craft CDK)", level: 2650, price: 28.00, status: "available", fav: false, specs: ["Nível: 2650", "Estilo: Dragon Talon", "Fruta: Gravity V2", "Armas: CDK"], images: [] },
-            { id: 3, title: "CONTA #01 - Starter Sea 2 + Shizu", level: 1745, price: 15.00, status: "available", fav: false, specs: ["Nível: 1745 (Sea 2)", "Fruta: Creation", "Arma: Shizu"], images: [] },
-            { id: 4, title: "CONTA #05 - Light All Skills + Angel V2", level: 1212, price: 12.00, status: "available", fav: false, specs: ["Nível: 1212 (Sea 2)", "Fruta: Light", "Raça: Angel V2"], images: [] }
+            { id: 1, title: "CONTA #00 - Dough V1 + Shark Anchor", level: 2611, price: 35.00, status: "available", fav: false },
+            { id: 2, title: "CONTA #04 - Gravity V2 (Craft CDK)", level: 2650, price: 28.00, status: "available", fav: false },
+            { id: 3, title: "CONTA #01 - Starter Sea 2 + Shizu", level: 1745, price: 15.00, status: "available", fav: false },
+            { id: 4, title: "CONTA #05 - Light All Skills + Angel V2", level: 1212, price: 12.00, status: "available", fav: false }
         ];
 
-        let cart = [];
-        let currentTab = 'all';
-        let discountPercent = 0;
+        function renderStore(productsToRender) {
+            // Exibir Aviso Global
+            const alertText = localStorage.getItem('app_global_alert');
+            const alertEl = document.getElementById('globalAlert');
+            if (alertText) {
+                alertEl.innerText = alertText;
+                alertEl.style.display = 'block';
+            } else {
+                alertEl.style.display = 'none';
+            }
 
-        function toggleTheme() { document.body.classList.toggle('cyan-theme'); }
-        function switchTab(tab) {
-            currentTab = tab;
-            document.getElementById('nav-all').classList.toggle('active', tab === 'all');
-            document.getElementById('nav-favs').classList.toggle('active', tab === 'favs');
-            document.getElementById('sectionTitle').innerText = tab === 'all' ? '🎮 Todas as Contas' : '❤️ Contas Favoritadas';
-            loadStore();
-        }
+            let products = productsToRender;
+            if (!products) {
+                products = JSON.parse(localStorage.getItem('app_products_v3'));
+                if (!products || !Array.isArray(products) || products.length === 0) {
+                    products = defaultProducts;
+                }
+            }
 
-        function loadStore() {
-            let products = JSON.parse(localStorage.getItem('app_products_v3')) || defaultProducts;
-            document.getElementById('fav-count').innerText = products.filter(p => p.fav).length;
-
-            const searchVal = document.getElementById('searchInput').value.toLowerCase();
-            const seaVal = document.getElementById('seaFilter').value;
-            const priceVal = document.getElementById('priceFilter').value;
-
-            let displayProducts = currentTab === 'favs' ? products.filter(p => p.fav) : products;
-
-            displayProducts = displayProducts.filter(p => {
-                const titleMatch = p.title.toLowerCase().includes(searchVal);
-                const seaMatch = seaVal === 'all' || (p.specs && p.specs.some(s => s.includes(seaVal)));
-                const priceMatch = priceVal === 'all' || parseFloat(p.price) <= parseFloat(priceVal);
-                return titleMatch && seaMatch && priceMatch;
-            });
-
-            const grid = document.getElementById('storeGrid');
+            const grid = document.getElementById('mainProductsGrid');
             grid.innerHTML = '';
 
-            displayProducts.forEach(p => {
+            products.forEach(p => {
+                const isAvailable = p.status === 'available';
                 grid.innerHTML += `
-                    <div class="card" onclick="openDetails(${p.id})">
+                    <div class="product-card">
                         <div>
-                            <div class="card-header"><span class="badge ${p.status === 'available' ? 'available' : 'sold'}">${p.status === 'available' ? 'DISPONÍVEL' : 'ESGOTADO'}</span></div>
-                            <h3>${p.title}</h3>
-                            <p style="color: var(--text-muted);">Nível: ${p.level}</p>
+                            <span class="badge-status ${isAvailable ? 'status-available' : 'status-sold'}">
+                                ${isAvailable ? 'DISPONÍVEL' : 'ESGOTADO'}
+                            </span>
+                            <div class="product-title">${p.title}</div>
+                            <div class="product-level">Nível: ${p.level}</div>
                         </div>
-                        <div>
-                            <div class="price">R$ ${parseFloat(p.price).toFixed(2).replace('.', ',')}</div>
-                            <span class="fav-icon ${p.fav ? 'active' : ''}" onclick="toggleFav(event, ${p.id})">♥</span>
+                        <div class="product-footer">
+                            <div class="product-price">R$ ${parseFloat(p.price).toFixed(2).replace('.', ',')}</div>
+                            <button class="btn-fav" onclick="toggleFav(${p.id})">♥</button>
                         </div>
                     </div>
                 `;
             });
         }
 
-        function toggleFav(e, id) {
-            e.stopPropagation();
-            const products = JSON.parse(localStorage.getItem('app_products_v3')) || defaultProducts;
-            const p = products.find(prod => prod.id === id);
-            if (p) { p.fav = !p.fav; localStorage.setItem('app_products_v3', JSON.stringify(products)); loadStore(); }
-        }
+        function filterProducts() {
+            let products = JSON.parse(localStorage.getItem('app_products_v3')) || defaultProducts;
+            const search = document.getElementById('searchInput').value.toLowerCase();
+            const maxPrice = parseFloat(document.getElementById('priceSelect').value);
 
-        function openDetails(id) {
-            const products = JSON.parse(localStorage.getItem('app_products_v3')) || defaultProducts;
-            const p = products.find(prod => prod.id === id);
-            if (!p) return;
-
-            document.getElementById('mTitle').innerText = p.title;
-            document.getElementById('mPrice').innerText = `R$ ${parseFloat(p.price).toFixed(2).replace('.', ',')}`;
-            document.getElementById('mSpecs').innerHTML = p.specs.map(s => `<div class="spec-item">❖ ${s}</div>`).join('');
-            
-            const buyBtn = document.getElementById('mBuyBtn');
-            buyBtn.onclick = () => { addToCart(p); closeModal('detailsModal'); };
-            document.getElementById('detailsModal').style.display = 'flex';
-        }
-
-        function addToCart(product) {
-            if (!cart.some(item => item.id === product.id)) { cart.push(product); updateCart(); openCartModal(); }
-        }
-
-        function updateCart() {
-            document.getElementById('cart-count').innerText = cart.length;
-            const container = document.getElementById('cartItems');
-            container.innerHTML = '';
-            let total = 0;
-
-            cart.forEach(item => {
-                total += parseFloat(item.price);
-                container.innerHTML += `<div style="display:flex; justify-content:space-between; margin-bottom:8px;"><span>${item.title}</span><button onclick="removeFromCart(${item.id})">&times;</button></div>`;
+            const filtered = products.filter(p => {
+                const matchesSearch = p.title.toLowerCase().includes(search);
+                const matchesPrice = isNaN(maxPrice) || p.price <= maxPrice;
+                return matchesSearch && matchesPrice;
             });
 
-            if (discountPercent > 0) total *= (1 - discountPercent / 100);
-            document.getElementById('cartTotal').innerText = `R$ ${total.toFixed(2).replace('.', ',')}`;
+            renderStore(filtered);
         }
 
-        function applyCoupon() {
-            const code = document.getElementById('couponInput').value.trim().toUpperCase();
-            if (code === 'PRIMEIRACOMPRA') {
-                discountPercent = 10;
-                document.getElementById('couponMsg').innerText = "Cupom de 10% aplicado!";
-                updateCart();
-            }
-        }
-
-        function removeFromCart(id) { cart = cart.filter(i => i.id !== id); updateCart(); }
-        function openCartModal() { document.getElementById('cartModal').style.display = 'flex'; }
-        function closeModal(id) { document.getElementById(id).style.display = 'none'; }
-        function copyPix() { navigator.clipboard.writeText('13997985399'); alert("Chave PIX copiada!"); }
-
-        function generatePix() {
-            const sales = JSON.parse(localStorage.getItem('app_sales_stats')) || { totalValue: 0, count: 0 };
-            let total = cart.reduce((acc, item) => acc + parseFloat(item.price), 0);
-            if (discountPercent > 0) total *= (1 - discountPercent / 100);
-
-            sales.totalValue += total;
-            sales.count += cart.length;
-            localStorage.setItem('app_sales_stats', JSON.stringify(sales));
-
-            document.getElementById('pixArea').style.display = 'block';
-            document.getElementById('checkoutBtnArea').style.display = 'none';
-        }
-
-        loadStore();
+        window.onload = () => renderStore();
     </script>
 </body>
 </html>

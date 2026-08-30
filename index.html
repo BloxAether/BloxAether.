@@ -60,17 +60,16 @@
         .badge { padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: bold; display: inline-block; }
         .available { background: rgba(0,255,135,0.2); color: var(--available); border: 1px solid var(--available); }
         .sold { background: rgba(255,42,109,0.2); color: var(--sold-out); border: 1px solid var(--sold-out); }
-        .price { font-family: 'Orbitron'; font-size: 1.4rem; color: #fff; margin-top: 10px; }
+        
+        .price-container { margin-top: 10px; }
+        .old-price { font-size: 0.9rem; color: var(--text-muted); text-decoration: line-through; }
+        .price { font-family: 'Orbitron'; font-size: 1.4rem; color: #00ff87; text-shadow: 0 0 5px rgba(0,255,135,0.3); }
         
         .fav-icon { position: absolute; bottom: 15px; right: 15px; font-size: 1.4rem; color: var(--text-muted); cursor: pointer; transition: 0.2s; }
         .fav-icon.active { color: var(--sold-out); text-shadow: 0 0 8px var(--sold-out); }
 
         .btn-buy { width: 100%; padding: 10px; background: linear-gradient(90deg, #8a2be2, var(--purple-glow)); border: none; color: #fff; font-family: 'Orbitron'; font-weight: bold; cursor: pointer; border-radius: 6px; margin-top: 10px; }
         .btn-disabled { width: 100%; padding: 10px; background: #222; border: none; color: #666; font-family: 'Orbitron'; cursor: not-allowed; border-radius: 6px; margin-top: 10px; }
-
-        /* PROVA SOCIAL POPUP */
-        .social-proof { position: fixed; bottom: 20px; left: 20px; background: var(--card-bg); border: 1px solid var(--accent-cyan); border-radius: 8px; padding: 12px 16px; font-size: 0.85rem; color: #fff; box-shadow: 0 0 15px rgba(0,243,255,0.3); display: none; z-index: 999; animation: slideIn 0.5s ease; }
-        @keyframes slideIn { from { transform: translateY(50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
 
         /* AVALIAÇÕES */
         .reviews-section { background: var(--card-bg); border: 1px solid rgba(138,43,226,0.3); border-radius: 10px; padding: 25px; margin-top: 50px; }
@@ -113,7 +112,7 @@
 <body>
 
     <div class="timer-banner">
-        🔥 OFERTA RELÂMPAGO: DESCONTOS ESPECIAIS TERMINAM EM <span id="offerTimer">15:00</span>!
+        🔥 OFERTA RELÂMPAGO: R$ 2,00 DE DESCONTO EM TODAS AS CONTAS! TERMINA EM <span id="offerTimer">15:00</span>!
     </div>
 
     <header>
@@ -171,11 +170,6 @@
         </section>
     </div>
 
-    <!-- PROVA SOCIAL POPUP -->
-    <div class="social-proof" id="socialProof">
-        🎉 <strong id="proofUser">Alguém</strong> acabou de comprar <strong id="proofItem">uma conta</strong>!
-    </div>
-
     <!-- MODAL DETALHES -->
     <div class="modal-overlay" id="detailsModal">
         <div class="modal-content">
@@ -188,7 +182,10 @@
             <p style="font-weight: bold; color: var(--accent-cyan); margin-bottom: 8px;">📋 Especificações da Conta:</p>
             <div id="mSpecs" style="margin-bottom: 20px;"></div>
             
-            <div class="price" id="mPrice"></div>
+            <div class="price-container">
+                <div class="old-price" id="mOldPrice"></div>
+                <div class="price" id="mPrice"></div>
+            </div>
             <button id="mBuyBtn" class="btn-buy">Adicionar ao Carrinho</button>
         </div>
     </div>
@@ -263,12 +260,14 @@
     </div>
 
     <script>
+        // LISTA COM DESCONTO DE R$ 2,00 APLICADO
         const defaultProducts = [
             {
                 id: 1,
                 title: "CONTA #00 - Dough V1 + Shark Anchor",
                 level: 2611,
-                price: 35.00,
+                originalPrice: 35.00,
+                price: 33.00,
                 status: "available",
                 fav: false,
                 specs: ["Nível: 2611 (Sea 3)", "Estilo: Dragon Talon", "Fruta: Dough V1 (Not All Skills)", "Arma: Shark Anchor", "Recursos: 37M Beli & 56k Frags", "Extras: Angel V2 + 6 Frutas Lendárias"],
@@ -278,7 +277,8 @@
                 id: 2,
                 title: "CONTA #04 - Gravity V2 (Craft CDK)",
                 level: 2650,
-                price: 28.00,
+                originalPrice: 28.00,
+                price: 26.00,
                 status: "available",
                 fav: false,
                 specs: ["Nível: 2650", "Estilo: Dragon Talon", "Fruta: Gravity V2 (All Skills)", "Armas: 5 Espadas Lendárias (Craft CDK)", "Inventário: 1 Fruta Mítica + 2 Lendárias"],
@@ -288,7 +288,8 @@
                 id: 3,
                 title: "CONTA #01 - Starter Sea 2 + Shizu",
                 level: 1745,
-                price: 15.00,
+                originalPrice: 15.00,
+                price: 13.00,
                 status: "available",
                 fav: false,
                 specs: ["Nível: 1745 (Sea 2)", "Estilo: Sharkman Karate V1", "Fruta: Creation Mast 1", "Arma: 3 Espadas Lendárias (com Shizu)", "Recursos: 1M Beli", "Raça: Human V1"],
@@ -298,7 +299,8 @@
                 id: 4,
                 title: "CONTA #05 - Light All Skills + Angel V2",
                 level: 1212,
-                price: 12.00,
+                originalPrice: 12.00,
+                price: 10.00,
                 status: "available",
                 fav: false,
                 specs: ["Nível: 1212 (Sea 2)", "Estilo: Electric Mast 1 V1", "Fruta: Light (All Skills)", "Arma: 1 Espada Lendária", "Recursos: 5M Beli & 6k Frags", "Extras: 1 Fruta Lendária + Angel V2"],
@@ -321,21 +323,6 @@
             }
         }, 1000);
 
-        // PROVA SOCIAL (POPUP ALEATÓRIO)
-        const fakeBuyers = ['Gabriel S.', 'Lucas M.', 'Pedro H.', 'Matheus K.', 'Felipe R.'];
-        const fakeItems = ['CONTA #00', 'CONTA #04', 'CONTA #01', 'CONTA #05'];
-        setInterval(() => {
-            if (Math.random() > 0.4) {
-                const u = fakeBuyers[Math.floor(Math.random() * fakeBuyers.length)];
-                const i = fakeItems[Math.floor(Math.random() * fakeItems.length)];
-                document.getElementById('proofUser').innerText = u;
-                document.getElementById('proofItem').innerText = i;
-                const el = document.getElementById('socialProof');
-                el.style.display = 'block';
-                setTimeout(() => { el.style.display = 'none'; }, 4000);
-            }
-        }, 12000);
-
         function toggleTheme() {
             document.body.classList.toggle('cyan-theme');
         }
@@ -350,10 +337,10 @@
         }
 
         function loadStore() {
-            let products = JSON.parse(localStorage.getItem('app_products'));
+            let products = JSON.parse(localStorage.getItem('app_products_v2'));
             if (!products || products.length === 0) {
                 products = defaultProducts;
-                localStorage.setItem('app_products', JSON.stringify(defaultProducts));
+                localStorage.setItem('app_products_v2', JSON.stringify(defaultProducts));
             }
 
             const favCount = products.filter(p => p.fav).length;
@@ -405,7 +392,10 @@
                                 <p style="color: var(--text-muted);">Nível: ${p.level}</p>
                             </div>
                             <div>
-                                <div class="price">R$ ${parseFloat(p.price).toFixed(2).replace('.', ',')}</div>
+                                <div class="price-container">
+                                    <div class="old-price">De: R$ ${parseFloat(p.originalPrice).toFixed(2).replace('.', ',')}</div>
+                                    <div class="price">Por: R$ ${parseFloat(p.price).toFixed(2).replace('.', ',')}</div>
+                                </div>
                                 <span class="fav-icon ${p.fav ? 'active' : ''}" onclick="toggleFav(event, ${p.id})">♥</span>
                             </div>
                         </div>
@@ -434,22 +424,23 @@
 
         function toggleFav(e, id) {
             e.stopPropagation();
-            const products = JSON.parse(localStorage.getItem('app_products')) || defaultProducts;
+            const products = JSON.parse(localStorage.getItem('app_products_v2')) || defaultProducts;
             const p = products.find(prod => prod.id === id);
             if (p) {
                 p.fav = !p.fav;
-                localStorage.setItem('app_products', JSON.stringify(products));
+                localStorage.setItem('app_products_v2', JSON.stringify(products));
                 loadStore();
             }
         }
 
         function openDetails(id) {
-            const products = JSON.parse(localStorage.getItem('app_products')) || defaultProducts;
+            const products = JSON.parse(localStorage.getItem('app_products_v2')) || defaultProducts;
             const p = products.find(prod => prod.id === id);
             if (!p) return;
 
             document.getElementById('mTitle').innerText = p.title;
-            document.getElementById('mPrice').innerText = `R$ ${parseFloat(p.price).toFixed(2).replace('.', ',')}`;
+            document.getElementById('mOldPrice').innerText = `De: R$ ${parseFloat(p.originalPrice).toFixed(2).replace('.', ',')}`;
+            document.getElementById('mPrice').innerText = `Por: R$ ${parseFloat(p.price).toFixed(2).replace('.', ',')}`;
             
             const specsArray = Array.isArray(p.specs) ? p.specs : (p.specs ? p.specs.split(',') : [`Nível: ${p.level}`]);
             document.getElementById('mSpecs').innerHTML = specsArray.map(s => `<div class="spec-item">❖ ${s.trim()}</div>`).join('');
@@ -551,7 +542,6 @@
         function generatePix() {
             if (cart.length === 0) return alert("Seu carrinho está vazio!");
             
-            // REGISTRAR VENDA PARA RELATÓRIO DO ADMIN
             const sales = JSON.parse(localStorage.getItem('app_sales_stats')) || { totalValue: 0, count: 0 };
             let currentTotal = cart.reduce((acc, item) => acc + parseFloat(item.price), 0);
             if (discountPercent > 0) currentTotal *= (1 - discountPercent / 100);
@@ -617,10 +607,10 @@
                 return "🛡️ <strong>Garantia e Segurança:</strong><br>Todas as contas são 100% verificadas, sem e-mail vinculado ou com e-mail alterável. Você tem garantia de acesso e troca imediata em caso de qualquer inconsistência no login.";
             }
             if (query.includes("conta") || query.includes("catalogo") || query.includes("preço") || query.includes("opções")) {
-                return "🎮 <strong>Contas no catálogo atual:</strong><br>• <strong>CONTA #00:</strong> Dough V1 + Shark Anchor (R$ 35,00)<br>• <strong>CONTA #04:</strong> Gravity V2 + CDK (R$ 28,00)<br>• <strong>CONTA #01:</strong> Starter Sea 2 + Shizu (R$ 15,00)<br>• <strong>CONTA #05:</strong> Light All Skills + Angel V2 (R$ 12,00)";
+                return "🎮 <strong>Contas no catálogo atual (com desconto de R$ 2,00):</strong><br>• <strong>CONTA #00:</strong> Dough V1 + Shark Anchor (R$ 33,00)<br>• <strong>CONTA #04:</strong> Gravity V2 + CDK (R$ 26,00)<br>• <strong>CONTA #01:</strong> Starter Sea 2 + Shizu (R$ 13,00)<br>• <strong>CONTA #05:</strong> Light All Skills + Angel V2 (R$ 10,00)";
             }
             if (query.includes("desconto") || query.includes("cupom") || query.includes("barato")) {
-                return "🏷️ <strong>Descontos:</strong><br>Use o cupom <code>PRIMEIRACOMPRA</code> no seu carrinho para ganhar 10% de desconto!";
+                return "🏷️ <strong>Descontos:</strong><br>Todas as contas já estão com R$ 2,00 de desconto na oferta relâmpago! Além disso, use o cupom <code>PRIMEIRACOMPRA</code> no seu carrinho para ganhar +10% OFF!";
             }
             if (query.includes("oi") || query.includes("olá") || query.includes("boa") || query.includes("salve")) {
                 return "👋 Olá! Como posso ajudar você hoje? Pergunte sobre nossas contas, métodos de pagamento, entrega ou garantias!";

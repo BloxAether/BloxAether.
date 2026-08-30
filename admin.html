@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel Admin | BloxAether</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Rajdhani:wght@600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0a0518;
+            --card-bg: #140b29;
+            --purple-glow: #b026ff;
+            --purple-main: #8a2be2;
+            --accent-cyan: #00f3ff;
+            --text-light: #e0d6ff;
+            --text-muted: #a093c4;
+            --sold-out: #ff2a6d;
+            --available: #00ff87;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Rajdhani', sans-serif; }
+        body { background: var(--bg-dark); color: var(--text-light); min-height: 100vh; padding: 20px; }
+        
+        header { display: flex; justify-content: space-between; align-items: center; padding: 15px 0; border-bottom: 1px solid rgba(176,38,255,0.2); margin-bottom: 30px; }
+        .logo { font-family: 'Orbitron', sans-serif; font-size: 1.8rem; color: #fff; text-shadow: 0 0 10px var(--purple-glow); }
+        .logo span { color: var(--purple-glow); }
+
+        .container { max-width: 1100px; margin: 0 auto; }
+
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 15px; }
+        .stat-card { background: var(--card-bg); border: 1px solid var(--purple-glow); border-radius: 10px; padding: 20px; text-align: center; }
+        .stat-number { font-family: 'Orbitron'; font-size: 2rem; color: var(--accent-cyan); text-shadow: 0 0 10px var(--accent-cyan); margin-bottom: 5px; }
+        .stat-label { color: var(--text-muted); font-size: 0.95rem; text-transform: uppercase; letter-spacing: 1px; }
+
+        .btn-reset { background: rgba(255, 42, 109, 0.15); border: 1px solid var(--sold-out); color: var(--sold-out); padding: 10px 20px; border-radius: 6px; font-family: 'Orbitron'; cursor: pointer; font-size: 0.9rem; transition: 0.3s; display: block; margin: 0 auto 30px auto; font-weight: bold; }
+        .btn-reset:hover { background: var(--sold-out); color: #fff; box-shadow: 0 0 12px var(--sold-out); }
+
+        .admin-section { background: var(--card-bg); border: 1px solid rgba(138,43,226,0.3); border-radius: 10px; padding: 25px; margin-bottom: 30px; }
+        .admin-section h2 { font-family: 'Orbitron'; color: #fff; margin-bottom: 20px; border-bottom: 1px solid var(--purple-glow); padding-bottom: 10px; }
+
+        .form-group { display: flex; flex-direction: column; gap: 8px; margin-bottom: 15px; }
+        .form-group label { color: var(--accent-cyan); font-weight: bold; }
+        .form-group input, .form-group textarea { padding: 10px; background: #0a0518; border: 1px solid var(--purple-glow); border-radius: 6px; color: #fff; font-size: 1rem; }
+
+        .form-row { display: flex; gap: 15px; flex-wrap: wrap; }
+        .form-row .form-group { flex: 1; min-width: 200px; }
+
+        .btn-submit { padding: 12px; background: linear-gradient(90deg, #8a2be2, var(--purple-glow)); border: none; color: #fff; font-family: 'Orbitron'; font-weight: bold; cursor: pointer; border-radius: 6px; width: 100%; margin-top: 10px; }
+        
+        .list-admin { display: flex; flex-direction: column; gap: 10px; }
+        .item-admin { background: #0a0518; border: 1px solid rgba(176,38,255,0.2); padding: 15px; border-radius: 6px; display: flex; justify-content: space-between; align-items: center; }
+        
+        .btn-action { padding: 6px 12px; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; font-family: 'Orbitron'; font-size: 0.8rem; }
+        .btn-toggle { background: var(--purple-main); color: #fff; }
+        .btn-delete { background: var(--sold-out); color: #fff; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <div class="logo">BloxAether <span>Painel Admin</span></div>
+            <a href="index.html" style="color: var(--accent-cyan); text-decoration: none; font-weight: bold;">← Voltar para a Loja</a>
+        </header>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number" id="statRevenue">R$ 0,00</div>
+                <div class="stat-label">Faturamento Total Estimado</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="statSold">0</div>
+                <div class="stat-label">Contas Vendidas</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="statStock">0</div>
+                <div class="stat-label">Contas no Estoque</div>
+            </div>
+        </div>
+
+        <button class="btn-reset" onclick="resetSalesStats()">🔄 Resetar Métricas de Vendas</button>
+
+        <div class="admin-section">
+            <h2>🎟️ Gerenciador de Cupons</h2>
+            <form onsubmit="addCoupon(event)" style="margin-bottom: 20px;">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Código do Cupom:</label>
+                        <input type="text" id="couponCode" placeholder="Ex: PRIMEIRACOMPRA" style="text-transform: uppercase;" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Desconto (%):</label>
+                        <input type="number" id="couponDiscount" placeholder="Ex: 10" min="1" max="100" required>
+                    </div>
+                </div>
+                <button type="submit" class="btn-submit">Criar Cupom</button>
+            </form>
+
+            <h3 style="color: var(--accent-cyan); font-family: 'Orbitron'; margin-bottom: 10px; font-size: 1rem;">Cupons Ativos:</h3>
+            <div class="list-admin" id="couponList"></div>
+        </div>
+
+        <div class="admin-section">
+            <h2>📢 Banner de Aviso Global</h2>
+            <div class="form-group">
+                <label>Texto do Aviso:</label>
+                <input type="text" id="alertInput" placeholder="Ex: 🔥 PROMOÇÃO DE CARNAVAL - 20% OFF!">
+            </div>
+            <button class="btn-submit" onclick="saveGlobalAlert()">Salvar Aviso Global</button>
+        </div>
+
+        <div class="admin-section">
+            <h2>➕ Cadastrar Nova Conta</h2>
+            <form onsubmit="addProduct(event)">
+                <div class="form-group">
+                    <label>Título da Conta:</label>
+                    <input type="text" id="pTitle" required>
+                </div>
+                <div class="form-group">
+                    <label>Nível (Level):</label>
+                    <input type="number" id="pLevel" required>
+                </div>
+                <div class="form-group">
+                    <label>Preço (R$):</label>
+                    <input type="number" step="0.01" id="pPrice" required>
+                </div>
+                <div class="form-group">
+                    <label>Especificações (separadas por vírgula):</label>
+                    <textarea id="pSpecs" rows="3"></textarea>
+                </div>
+                <button type="submit" class="btn-submit">Cadastrar Conta</button>
+            </form>
+        </div>
+
+        <div class="admin-section">
+            <h2>📦 Gerenciar Estoque Atual</h2>
+            <div class="list-admin" id="adminProductList"></div>
+        </div>
+    </div>
+
+    <script>
+        const defaultProducts = [
+            { id: 1, title: "CONTA #00 - Dough V1 + Shark Anchor", level: 2611, price: 35.00, status: "available" },
+            { id: 2, title: "CONTA #04 - Gravity V2 (Craft CDK)", level: 2650, price: 28.00, status: "available" },
+            { id: 3, title: "CONTA #01 - Starter Sea 2 + Shizu", level: 1745, price: 15.00, status: "available" },
+            { id: 4, title: "CONTA #05 - Light All Skills + Angel V2", level: 1212, price: 12.00, status: "available" }
+        ];
+
+        const defaultCoupons = [
+            { code: "PRIMEIRACOMPRA", discount: 10 }
+        ];
+
+        function loadAdminData() {
+            try {
+                let sales = JSON.parse(localStorage.getItem('app_sales_stats'));
+                if (!sales || typeof sales.totalValue === 'undefined') {
+                    sales = { totalValue: 0, count: 0 };
+                }
+
+                let products = JSON.parse(localStorage.getItem('app_products_v3'));
+                if (!products || !Array.isArray(products) || products.length === 0) {
+                    products = defaultProducts;
+                    localStorage.setItem('app_products_v3', JSON.stringify(products));
+                }
+
+                let coupons = JSON.parse(localStorage.getItem('app_coupons'));
+                if (!coupons || !Array.isArray(coupons)) {
+                    coupons = defaultCoupons;
+                    localStorage.setItem('app_coupons', JSON.stringify(coupons));
+                }
+
+                document.getElementById('statRevenue').innerText = `R$ ${parseFloat(sales.totalValue || 0).toFixed(2).replace('.', ',')}`;
+                document.getElementById('statSold').innerText = sales.count || 0;
+                document.getElementById('statStock').innerText = products.filter(p => p.status === 'available').length;
+
+                const currentAlert = localStorage.getItem('app_global_alert') || '';
+                document.getElementById('alertInput').value = currentAlert;
+
+                const couponListEl = document.getElementById('couponList');
+                couponListEl.innerHTML = '';
+                if (coupons.length === 0) {
+                    couponListEl.innerHTML = '<p style="color: var(--text-muted);">Nenhum cupom cadastrado.</p>';
+                } else {
+                    coupons.forEach(c => {
+                        couponListEl.innerHTML += `
+                            <div class="item-admin">
+                                <div>
+                                    <strong style="color: var(--accent-cyan); font-family:'Orbitron';">${c.code}</strong>
+                                    <span style="color: var(--available); font-weight: bold; margin-left: 10px;">${c.discount}% OFF</span>
+                                </div>
+                                <button class="btn-action btn-delete" onclick="deleteCoupon('${c.code}')">Excluir</button>
+                            </div>
+                        `;
+                    });
+                }
+
+                const listEl = document.getElementById('adminProductList');
+                listEl.innerHTML = '';
+
+                if (products.length === 0) {
+                    listEl.innerHTML = '<p style="color: var(--text-muted);">Nenhum produto cadastrado.</p>';
+                } else {
+                    products.forEach(p => {
+                        listEl.innerHTML += `
+                            <div class="item-admin">
+                                <div>
+                                    <strong style="color: #fff;">${p.title}</strong>
+                                    <div style="color: var(--text-muted); font-size: 0.85rem;">R$ ${parseFloat(p.price).toFixed(2).replace('.', ',')} | Status: ${p.status === 'available' ? 'Disponível' : 'Esgotado'}</div>
+                                </div>
+                                <div style="display: flex; gap: 8px;">
+                                    <button class="btn-action btn-toggle" onclick="toggleProductStatus(${p.id})">${p.status === 'available' ? 'Marcar Esgotado' : 'Marcar Disponível'}</button>
+                                    <button class="btn-action btn-delete" onclick="deleteProduct(${p.id})">Excluir</button>
+                                </div>
+                            </div>
+                        `;
+                    });
+                }
+            } catch (err) {
+                console.error("Erro ao carregar o painel admin:", err);
+            }
+        }
+
+        function addCoupon(e) {
+            e.preventDefault();
+            let coupons = JSON.parse(localStorage.getItem('app_coupons')) || defaultCoupons;
+            const code = document.getElementById('couponCode').value.trim().toUpperCase();
+            const discount = parseInt(document.getElementById('couponDiscount').value);
+
+            if (coupons.some(c => c.code === code)) {
+                alert("Um cupom com esse código já existe!");
+                return;
+            }
+
+            coupons.push({ code, discount });
+            localStorage.setItem('app_coupons', JSON.stringify(coupons));
+
+            document.getElementById('couponCode').value = '';
+            document.getElementById('couponDiscount').value = '';
+
+            loadAdminData();
+            alert("Cupom criado com sucesso!");
+        }
+
+        function deleteCoupon(code) {
+            if (confirm(`Tem certeza que deseja excluir o cupom ${code}?`)) {
+                let coupons = JSON.parse(localStorage.getItem('app_coupons')) || defaultCoupons;
+                coupons = coupons.filter(c => c.code !== code);
+                localStorage.setItem('app_coupons', JSON.stringify(coupons));
+                loadAdminData();
+            }
+        }
+
+        function resetSalesStats() {
+            if (confirm("Deseja zerar as métricas de faturamento e vendas para R$ 0,00?")) {
+                localStorage.setItem('app_sales_stats', JSON.stringify({ totalValue: 0, count: 0 }));
+                loadAdminData();
+            }
+        }
+
+        function saveGlobalAlert() {
+            localStorage.setItem('app_global_alert', document.getElementById('alertInput').value.trim());
+            alert("Aviso global salvo!");
+        }
+
+        function addProduct(e) {
+            e.preventDefault();
+            let products = JSON.parse(localStorage.getItem('app_products_v3')) || defaultProducts;
+            
+            const newProduct = {
+                id: Date.now(),
+                title: document.getElementById('pTitle').value,
+                level: document.getElementById('pLevel').value,
+                price: parseFloat(document.getElementById('pPrice').value),
+                status: "available"
+            };
+
+            products.push(newProduct);
+            localStorage.setItem('app_products_v3', JSON.stringify(products));
+            
+            document.getElementById('pTitle').value = '';
+            document.getElementById('pLevel').value = '';
+            document.getElementById('pPrice').value = '';
+            document.getElementById('pSpecs').value = '';
+
+            loadAdminData();
+            alert("Nova conta cadastrada com sucesso!");
+        }
+
+        function toggleProductStatus(id) {
+            let products = JSON.parse(localStorage.getItem('app_products_v3')) || defaultProducts;
+            const p = products.find(prod => prod.id === id);
+            if (p) { 
+                p.status = p.status === 'available' ? 'sold' : 'available'; 
+                localStorage.setItem('app_products_v3', JSON.stringify(products)); 
+                loadAdminData(); 
+            }
+        }
+
+        function deleteProduct(id) {
+            if (confirm("Tem certeza que deseja excluir esta conta?")) {
+                let products = JSON.parse(localStorage.getItem('app_products_v3')) || defaultProducts;
+                products = products.filter(prod => prod.id !== id);
+                localStorage.setItem('app_products_v3', JSON.stringify(products));
+                loadAdminData();
+            }
+        }
+
+        window.onload = loadAdminData;
+    </script>
+</body>
+</html>

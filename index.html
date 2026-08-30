@@ -31,26 +31,24 @@
         .nav-links a:hover, .nav-btn:hover { color: var(--accent-cyan); }
         .btn-theme { border: 1px solid var(--accent-cyan); color: var(--accent-cyan); }
         .btn-cart { border: 1px solid var(--purple-glow); background: rgba(176,38,255,0.1); }
-        .btn-admin { border: 1px solid var(--purple-glow); color: var(--accent-cyan) !important; font-weight: bold; }
-        .btn-admin:hover { background: rgba(176,38,255,0.2); box-shadow: 0 0 10px var(--purple-glow); }
 
-        /* Banner de Aviso */
+        /* Banner de Aviso Global */
         .alert-banner { background: rgba(176,38,255,0.15); border: 1px solid var(--purple-glow); color: #fff; text-align: center; padding: 12px; border-radius: 8px; margin-bottom: 25px; font-weight: bold; font-family: 'Orbitron'; display: none; }
 
-        /* Hero */
+        /* Hero Header */
         .hero { text-align: center; margin-bottom: 30px; }
         .hero h1 { font-family: 'Orbitron', sans-serif; font-size: 2.5rem; text-shadow: 0 0 15px var(--purple-glow); margin-bottom: 5px; }
         .hero p { color: var(--text-muted); }
 
-        /* Filtros */
+        /* Barra de Filtros */
         .filter-bar { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 30px; }
         .filter-input, .filter-select { background: #0a0518; border: 1px solid rgba(176,38,255,0.4); border-radius: 6px; padding: 10px 15px; color: #fff; font-size: 0.95rem; outline: none; }
         .filter-input:focus, .filter-select:focus { border-color: var(--accent-cyan); box-shadow: 0 0 8px var(--accent-cyan); }
 
-        /* Section Title */
+        /* Título da Seção */
         .section-title { font-family: 'Orbitron'; font-size: 1.4rem; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
 
-        /* Grid de Produtos */
+        /* Cards do Produto */
         .products-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; margin-bottom: 40px; }
         .product-card { background: var(--card-bg); border: 1px solid rgba(138,43,226,0.3); border-radius: 10px; padding: 20px; position: relative; transition: 0.3s; display: flex; flex-direction: column; justify-content: space-between; min-height: 220px; }
         .product-card:hover { border-color: var(--purple-glow); box-shadow: 0 0 15px rgba(176,38,255,0.3); }
@@ -82,7 +80,6 @@
                 <a href="#">🎮 Todas as Contas</a>
                 <a href="#">❤️ Favoritados (<span id="favCount">0</span>)</a>
                 <a href="#">🎧 Suporte</a>
-                <a href="admin.html" class="btn-admin">⚙️ Admin</a>
                 <button class="nav-btn btn-theme">🎨 Tema</button>
                 <button class="nav-btn btn-cart">🛒 Carrinho (0)</button>
             </div>
@@ -95,7 +92,6 @@
             <p>Segurança, entrega imediata e suporte dedicado.</p>
         </div>
 
-        <!-- Filtros de Busca -->
         <div class="filter-bar">
             <input type="text" id="searchInput" class="filter-input" placeholder="🔍 Buscar por nome, fruta ou item..." oninput="filterProducts()">
             <select id="seaSelect" class="filter-select" onchange="filterProducts()">
@@ -111,11 +107,9 @@
             </select>
         </div>
 
-        <!-- Lista de Produtos -->
         <div class="section-title">🎮 Todas as Contas</div>
         <div class="products-grid" id="mainProductsGrid"></div>
 
-        <!-- Avaliações -->
         <div class="reviews-section">
             <div class="section-title" style="color: #ffca28;">★ Avaliações dos Clientes</div>
             <div class="reviews-list">Nenhuma avaliação enviada ainda. Seja o primeiro a avaliar!</div>
@@ -138,7 +132,6 @@
         ];
 
         function renderStore(productsToRender) {
-            // Exibir Aviso Global
             const alertText = localStorage.getItem('app_global_alert');
             const alertEl = document.getElementById('globalAlert');
             if (alertText) {
@@ -192,6 +185,14 @@
 
             renderStore(filtered);
         }
+
+        /* Atalho Secreto: CTRL + SHIFT + A abre o Painel Admin */
+        document.addEventListener('keydown', function(e) {
+            if (e.ctrlKey && e.shiftKey && (e.key === 'A' || e.key === 'a')) {
+                e.preventDefault();
+                window.location.href = 'admin.html';
+            }
+        });
 
         window.onload = () => renderStore();
     </script>

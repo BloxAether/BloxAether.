@@ -14,33 +14,43 @@
             --text-light: #e6f9ff;
             --text-muted: #8b9bb4;
             --available: #00ffaa;
+            --sold-out: #ff3366;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Rajdhani', sans-serif; }
+
+        /* Scrollbar Cyberpunk */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg-dark); }
+        ::-webkit-scrollbar-thumb { background: var(--main-neon); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #c44dff; }
 
         body {
             background: var(--bg-dark);
             color: var(--text-light);
             min-height: 100vh;
-            /* Fundo corrigido para não sobrepor nada */
             background-image: radial-gradient(circle at 50% 0%, var(--main-glow) 0%, transparent 50%);
             background-size: 100% 100%;
             background-attachment: fixed;
             padding-bottom: 50px;
         }
 
-        /* Alerta Global Consertado */
+        body.modal-open {
+            overflow: hidden; /* Impede rolar o site quando modal está aberto */
+        }
+
         #globalAlertBanner {
             display: none;
             background: var(--main-neon);
             color: #fff;
             text-align: center;
-            padding: 10px;
+            padding: 12px;
             font-family: 'Orbitron', sans-serif;
             font-size: 1rem;
             box-shadow: 0 0 15px var(--main-glow);
             position: relative;
             z-index: 1000;
+            letter-spacing: 1px;
         }
 
         .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
@@ -56,20 +66,24 @@
             gap: 15px;
         }
 
-        .logo { font-family: 'Orbitron'; font-size: 2rem; color: #fff; }
+        .logo { font-family: 'Orbitron'; font-size: 2.2rem; color: #fff; cursor: pointer; }
         .logo span { color: var(--main-neon); text-shadow: 0 0 10px var(--main-glow); }
 
         .header-btn {
-            background: transparent;
+            background: rgba(162, 0, 255, 0.1);
             border: 1px solid var(--main-neon);
             color: #fff;
-            padding: 8px 15px;
+            padding: 10px 20px;
             border-radius: 8px;
             cursor: pointer;
             transition: 0.3s;
             font-weight: bold;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
-        .header-btn:hover { background: var(--main-neon); box-shadow: 0 0 10px var(--main-glow); }
+        .header-btn:hover { background: var(--main-neon); box-shadow: 0 0 15px var(--main-glow); transform: translateY(-2px); }
 
         /* Filtros */
         .filters {
@@ -82,11 +96,17 @@
             background: rgba(0,0,0,0.5);
             border: 1px solid rgba(162, 0, 255, 0.5);
             color: #fff;
-            padding: 12px;
+            padding: 14px;
             border-radius: 8px;
             outline: none;
             flex: 1;
             min-width: 200px;
+            font-size: 1.1rem;
+            transition: 0.3s;
+        }
+        .filters input:focus, .filters select:focus {
+            border-color: var(--main-neon);
+            box-shadow: 0 0 10px var(--main-glow);
         }
 
         /* Grid de Produtos */
@@ -106,64 +126,86 @@
             display: flex;
             flex-direction: column;
             justify-content: space-between;
+            position: relative;
+            overflow: hidden;
+        }
+        .product-card::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 4px;
+            background: var(--main-neon);
+            opacity: 0;
+            transition: 0.3s;
         }
         .product-card:hover {
             border-color: var(--main-neon);
-            box-shadow: 0 0 15px var(--main-glow);
+            box-shadow: 0 0 20px var(--main-glow);
             transform: translateY(-5px);
         }
+        .product-card:hover::before { opacity: 1; }
 
         .status-badge {
             background: rgba(0, 255, 170, 0.1);
             color: var(--available);
-            padding: 4px 8px;
+            padding: 4px 10px;
             border-radius: 4px;
-            font-size: 0.8rem;
+            font-size: 0.85rem;
             border: 1px solid var(--available);
             display: inline-block;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
             font-family: 'Orbitron';
+            font-weight: bold;
+        }
+        .status-badge.sold {
+            background: rgba(255, 51, 102, 0.1);
+            color: var(--sold-out);
+            border-color: var(--sold-out);
         }
 
-        .product-title { font-family: 'Orbitron'; font-size: 1.1rem; margin-bottom: 10px; line-height: 1.4; }
-        .product-level { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 15px; }
-        .product-price { font-family: 'Orbitron'; color: var(--main-neon); font-size: 1.5rem; }
+        .product-title { font-family: 'Orbitron'; font-size: 1.2rem; margin-bottom: 8px; line-height: 1.3; }
+        .product-level { color: var(--text-muted); font-size: 1rem; margin-bottom: 15px; }
+        .product-price { font-family: 'Orbitron'; color: var(--main-neon); font-size: 1.6rem; margin-top: 10px; }
 
-        /* Modais Consertados (Sem sobrepor texto) */
+        /* Modais */
         .modal-overlay {
             display: none;
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.8);
-            backdrop-filter: blur(5px);
+            background: rgba(0,0,0,0.85);
+            backdrop-filter: blur(8px);
             z-index: 2000;
             justify-content: center;
             align-items: center;
             padding: 20px;
+            animation: fadeIn 0.3s ease;
         }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
         .modal-content {
             background: var(--bg-dark);
             border: 1px solid var(--main-neon);
-            box-shadow: 0 0 30px var(--main-glow);
+            box-shadow: 0 0 40px var(--main-glow);
             border-radius: 12px;
             width: 100%;
             max-width: 500px;
-            padding: 25px;
+            padding: 30px;
             position: relative;
-            max-height: 90vh; /* Impede que passe da tela */
-            overflow-y: auto; /* Adiciona rolagem se tiver muito texto */
+            max-height: 90vh;
+            overflow-y: auto;
         }
 
         .close-btn {
             position: absolute;
-            top: 15px; right: 15px;
+            top: 15px; right: 20px;
             background: transparent;
             border: none;
-            color: #fff;
-            font-size: 1.5rem;
+            color: var(--text-muted);
+            font-size: 1.8rem;
             cursor: pointer;
+            transition: 0.3s;
         }
+        .close-btn:hover { color: var(--sold-out); transform: scale(1.1); }
 
         .btn-buy {
             width: 100%;
@@ -173,142 +215,187 @@
             border: none;
             border-radius: 8px;
             font-family: 'Orbitron';
-            font-size: 1.1rem;
+            font-size: 1.2rem;
             cursor: pointer;
-            margin-top: 20px;
+            margin-top: 25px;
             transition: 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
-        .btn-buy:hover { box-shadow: 0 0 20px var(--main-neon); }
+        .btn-buy:hover { box-shadow: 0 0 25px var(--main-neon); background: #b333ff; }
+        .btn-buy:disabled { background: #333; box-shadow: none; cursor: not-allowed; color: #888; }
 
         /* Chat do Suporte */
         .chat-box {
-            background: rgba(0,0,0,0.5);
+            background: rgba(0,0,0,0.6);
             border: 1px solid rgba(255,255,255,0.1);
             border-radius: 8px;
-            height: 250px;
+            height: 300px;
             overflow-y: auto;
-            padding: 10px;
-            margin-bottom: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 12px;
         }
-        .msg { max-width: 80%; padding: 10px; border-radius: 8px; }
-        .msg.bot { background: rgba(162, 0, 255, 0.2); border: 1px solid var(--main-neon); align-self: flex-start; }
+        .msg { max-width: 85%; padding: 12px; border-radius: 8px; font-size: 1.05rem; line-height: 1.4; }
+        .msg.bot { background: rgba(162, 0, 255, 0.15); border: 1px solid var(--main-neon); align-self: flex-start; }
         .msg.user { background: rgba(255,255,255,0.1); align-self: flex-end; }
         
         .chat-input { display: flex; gap: 10px; }
-        .chat-input input { flex: 1; padding: 10px; border-radius: 8px; border: 1px solid var(--main-neon); background: #000; color: #fff; }
-        .chat-input button { padding: 10px 20px; background: var(--main-neon); color: #fff; border: none; border-radius: 8px; cursor: pointer; }
+        .chat-input input { flex: 1; padding: 12px; border-radius: 8px; border: 1px solid rgba(162, 0, 255, 0.5); background: #000; color: #fff; font-size: 1rem; }
+        .chat-input input:focus { border-color: var(--main-neon); outline: none; }
+        .chat-input button { padding: 12px 25px; background: var(--main-neon); color: #fff; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; transition: 0.3s; }
+        .chat-input button:hover { background: #b333ff; box-shadow: 0 0 10px var(--main-glow); }
+
+        .btn-whatsapp {
+            width: 100%; padding: 12px; background: #00E676; color: #000; border: none; border-radius: 8px; font-weight: bold; font-size: 1.1rem; margin-bottom: 20px; cursor: pointer; transition: 0.3s; display: flex; justify-content: center; align-items: center; gap: 8px;
+        }
+        .btn-whatsapp:hover { background: #00C853; box-shadow: 0 0 15px rgba(0, 230, 118, 0.4); }
 
     </style>
 </head>
 <body>
 
-    <!-- Aviso Global no Topo Corrigido -->
+    <!-- Aviso Global no Topo -->
     <div id="globalAlertBanner"></div>
 
     <div class="container">
         <header>
-            <div class="logo">Blox<span>Aether</span></div>
+            <div class="logo" onclick="window.scrollTo(0,0)">Blox<span>Aether</span></div>
             <div>
-                <button class="header-btn" onclick="document.getElementById('supportModal').style.display='flex'">🎧 Suporte</button>
+                <button class="header-btn" onclick="openModal('supportModal')">🎧 Central de Suporte</button>
             </div>
         </header>
 
-        <div style="text-align: center; margin-bottom: 40px;">
-            <h1 style="font-family: 'Orbitron'; font-size: 2.5rem; margin-bottom: 10px;">Mercado Cyber Blox Fruits</h1>
-            <p style="color: var(--text-muted);">Entrega ultra-rápida, sistema seguro e suporte inteligente 24/7.</p>
+        <div style="text-align: center; margin-bottom: 50px;">
+            <h1 style="font-family: 'Orbitron'; font-size: 2.8rem; margin-bottom: 12px;">Mercado Cyber Blox Fruits</h1>
+            <p style="color: var(--text-muted); font-size: 1.2rem;">Entrega ultra-rápida, sistema seguro e suporte inteligente 24/7.</p>
         </div>
 
-        <!-- Filtros Corrigidos -->
+        <!-- Filtros -->
         <div class="filters">
-            <input type="text" id="searchInput" placeholder="🔍 Buscar por nome, fruta ou item..." onkeyup="filterProducts()">
+            <input type="text" id="searchInput" placeholder="🔍 Buscar por fruta, espada, nível..." onkeyup="filterProducts()">
             <select id="seaFilter" onchange="filterProducts()">
                 <option value="all">🌍 Todos os Seas</option>
-                <option value="Sea 1">Sea 1</option>
-                <option value="Sea 2">Sea 2</option>
-                <option value="Sea 3">Sea 3</option>
+                <option value="Sea 1">Sea 1 (Iniciante)</option>
+                <option value="Sea 2">Sea 2 (Intermediário)</option>
+                <option value="Sea 3">Sea 3 (Avançado)</option>
             </select>
         </div>
 
-        <h3 style="font-family: 'Orbitron'; margin-bottom: 20px;">🎮 Contas Disponíveis</h3>
+        <h3 style="font-family: 'Orbitron'; margin-bottom: 20px; font-size: 1.4rem;">🎮 Contas Disponíveis</h3>
         <div class="product-grid" id="productGrid">
             <!-- Produtos renderizados pelo JS -->
         </div>
     </div>
 
     <!-- Modal do Produto -->
-    <div class="modal-overlay" id="productModal">
+    <!-- Adicionado onclick para fechar ao clicar no fundo escuro -->
+    <div class="modal-overlay" id="productModal" onclick="closeModalOutside(event, 'productModal')">
         <div class="modal-content">
-            <button class="close-btn" onclick="document.getElementById('productModal').style.display='none'">✕</button>
-            <div class="status-badge" style="margin-top: 10px;">DISPONÍVEL</div>
-            <h2 id="modalTitle" class="product-title" style="font-size: 1.5rem;"></h2>
-            <p id="modalLevel" class="product-level" style="margin-bottom: 5px;"></p>
-            <p id="modalSea" class="product-level" style="color: #fff; font-weight: bold;"></p>
+            <button class="close-btn" onclick="closeModal('productModal')">✕</button>
             
-            <div style="background: rgba(0,0,0,0.5); padding: 15px; border-radius: 8px; margin: 15px 0; border: 1px solid rgba(255,255,255,0.1);">
-                <h4 style="font-family: 'Orbitron'; margin-bottom: 10px; color: var(--main-neon);">📄 Descrição da Conta:</h4>
-                <p id="modalDesc" style="color: #ccc; line-height: 1.5; white-space: pre-wrap;"></p>
+            <div id="modalStatus" class="status-badge" style="margin-top: 10px;"></div>
+            <h2 id="modalTitle" class="product-title" style="font-size: 1.6rem; color: #fff;"></h2>
+            
+            <div style="display: flex; gap: 15px; margin-bottom: 15px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 15px;">
+                <p id="modalLevel" class="product-level" style="margin: 0; color: var(--main-neon); font-weight: bold;"></p>
+                <p id="modalSea" class="product-level" style="margin: 0; color: #fff;"></p>
+            </div>
+            
+            <div style="background: rgba(0,0,0,0.5); padding: 18px; border-radius: 8px; margin: 15px 0; border: 1px solid rgba(162, 0, 255, 0.2);">
+                <h4 style="font-family: 'Orbitron'; margin-bottom: 10px; color: var(--main-neon);">📄 Detalhes da Conta:</h4>
+                <p id="modalDesc" style="color: #d1d5db; line-height: 1.6; white-space: pre-wrap; font-size: 1.05rem;"></p>
             </div>
 
             <h2 id="modalPrice" class="product-price"></h2>
-            <button class="btn-buy" onclick="alert('Função de checkout será integrada ao gateway de pagamento.')">🛒 Comprar Agora</button>
+            <button id="btnBuy" class="btn-buy" onclick="alert('Sistema de pagamento em integração. Aguarde as próximas atualizações!')">🛒 Comprar Agora</button>
         </div>
     </div>
 
     <!-- Modal de Suporte -->
-    <div class="modal-overlay" id="supportModal">
-        <div class="modal-content">
-            <button class="close-btn" onclick="document.getElementById('supportModal').style.display='none'">✕</button>
-            <h2 style="font-family: 'Orbitron'; margin-bottom: 20px; color: var(--main-neon);">🎧 Central de Suporte</h2>
+    <div class="modal-overlay" id="supportModal" onclick="closeModalOutside(event, 'supportModal')">
+        <div class="modal-content" style="max-width: 600px;">
+            <button class="close-btn" onclick="closeModal('supportModal')">✕</button>
+            <h2 style="font-family: 'Orbitron'; margin-bottom: 25px; color: var(--main-neon); font-size: 1.8rem;">🎧 Central de Ajuda</h2>
             
-            <button style="width: 100%; padding: 10px; background: #00ffaa; color: #000; border: none; border-radius: 8px; font-weight: bold; margin-bottom: 15px; cursor: pointer;">
+            <button class="btn-whatsapp" onclick="alert('Redirecionando para o WhatsApp do suporte...')">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.82 9.82 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>
                 Falar com Humano (WhatsApp)
             </button>
 
             <div class="chat-box" id="chatBox">
-                <div class="msg bot">Olá! Sou o AetherBot. Como posso te ajudar hoje? (Ex: Pix, Entrega, Contas)</div>
+                <div class="msg bot">Olá! Sou o AetherBot 🤖.<br>Como posso te ajudar hoje? (Ex: Pix, Entrega, Contas, Confiável)</div>
             </div>
             
             <div class="chat-input">
-                <input type="text" id="chatInput" placeholder="Digite sua dúvida..." onkeypress="if(event.key === 'Enter') sendMsg()">
+                <input type="text" id="chatInput" placeholder="Digite sua dúvida aqui..." onkeypress="if(event.key === 'Enter') sendMsg()">
                 <button onclick="sendMsg()">Enviar</button>
             </div>
         </div>
     </div>
 
     <script>
-        // Puxar produtos do banco (localStorage)
+        // Função para injetar contas de teste caso o LocalStorage esteja vazio
+        // Isso garante que o site já abra funcionando para testes!
+        function initMockData() {
+            if (!localStorage.getItem('app_products_v3') || JSON.parse(localStorage.getItem('app_products_v3')).length === 0) {
+                const mockProducts = [
+                    { id: 1, title: 'Conta Godhuman + CDK + Soul Guitar', level: '2550 (MAX)', sea: 'Sea 3', price: '45.90', stock: 2, desc: '🔥 CONTA FULL PVP 🔥\n\n- Level Máximo (2550)\n- Estilo de Luta: Godhuman (Maestria Máx)\n- Espadas: Cursed Dual Katana (CDK)\n- Arma: Soul Guitar\n- Fruta: Dough Despertada no inventário\n- Beli: 25 Milhões\n\nEntrega automática na hora!' },
+                    { id: 2, title: 'Conta Leopard (Ingerida)', level: '1500', sea: 'Sea 2', price: '25.00', stock: 1, desc: '🐆 Conta focada na Leopard!\n\n- Level 1500 (Pronta pra upar no Sea 3)\n- Fruta Leopard comida e com todos ataques liberados\n- Estilo de Luta: Superhuman\n- Beli: 5 Milhões\n- Sem e-mail verificado (100% sua após a compra).' },
+                    { id: 3, title: 'Conta Starter Kitsune', level: '700', sea: 'Sea 2', price: '35.50', stock: 0, desc: '🦊 Conta perfeita para iniciar o Sea 2!\n\n- Level 700 cravado\n- Fruta Kitsune no inventário (Física)\n- Dinheiro e fragmentos básicos.' }
+                ];
+                localStorage.setItem('app_products_v3', JSON.stringify(mockProducts));
+            }
+            if (!localStorage.getItem('app_global_alert')) {
+                localStorage.setItem('app_global_alert', '⚡ EVENTO CYBER: 20% de Desconto em todas as contas do Sea 3 nas próximas 24h!');
+            }
+        }
+
+        // Puxar produtos do banco
         function getProducts() {
             return JSON.parse(localStorage.getItem('app_products_v3')) || [];
         }
 
-        // Renderizar Produtos
+        // Renderizar Produtos no HTML
         function renderProducts(productsToRender) {
             const grid = document.getElementById('productGrid');
             grid.innerHTML = '';
             
             if (productsToRender.length === 0) {
-                grid.innerHTML = '<p style="color: gray;">Nenhuma conta encontrada com esses filtros.</p>';
+                grid.innerHTML = `
+                    <div style="grid-column: 1 / -1; text-align: center; padding: 50px 0; background: rgba(0,0,0,0.3); border-radius: 12px; border: 1px dashed var(--main-neon);">
+                        <h3 style="color: var(--text-muted); font-family: 'Orbitron';">Nenhuma conta encontrada 🕵️‍♂️</h3>
+                        <p style="margin-top: 10px; color: #666;">Tente alterar os filtros de busca.</p>
+                    </div>`;
                 return;
             }
 
             productsToRender.forEach(p => {
+                // Tratamento de preço seguro
+                let priceNum = parseFloat(p.price);
+                if(isNaN(priceNum)) priceNum = 0;
+                let priceFormat = priceNum.toFixed(2).replace('.', ',');
+
+                let stockStatus = p.stock > 0 
+                    ? `<div class="status-badge">DISPONÍVEL (${p.stock})</div>` 
+                    : `<div class="status-badge sold">ESGOTADO</div>`;
+
                 grid.innerHTML += `
-                    <div class="product-card" onclick="openModal(${p.id})">
+                    <div class="product-card" onclick="openProductModal(${p.id})">
                         <div>
-                            <div class="status-badge">${p.stock > 0 ? 'DISPONÍVEL (' + p.stock + ')' : 'ESGOTADO'}</div>
+                            ${stockStatus}
                             <h3 class="product-title">${p.title}</h3>
                             <p class="product-level">Nível: ${p.level} | ${p.sea}</p>
                         </div>
-                        <div class="product-price">R$ ${parseFloat(p.price).toFixed(2).replace('.', ',')}</div>
+                        <div class="product-price">R$ ${priceFormat}</div>
                     </div>
                 `;
             });
         }
 
-        // Filtro de Texto e Sea Funcionando Juntos
+        // Sistema de Filtros Inteligentes
         function filterProducts() {
             const searchText = document.getElementById('searchInput').value.toLowerCase();
             const seaSelect = document.getElementById('seaFilter').value;
@@ -323,19 +410,54 @@
             renderProducts(filtered);
         }
 
-        // Abrir modal carregando todas as informações (Sem undefined)
-        function openModal(id) {
+        // Controle de Modais Refatorado
+        function openProductModal(id) {
             const products = getProducts();
             const p = products.find(x => x.id === id);
             
             if (p) {
+                let priceNum = parseFloat(p.price);
+                if(isNaN(priceNum)) priceNum = 0;
+
                 document.getElementById('modalTitle').innerText = p.title;
-                document.getElementById('modalLevel').innerText = `Nível da Conta: ${p.level}`;
+                document.getElementById('modalLevel').innerText = `LVL: ${p.level}`;
                 document.getElementById('modalSea').innerText = `Mundo: ${p.sea}`;
                 document.getElementById('modalDesc').innerText = p.desc ? p.desc : "Nenhuma descrição fornecida pelo administrador.";
-                document.getElementById('modalPrice').innerText = `R$ ${parseFloat(p.price).toFixed(2).replace('.', ',')}`;
+                document.getElementById('modalPrice').innerText = `R$ ${priceNum.toFixed(2).replace('.', ',')}`;
                 
-                document.getElementById('productModal').style.display = 'flex';
+                const statusBadge = document.getElementById('modalStatus');
+                const btnBuy = document.getElementById('btnBuy');
+
+                if (p.stock > 0) {
+                    statusBadge.className = 'status-badge';
+                    statusBadge.innerText = `DISPONÍVEL (${p.stock} em estoque)`;
+                    btnBuy.disabled = false;
+                    btnBuy.innerText = '🛒 Comprar Agora';
+                } else {
+                    statusBadge.className = 'status-badge sold';
+                    statusBadge.innerText = 'ESGOTADO';
+                    btnBuy.disabled = true;
+                    btnBuy.innerText = 'Sem Estoque no Momento';
+                }
+                
+                openModal('productModal');
+            }
+        }
+
+        function openModal(modalId) {
+            document.getElementById(modalId).style.display = 'flex';
+            document.body.classList.add('modal-open'); // Trava o scroll do fundo
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+            document.body.classList.remove('modal-open');
+        }
+
+        // Fecha o modal ao clicar fora do quadro de conteúdo
+        function closeModalOutside(event, modalId) {
+            if (event.target.id === modalId) {
+                closeModal(modalId);
             }
         }
 
@@ -351,7 +473,7 @@
             }
         }
 
-        // Bot de Suporte Inteligente
+        // Bot de Suporte Inteligente Aprimorado
         function sendMsg() {
             const input = document.getElementById('chatInput');
             const text = input.value.trim();
@@ -362,23 +484,38 @@
             input.value = '';
             chatBox.scrollTop = chatBox.scrollHeight;
 
+            // Simulando digitando...
             setTimeout(() => {
-                let response = "Desculpe, não entendi. Tente usar palavras como 'pagamento', 'entrega' ou clique no botão de Suporte Humano.";
-                let t = text.toLowerCase();
+                let response = "Desculpe, sou um robô em treinamento 🤖. Tente usar palavras-chave como 'pagamento', 'entrega', 'estoque' ou clique no botão verde para falar com um atendente humano.";
+                let t = text.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, ""); // Remove acentos
                 
-                if (t.includes("oi") || t.includes("ola") || t.includes("opa")) response = "Olá! Em que posso ajudar?";
-                else if (t.includes("pix") || t.includes("pagar") || t.includes("cartão") || t.includes("forma de pagamento")) response = "Aceitamos Pix! O pagamento é imediato e a conta é liberada na hora.";
-                else if (t.includes("entrega") || t.includes("receber") || t.includes("demora")) response = "Nossa entrega é 100% automática! Assim que o Pix for aprovado, o login e senha aparecem na sua tela.";
-                else if (t.includes("confiavel") || t.includes("golpe") || t.includes("seguro")) response = "Somos uma plataforma automatizada. O sistema retém o valor até você receber a conta. É 100% seguro.";
-                else if (t.includes("estoque") || t.includes("tem a conta") || t.includes("disponivel")) response = "Se a conta está aparecendo na loja com a tag verde, ela está em estoque e pronta para entrega!";
+                if (t.includes("oi") || t.includes("ola") || t.includes("opa") || t.includes("bom dia") || t.includes("boa noite")) {
+                    response = "Olá guerreiro! Em que posso te ajudar hoje no BloxAether?";
+                }
+                else if (t.includes("pix") || t.includes("pagar") || t.includes("cartao") || t.includes("pagamento")) {
+                    response = "💳 Aceitamos Pix (aprovação imediata) e Cartão de Crédito via Stripe/MercadoPago. Qual você prefere?";
+                }
+                else if (t.includes("entrega") || t.includes("receber") || t.includes("demora") || t.includes("tempo")) {
+                    response = "⚡ Nossa entrega é **100% Automática**! Assim que o Pix for aprovado, o sistema libera o usuário e senha da conta diretamente na tela do seu pedido e também no seu e-mail.";
+                }
+                else if (t.includes("confiavel") || t.includes("golpe") || t.includes("seguro") || t.includes("medo")) {
+                    response = "🛡️ Somos uma plataforma verificada. O sistema retém o valor até a conta estar logada com você. Além disso, você tem suporte total pós-compra. É 100% seguro!";
+                }
+                else if (t.includes("estoque") || t.includes("tem a conta") || t.includes("disponivel")) {
+                    response = "📦 Se a conta está aparecendo na loja com a tag verde 'DISPONÍVEL', significa que ela está pronta para entrega imediata. Se estiver 'ESGOTADO', alguém comprou antes!";
+                }
+                else if (t.includes("vincular") || t.includes("email") || t.includes("senha") || t.includes("recuperar")) {
+                    response = "🔑 Todas as contas são entregues **SEM e-mail e SEM telefone vinculado**. Você receberá apenas Usuário e Senha e poderá vincular seus próprios dados assim que logar!";
+                }
 
                 chatBox.innerHTML += `<div class="msg bot">${response}</div>`;
                 chatBox.scrollTop = chatBox.scrollHeight;
             }, 800);
         }
 
-        // Iniciar
+        // Start da Aplicação
         window.onload = () => {
+            initMockData(); // Garante que terá itens para mostrar
             checkAlert();
             renderProducts(getProducts());
         };

@@ -1,4 +1,231 @@
-// --- BANCO DE DADOS ATUALIZADO (PREÇOS REDUZIDOS E LEVEL CORRIGIDO) ---
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BloxAether | Mercado Cyber Blox Fruits</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #030611;
+            --card-bg: rgba(9, 19, 38, 0.9);
+            --main-neon: #a200ff;
+            --main-glow: rgba(162, 0, 255, 0.4);
+            --text-light: #e6f9ff;
+            --text-muted: #8b9bb4;
+            --available: #00ffaa;
+            --sold-out: #ff3366;
+            --star: #ffd700;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Rajdhani', sans-serif; }
+
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg-dark); }
+        ::-webkit-scrollbar-thumb { background: var(--main-neon); border-radius: 4px; }
+
+        body {
+            background: var(--bg-dark);
+            color: var(--text-light);
+            min-height: 100vh;
+            background-image: radial-gradient(circle at 50% 0%, var(--main-glow) 0%, transparent 50%);
+            background-attachment: fixed;
+            padding-bottom: 50px;
+        }
+
+        body.modal-open { overflow: hidden; }
+
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+
+        header {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 20px 0; border-bottom: 1px solid rgba(255,255,255,0.1); margin-bottom: 30px; flex-wrap: wrap; gap: 15px;
+        }
+        .logo { font-family: 'Orbitron'; font-size: 2.2rem; color: #fff; cursor: pointer; }
+        .logo span { color: var(--main-neon); text-shadow: 0 0 10px var(--main-glow); }
+        
+        .header-actions { display: flex; gap: 10px; }
+        .btn-neon {
+            background: rgba(162, 0, 255, 0.1); border: 1px solid var(--main-neon); color: #fff;
+            padding: 10px 20px; border-radius: 8px; cursor: pointer; transition: 0.3s;
+            font-weight: bold; font-size: 1.1rem; display: flex; align-items: center; gap: 8px; position: relative;
+        }
+        .btn-neon:hover { background: var(--main-neon); box-shadow: 0 0 15px var(--main-glow); transform: translateY(-2px); }
+        .cart-badge {
+            position: absolute; top: -8px; right: -8px; background: var(--sold-out); color: #fff;
+            font-size: 0.8rem; padding: 2px 8px; border-radius: 50%; font-weight: bold;
+        }
+
+        .filters { display: flex; gap: 10px; margin-bottom: 30px; flex-wrap: wrap; background: rgba(0,0,0,0.4); padding: 15px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.05); }
+        .filters input, .filters select {
+            background: rgba(0,0,0,0.6); border: 1px solid rgba(162, 0, 255, 0.5); color: #fff;
+            padding: 12px; border-radius: 8px; outline: none; flex: 1; min-width: 150px; font-size: 1rem;
+        }
+        .filters input:focus, .filters select:focus { border-color: var(--main-neon); box-shadow: 0 0 10px var(--main-glow); }
+
+        .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
+        .product-card {
+            background: var(--card-bg); border: 1px solid rgba(162, 0, 255, 0.3); border-radius: 12px;
+            padding: 20px; cursor: pointer; transition: 0.3s; position: relative; overflow: hidden;
+        }
+        .product-card:hover { border-color: var(--main-neon); box-shadow: 0 0 20px var(--main-glow); transform: translateY(-5px); }
+        .status-badge {
+            background: rgba(0, 255, 170, 0.1); color: var(--available); padding: 4px 10px; border-radius: 4px;
+            font-size: 0.85rem; border: 1px solid var(--available); display: inline-block; margin-bottom: 10px; font-family: 'Orbitron';
+        }
+        .status-badge.sold { background: rgba(255, 51, 102, 0.1); color: var(--sold-out); border-color: var(--sold-out); }
+        
+        .product-title { font-family: 'Orbitron'; font-size: 1.2rem; margin-bottom: 8px; }
+        .product-meta { color: var(--text-muted); font-size: 0.95rem; margin-bottom: 5px; }
+        .product-price { font-family: 'Orbitron'; color: var(--main-neon); font-size: 1.6rem; margin-top: 10px; }
+
+        .modal-overlay {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); z-index: 2000;
+            justify-content: center; align-items: center; padding: 20px;
+        }
+        .modal-content {
+            background: var(--bg-dark); border: 1px solid var(--main-neon); box-shadow: 0 0 40px var(--main-glow);
+            border-radius: 12px; width: 100%; max-width: 600px; padding: 30px; position: relative; max-height: 90vh; overflow-y: auto;
+        }
+        .close-btn {
+            position: absolute; top: 15px; right: 20px; background: transparent; border: none; color: var(--text-muted);
+            font-size: 1.8rem; cursor: pointer; transition: 0.3s;
+        }
+        .close-btn:hover { color: var(--sold-out); }
+
+        .btn-action {
+            width: 100%; padding: 15px; background: var(--main-neon); color: #fff; border: none; border-radius: 8px;
+            font-family: 'Orbitron'; font-size: 1.2rem; cursor: pointer; margin-top: 15px; transition: 0.3s; text-transform: uppercase;
+        }
+        .btn-action:hover:not(:disabled) { box-shadow: 0 0 25px var(--main-neon); background: #b333ff; }
+        .btn-action:disabled { background: #333; cursor: not-allowed; color: #888; }
+        .btn-green { background: #00E676; color: #000; }
+        .btn-green:hover { background: #00C853; box-shadow: 0 0 15px rgba(0, 230, 118, 0.4); }
+
+        .review-box { background: rgba(255,255,255,0.05); padding: 10px; border-radius: 8px; margin-top: 10px; font-size: 0.9rem; }
+        .stars { color: var(--star); letter-spacing: 2px; }
+
+        .cart-item { display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.5); padding: 10px; border-radius: 8px; margin-bottom: 10px; border: 1px solid rgba(255,255,255,0.1); }
+        .cart-remove { color: var(--sold-out); background: none; border: none; font-size: 1.2rem; cursor: pointer; }
+
+        .pix-box { text-align: center; background: rgba(0,0,0,0.6); padding: 20px; border-radius: 8px; border: 1px dashed var(--main-neon); margin: 20px 0; }
+        .pix-key { font-family: 'Orbitron'; font-size: 1.5rem; color: #fff; letter-spacing: 2px; margin: 10px 0; padding: 10px; background: #000; border-radius: 5px; user-select: all; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <div class="logo" onclick="window.scrollTo(0,0)">Blox<span>Aether</span></div>
+            <div class="header-actions">
+                <button class="btn-neon" onclick="openModal('supportModal')">🎧 Suporte</button>
+                <button class="btn-neon" onclick="openCartModal()">
+                    🛒 Carrinho
+                    <span class="cart-badge" id="cartCount">0</span>
+                </button>
+            </div>
+        </header>
+
+        <div class="filters">
+            <input type="text" id="searchInput" placeholder="🔍 Buscar conta..." oninput="filterProducts()">
+            <select id="seaFilter" onchange="filterProducts()">
+                <option value="all">🌍 Todos os Seas</option>
+                <option value="Sea 1">Sea 1</option>
+                <option value="Sea 2">Sea 2</option>
+                <option value="Sea 3">Sea 3</option>
+            </select>
+            <input type="number" id="minPrice" placeholder="Preço Mín (R$)" oninput="filterProducts()">
+            <input type="number" id="maxPrice" placeholder="Preço Máx (R$)" oninput="filterProducts()">
+            <input type="number" id="minBeli" placeholder="Mín. Beli" oninput="filterProducts()">
+        </div>
+
+        <div class="product-grid" id="productGrid"></div>
+    </div>
+
+    <!-- Modal Detalhes do Produto -->
+    <div class="modal-overlay" id="productModal" onclick="closeModalOutside(event, 'productModal')">
+        <div class="modal-content">
+            <button class="close-btn" onclick="closeModal('productModal')">✕</button>
+            <div id="modalStatus" class="status-badge"></div>
+            <h2 id="modalTitle" class="product-title" style="font-size: 1.6rem; color: #fff;"></h2>
+            
+            <div style="display: flex; gap: 15px; margin-bottom: 15px;">
+                <p id="modalLevel" class="product-meta" style="color: var(--main-neon); font-weight: bold;"></p>
+                <p id="modalBeli" class="product-meta" style="color: #00ffaa;"></p>
+            </div>
+            
+            <div style="background: rgba(0,0,0,0.5); padding: 15px; border-radius: 8px; border: 1px solid rgba(162, 0, 255, 0.2);">
+                <h4 style="font-family: 'Orbitron'; color: var(--main-neon); margin-bottom: 5px;">📄 Descrição:</h4>
+                <p id="modalDesc" style="color: #d1d5db; white-space: pre-wrap; font-size: 1rem;"></p>
+            </div>
+
+            <div style="margin-top: 15px;">
+                <h4 style="font-family: 'Orbitron'; color: var(--star);">⭐ Avaliações Recentes</h4>
+                <div id="modalReviews"></div>
+            </div>
+
+            <h2 id="modalPrice" class="product-price" style="margin-top: 20px;"></h2>
+            <button id="btnAddToCart" class="btn-action">🛒 Adicionar ao Carrinho</button>
+        </div>
+    </div>
+
+    <!-- Modal do Carrinho -->
+    <div class="modal-overlay" id="cartModal" onclick="closeModalOutside(event, 'cartModal')">
+        <div class="modal-content">
+            <button class="close-btn" onclick="closeModal('cartModal')">✕</button>
+            <h2 style="font-family: 'Orbitron'; color: var(--main-neon); margin-bottom: 20px;">🛒 Seu Carrinho</h2>
+            
+            <div id="cartItems"></div>
+            
+            <div style="margin-top: 20px; padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.1);">
+                <div style="display: flex; gap: 10px; margin-bottom: 15px;">
+                    <input type="text" id="couponCode" placeholder="Cupom de Desconto" style="flex: 1; padding: 10px; border-radius: 5px; background: #000; color: #fff; border: 1px solid rgba(162, 0, 255, 0.5);">
+                    <button class="btn-neon" onclick="applyCoupon()" style="padding: 10px;">Aplicar</button>
+                </div>
+                <h3 style="text-align: right; font-family: 'Orbitron';">Total: <span id="cartTotal" style="color: var(--main-neon);">R$ 0,00</span></h3>
+                <button class="btn-action btn-green" onclick="openCheckout()" id="btnCheckout">💸 Finalizar via PIX</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Checkout (PIX) -->
+    <div class="modal-overlay" id="checkoutModal">
+        <div class="modal-content" style="text-align: center;">
+            <h2 style="font-family: 'Orbitron'; color: #00E676;">Pagamento Gerado!</h2>
+            <p style="margin-top: 10px; color: var(--text-muted);">Transfira o valor exato para a chave Pix abaixo.</p>
+            
+            <div class="pix-box">
+                <p>Chave Pix (Celular):</p>
+                <div class="pix-key" id="pixKey">13997985399</div>
+                <p style="color: var(--text-muted); font-size: 0.9rem;">Nome: Admin BloxAether</p>
+                <p style="color: var(--main-neon); font-size: 1.2rem; font-weight: bold; margin-top: 10px;" id="pixTotalValue"></p>
+            </div>
+            
+            <button class="btn-action" style="background: #333; border: 1px solid #fff;" onclick="copyPix()">📋 Copiar Chave Pix</button>
+            
+            <hr style="border: 1px solid rgba(255,255,255,0.1); margin: 20px 0;">
+            <p style="margin-bottom: 15px; font-size: 0.9rem;">Já pagou? Envie o comprovante para liberação imediata!</p>
+            
+            <button class="btn-action btn-green" onclick="sendProof()">📲 Enviar Comprovante no WhatsApp</button>
+            <button class="btn-action" style="background: transparent; border: none; font-size: 1rem;" onclick="closeModal('checkoutModal')">Cancelar</button>
+        </div>
+    </div>
+
+    <!-- Modal de Suporte Avançado -->
+    <div class="modal-overlay" id="supportModal" onclick="closeModalOutside(event, 'supportModal')">
+        <div class="modal-content">
+            <button class="close-btn" onclick="closeModal('supportModal')">✕</button>
+            <h2 style="font-family: 'Orbitron'; color: var(--main-neon); margin-bottom: 20px;">🎧 Central de Suporte</h2>
+            <p style="margin-bottom: 20px; color: var(--text-muted);">Precisa de ajuda avançada ou quer falar diretamente com nossa equipe?</p>
+            <button class="btn-action btn-green" onclick="window.open('https://api.whatsapp.com/send?phone=5513996307983&text=Ol%C3%A1%2C%20preciso%20de%20suporte%20avan%C3%A7ado%20na%20plataforma!', '_blank')">
+                Falar com Suporte Avançado
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // --- BANCO DE DADOS OFICIAL COM AS 4 CONTAS ---
         let products = [
             { 
                 id: 1, 
@@ -45,3 +272,209 @@
                 reviews: [] 
             }
         ];
+
+        let cart = JSON.parse(localStorage.getItem('bloxaether_cart')) || [];
+        let currentDiscount = 0;
+        const PIX_KEY = "13997985399";
+        const WHATSAPP_NUM = "5513996307983";
+
+        function renderProducts(data) {
+            const grid = document.getElementById('productGrid');
+            grid.innerHTML = '';
+            
+            if (data.length === 0) {
+                grid.innerHTML = `<div style="grid-column: 1/-1; text-align: center; padding: 40px; color: #888;">Nenhuma conta encontrada com esses filtros.</div>`;
+                return;
+            }
+
+            data.forEach(p => {
+                const inCart = cart.find(item => item.id === p.id);
+                const actualStock = inCart ? p.stock - 1 : p.stock;
+
+                let stockStatus = actualStock > 0 
+                    ? `<div class="status-badge">DISPONÍVEL</div>` 
+                    : `<div class="status-badge sold">ESGOTADO</div>`;
+
+                grid.innerHTML += `
+                    <div class="product-card" onclick="openProductModal(${p.id})">
+                        ${stockStatus}
+                        <h3 class="product-title">${p.title}</h3>
+                        <p class="product-meta">Level: ${p.level} | ${p.sea}</p>
+                        <p class="product-meta" style="color:#00ffaa">💰 Beli: ${(p.beli / 1000000).toFixed(1)}M</p>
+                        <div class="product-price">R$ ${p.price.toFixed(2).replace('.', ',')}</div>
+                    </div>
+                `;
+            });
+            updateCartBadge();
+        }
+
+        function filterProducts() {
+            const search = document.getElementById('searchInput').value.toLowerCase();
+            const sea = document.getElementById('seaFilter').value;
+            const minP = parseFloat(document.getElementById('minPrice').value) || 0;
+            const maxP = parseFloat(document.getElementById('maxPrice').value) || Infinity;
+            const minB = parseFloat(document.getElementById('minBeli').value) || 0;
+
+            const filtered = products.filter(p => {
+                return (p.title.toLowerCase().includes(search) || p.desc.toLowerCase().includes(search)) &&
+                       (sea === 'all' || p.sea === sea) &&
+                       (p.price >= minP && p.price <= maxP) &&
+                       (p.beli >= minB);
+            });
+            renderProducts(filtered);
+        }
+
+        function openModal(id) {
+            document.getElementById(id).style.display = 'flex';
+            document.body.classList.add('modal-open');
+        }
+        function closeModal(id) {
+            document.getElementById(id).style.display = 'none';
+            document.body.classList.remove('modal-open');
+        }
+        function closeModalOutside(event, id) {
+            if (event.target.id === id) closeModal(id);
+        }
+
+        function openProductModal(id) {
+            const p = products.find(x => x.id === id);
+            if (!p) return;
+
+            const inCart = cart.find(item => item.id === p.id);
+            const actualStock = inCart ? p.stock - 1 : p.stock;
+
+            document.getElementById('modalTitle').innerText = p.title;
+            document.getElementById('modalLevel').innerText = `Level: ${p.level} | ${p.sea}`;
+            document.getElementById('modalBeli').innerText = `💰 ${(p.beli / 1000000).toFixed(1)}M Beli`;
+            document.getElementById('modalDesc').innerText = p.desc;
+            document.getElementById('modalPrice').innerText = `R$ ${p.price.toFixed(2).replace('.', ',')}`;
+            
+            const reviewsDiv = document.getElementById('modalReviews');
+            reviewsDiv.innerHTML = p.reviews.length ? p.reviews.map(r => `
+                <div class="review-box">
+                    <span class="stars">${'★'.repeat(r.rating)}${'☆'.repeat(5-r.rating)}</span>
+                    <strong style="color: #fff; margin-left: 10px;">${r.user}</strong>
+                    <p style="margin-top: 5px; color: var(--text-muted);">${r.text}</p>
+                </div>
+            `).join('') : '<p style="color: #666; margin-top:10px;">Ainda não há avaliações.</p>';
+
+            const btn = document.getElementById('btnAddToCart');
+            if (actualStock > 0) {
+                document.getElementById('modalStatus').className = 'status-badge';
+                document.getElementById('modalStatus').innerText = 'DISPONÍVEL';
+                btn.disabled = false;
+                btn.innerText = '🛒 Adicionar ao Carrinho';
+                btn.onclick = () => addToCart(p.id);
+            } else {
+                document.getElementById('modalStatus').className = 'status-badge sold';
+                document.getElementById('modalStatus').innerText = inCart ? 'JÁ NO CARRINHO' : 'ESGOTADO';
+                btn.disabled = true;
+                btn.innerText = 'Indisponível';
+            }
+            openModal('productModal');
+        }
+
+        function addToCart(id) {
+            const p = products.find(x => x.id === id);
+            if (!cart.find(item => item.id === id) && p.stock > 0) {
+                cart.push(p);
+                saveCart();
+                closeModal('productModal');
+                renderProducts(products);
+                openCartModal();
+            }
+        }
+
+        function removeFromCart(id) {
+            cart = cart.filter(item => item.id !== id);
+            saveCart();
+            renderCartItems();
+            renderProducts(products);
+        }
+
+        function saveCart() {
+            localStorage.setItem('bloxaether_cart', JSON.stringify(cart));
+            updateCartBadge();
+        }
+
+        function updateCartBadge() {
+            document.getElementById('cartCount').innerText = cart.length;
+        }
+
+        function getCartTotal() {
+            let total = cart.reduce((acc, item) => acc + item.price, 0);
+            return total - (total * currentDiscount);
+        }
+
+        function renderCartItems() {
+            const list = document.getElementById('cartItems');
+            if (cart.length === 0) {
+                list.innerHTML = '<p style="text-align:center; color: #888;">Seu carrinho está vazio.</p>';
+                document.getElementById('btnCheckout').disabled = true;
+            } else {
+                list.innerHTML = cart.map(item => `
+                    <div class="cart-item">
+                        <div>
+                            <h4 style="color:#fff;">${item.title}</h4>
+                            <span style="color:var(--main-neon);">R$ ${item.price.toFixed(2).replace('.', ',')}</span>
+                        </div>
+                        <button class="cart-remove" onclick="removeFromCart(${item.id})">🗑️</button>
+                    </div>
+                `).join('');
+                document.getElementById('btnCheckout').disabled = false;
+            }
+            document.getElementById('cartTotal').innerText = `R$ ${getCartTotal().toFixed(2).replace('.', ',')}`;
+        }
+
+        function openCartModal() {
+            renderCartItems();
+            openModal('cartModal');
+        }
+
+        function applyCoupon() {
+            const code = document.getElementById('couponCode').value.toUpperCase();
+            if (code === 'VIP10') {
+                currentDiscount = 0.10;
+                alert('Cupom de 10% aplicado!');
+            } else {
+                currentDiscount = 0;
+                alert('Cupom inválido.');
+            }
+            renderCartItems();
+        }
+
+        function openCheckout() {
+            if(cart.length === 0) return;
+            closeModal('cartModal');
+            document.getElementById('pixTotalValue').innerText = `Valor a pagar: R$ ${getCartTotal().toFixed(2).replace('.', ',')}`;
+            openModal('checkoutModal');
+        }
+
+        function copyPix() {
+            navigator.clipboard.writeText(PIX_KEY).then(() => {
+                alert('Chave Pix copiada com sucesso!');
+            });
+        }
+
+        function sendProof() {
+            const total = getCartTotal().toFixed(2);
+            const items = cart.map(c => c.title).join(', ');
+            const orderId = Math.floor(Math.random() * 1000000);
+            
+            const msg = `Olá, vim pelo site BloxAether! 👋\n\n*Pedido:* #${orderId}\n*Contas:* ${items}\n*Valor Total:* R$ ${total}\n\nSegue o meu comprovante Pix logo abaixo para liberação imediata:`;
+            const url = `https://api.whatsapp.com/send?phone=${WHATSAPP_NUM}&text=${encodeURIComponent(msg)}`;
+            
+            cart = [];
+            saveCart();
+            renderProducts(products);
+            closeModal('checkoutModal');
+            
+            window.open(url, '_blank');
+        }
+
+        window.onload = () => {
+            renderProducts(products);
+        };
+    </script>
+</body>
+</html>

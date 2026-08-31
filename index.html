@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BloxAether | Mercado Cyber Blox Fruits</title>
+    <meta name="description" content="Mercado BloxAether de contas Blox Fruits com filtros, carrinho, PIX, suporte e avaliações.">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -16,6 +17,8 @@
             --available: #00ffaa;
             --sold-out: #ff3366;
             --star: #ffd700;
+            --cyan: #00e5ff;
+            --danger: #ff4466;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Rajdhani', sans-serif; }
@@ -111,6 +114,39 @@
 
         .pix-box { text-align: center; background: rgba(0,0,0,0.6); padding: 20px; border-radius: 8px; border: 1px dashed var(--main-neon); margin: 20px 0; }
         .pix-key { font-family: 'Orbitron'; font-size: 1.5rem; color: #fff; letter-spacing: 2px; margin: 10px 0; padding: 10px; background: #000; border-radius: 5px; user-select: all; }
+    
+        .toolbar-row{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px}
+        .toolbar-row button,.toolbar-row select{background:rgba(0,0,0,.55);border:1px solid rgba(162,0,255,.45);color:#fff;padding:10px 14px;border-radius:8px;cursor:pointer}
+        .toolbar-row button.active{background:var(--main-neon)}
+        .filter-summary{color:var(--text-muted);font-size:.95rem;margin:8px 0 18px}
+        .product-card .card-actions{display:flex;gap:8px;margin-top:14px}
+        .mini-btn{flex:1;padding:9px;border-radius:7px;border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.06);color:#fff;cursor:pointer}
+        .mini-btn:hover{border-color:var(--main-neon)}
+        .favorite{position:absolute;right:12px;top:12px;background:rgba(0,0,0,.5);border:1px solid rgba(255,255,255,.15);color:#fff;border-radius:50%;width:34px;height:34px;cursor:pointer}
+        .account-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin:15px 0}
+        .stat{background:rgba(255,255,255,.045);border:1px solid rgba(162,0,255,.2);border-radius:8px;padding:10px}.stat b{display:block;color:#fff;font-family:'Orbitron';font-size:1rem}.stat span{color:var(--text-muted);font-size:.8rem}
+        .tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}.tag{padding:4px 8px;border-radius:20px;background:rgba(0,229,255,.08);border:1px solid rgba(0,229,255,.35);color:var(--cyan);font-size:.8rem}
+        .notice{padding:12px;border-radius:8px;background:rgba(162,0,255,.08);border:1px solid rgba(162,0,255,.3);margin:10px 0;color:#dce8ff}
+        .empty-state{text-align:center;padding:35px;color:#888}.empty-state button{margin-top:12px}
+        .review-form{margin-top:15px;padding:14px;background:rgba(0,0,0,.35);border-radius:8px}.review-form input,.review-form textarea{width:100%;margin:6px 0;padding:10px;background:#000;color:#fff;border:1px solid rgba(162,0,255,.4);border-radius:6px}.review-form textarea{min-height:70px;resize:vertical}
+        .stars-input{display:flex;gap:5px;margin:8px 0}.star-btn{border:0;background:none;color:#666;font-size:1.5rem;cursor:pointer}.star-btn.on{color:var(--star)}
+        .checkout-steps{display:flex;justify-content:center;gap:8px;margin-bottom:15px}.step{padding:6px 10px;border-radius:20px;background:rgba(255,255,255,.06);color:#777}.step.active{color:#fff;background:rgba(162,0,255,.3);border:1px solid var(--main-neon)}
+        .copy-success{color:var(--available);font-size:.85rem;min-height:18px}
+        .history-item{padding:12px;background:rgba(0,0,0,.4);border:1px solid rgba(255,255,255,.08);border-radius:8px;margin-bottom:8px}.history-item small{color:var(--text-muted)}
+
+        .chat-window{display:flex;flex-direction:column;height:430px;background:rgba(0,0,0,.35);border:1px solid rgba(162,0,255,.25);border-radius:10px;overflow:hidden}
+        .chat-messages{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:10px}
+        .chat-msg{max-width:82%;padding:10px 12px;border-radius:10px;line-height:1.35;white-space:pre-wrap}
+        .chat-msg.bot{align-self:flex-start;background:rgba(162,0,255,.12);border:1px solid rgba(162,0,255,.25)}
+        .chat-msg.user{align-self:flex-end;background:rgba(0,229,255,.1);border:1px solid rgba(0,229,255,.25)}
+        .chat-msg small{display:block;color:var(--text-muted);font-size:.7rem;margin-top:4px}
+        .chat-quick{display:flex;gap:6px;flex-wrap:wrap;padding:8px 12px;border-top:1px solid rgba(255,255,255,.08)}
+        .chat-quick button{background:rgba(255,255,255,.05);border:1px solid rgba(162,0,255,.3);color:#fff;padding:7px 9px;border-radius:7px;cursor:pointer;font-size:.82rem}
+        .chat-input-row{display:flex;gap:8px;padding:10px;border-top:1px solid rgba(255,255,255,.08)}
+        .chat-input{flex:1;background:#000;color:#fff;border:1px solid rgba(162,0,255,.45);border-radius:8px;padding:11px;outline:none}
+        .chat-send{background:var(--main-neon);border:0;color:#fff;border-radius:8px;padding:0 16px;font-weight:bold;cursor:pointer}
+        .chat-label{font-size:.8rem;color:var(--text-muted);margin-bottom:8px}
+        @media(max-width:600px){.container{padding:12px}.modal-content{padding:20px}.filters input,.filters select{min-width:100%}}
     </style>
 </head>
 <body>
@@ -139,7 +175,15 @@
             <input type="number" id="maxPrice" placeholder="Preço Máx (R$)" oninput="filterProducts()">
             <input type="number" id="minBeli" placeholder="Mín. Beli" oninput="filterProducts()">
         </div>
-
+        <div class="toolbar-row">
+            <select id="sortFilter" onchange="filterProducts()">
+                <option value="default">↕ Ordenar: padrão</option><option value="priceAsc">💸 Menor preço</option><option value="priceDesc">💰 Maior preço</option><option value="levelDesc">⚡ Maior level</option><option value="beliDesc">🪙 Mais Beli</option>
+            </select>
+            <button id="favFilterBtn" onclick="toggleFavoritesFilter()">☆ Favoritos</button>
+            <button onclick="clearFilters()">↺ Limpar filtros</button>
+            <button onclick="openModal('historyModal')">📦 Meus pedidos</button>
+        </div>
+        <div class="filter-summary" id="filterSummary"></div>
         <div class="product-grid" id="productGrid"></div>
     </div>
 
@@ -181,7 +225,7 @@
                     <input type="text" id="couponCode" placeholder="Cupom de Desconto" style="flex: 1; padding: 10px; border-radius: 5px; background: #000; color: #fff; border: 1px solid rgba(162, 0, 255, 0.5);">
                     <button class="btn-neon" onclick="applyCoupon()" style="padding: 10px;">Aplicar</button>
                 </div>
-                <h3 style="text-align: right; font-family: 'Orbitron';">Total: <span id="cartTotal" style="color: var(--main-neon);">R$ 0,00</span></h3>
+                <div style="text-align:right;color:var(--text-muted);font-size:.9rem">Subtotal: <span id="cartSubtotal">R$ 0,00</span> • Desconto: <span id="cartDiscount">R$ 0,00</span></div><h3 style="text-align:right;font-family:'Orbitron';margin-top:6px">Total: <span id="cartTotal" style="color:var(--main-neon)">R$ 0,00</span></h3>
                 <button class="btn-action btn-green" onclick="openCheckout()" id="btnCheckout">💸 Finalizar via PIX</button>
             </div>
         </div>
@@ -199,7 +243,7 @@
                 <p style="color: var(--main-neon); font-size: 1.2rem; font-weight: bold; margin-top: 10px;" id="pixTotalValue"></p>
             </div>
             
-            <button class="btn-action" style="background: #333; border: 1px solid #fff;" onclick="copyPix()">📋 Copiar Chave Pix</button>
+            <button class="btn-action" style="background:#333;border:1px solid #fff" onclick="copyPix()">📋 Copiar Chave Pix</button><div id="copyFeedback" class="copy-success"></div>
             
             <hr style="border: 1px solid rgba(255,255,255,0.1); margin: 20px 0;">
             <p style="margin-bottom: 15px; font-size: 0.9rem;">Já pagou? Envie o comprovante para liberação imediata!</p>
@@ -209,268 +253,183 @@
         </div>
     </div>
 
+    <div class="modal-overlay" id="historyModal" onclick="closeModalOutside(event, 'historyModal')">
+        <div class="modal-content">
+            <button class="close-btn" onclick="closeModal('historyModal')">✕</button>
+            <h2 style="font-family:'Orbitron';color:var(--main-neon);margin-bottom:15px">📦 Histórico de pedidos</h2>
+            <div id="historyItems"></div>
+        </div>
+    </div>
+
     <div class="modal-overlay" id="supportModal" onclick="closeModalOutside(event, 'supportModal')">
         <div class="modal-content">
             <button class="close-btn" onclick="closeModal('supportModal')">✕</button>
-            <h2 style="font-family: 'Orbitron'; color: var(--main-neon); margin-bottom: 20px;">🎧 Central de Suporte</h2>
-            <p style="margin-bottom: 20px; color: var(--text-muted);">Precisa de ajuda avançada ou quer falar diretamente com nossa equipe?</p>
-            <button class="btn-action btn-green" onclick="window.open('https://api.whatsapp.com/send?phone=5513996307983&text=Ol%C3%A1%2C%20preciso%20de%20suporte%20avan%C3%A7ado%20na%20plataforma!', '_blank')">
-                Falar com Suporte Avançado
-            </button>
+            <h2 style="font-family:'Orbitron';color:var(--main-neon);margin-bottom:6px">🎧 Suporte</h2>
+            <div class="chat-label">Assistente automático • disponível 24h</div>
+            <div class="chat-window">
+                <div class="chat-messages" id="supportMessages"></div>
+                <div class="chat-quick">
+                    <button onclick="quickSupport('Como comprar uma conta?')">Como comprar?</button>
+                    <button onclick="quickSupport('Como funciona o Pix?')">PIX</button>
+                    <button onclick="quickSupport('Quero falar com o suporte avançado')">Suporte avançado</button>
+                    <button onclick="quickSupport('Como recebo a conta?')">Entrega</button>
+                </div>
+                <div class="chat-input-row">
+                    <input class="chat-input" id="supportInput" placeholder="Digite sua dúvida..." onkeydown="if(event.key==='Enter')sendSupportMessage()">
+                    <button class="chat-send" onclick="sendSupportMessage()">Enviar</button>
+                </div>
+            </div>
+            <div class="notice" style="margin-top:12px">📞 Atendimento humano: <b>13996307983</b></div>
+            <button class="btn-action btn-green" onclick="openAdvancedSupport()">🚀 Abrir Suporte Avançado</button>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="advancedSupportModal" onclick="closeModalOutside(event, 'advancedSupportModal')">
+        <div class="modal-content">
+            <button class="close-btn" onclick="closeModal('advancedSupportModal')">✕</button>
+            <h2 style="font-family:'Orbitron';color:#00E676;margin-bottom:6px">🚀 Suporte Avançado</h2>
+            <div class="chat-label">Assistente avançado • problemas de pagamento, pedidos e entrega</div>
+            <div class="chat-window">
+                <div class="chat-messages" id="advancedMessages"></div>
+                <div class="chat-quick">
+                    <button onclick="quickAdvanced('Meu pagamento foi feito')">Pagamento feito</button>
+                    <button onclick="quickAdvanced('Quero enviar comprovante')">Comprovante</button>
+                    <button onclick="quickAdvanced('Não recebi minha conta')">Não recebi</button>
+                    <button onclick="quickAdvanced('Quero atendimento humano')">Humano</button>
+                </div>
+                <div class="chat-input-row">
+                    <input class="chat-input" id="advancedInput" placeholder="Explique o problema..." onkeydown="if(event.key==='Enter')sendAdvancedMessage()">
+                    <button class="chat-send" onclick="sendAdvancedMessage()">Enviar</button>
+                </div>
+            </div>
+            <div class="notice" style="margin-top:12px">📲 Atendimento avançado / comprovantes: <b>13996307983</b></div>
+            <button class="btn-action btn-green" onclick="openHumanWhatsApp()">📲 Falar com atendente no WhatsApp</button>
         </div>
     </div>
 
     <script>
         // --- BANCO DE DADOS OFICIAL COM AS 4 CONTAS ---
         let products = [
-            { 
-                id: 1, 
-                title: 'Conta Dough + Shark Anchor', 
-                level: 2611, 
-                sea: 'Sea 3', 
-                price: 39.90, 
-                beli: 37000000, 
-                stock: 1, 
-                desc: '🔥 CONTA SEA 3\n- Dragon Talon V1 ou V2\n- Dough V1 (Não tem todas as skills)\n- Shark Anchor\n- 560 Mil Fragmentos\n- Angel V2\n- 6 Frutas Lendárias no inventário.', 
-                reviews: [] 
-            },
-            { 
-                id: 2, 
-                title: 'Conta Sharkman + 3 Espadas', 
-                level: 1745, 
-                sea: 'Sea 2', 
-                price: 15.00, 
-                beli: 1000000, 
-                stock: 1, 
-                desc: '⚔️ CONTA SEA 2\n- Sharkman Karate V1\n- Creation Mast 1\n- 3 Espadas Lendárias (com Shisui)\n- Human V1.', 
-                reviews: [] 
-            },
-            { 
-                id: 3, 
-                title: 'Conta Gravity V2 + Craft CDK', 
-                level: 2650, 
-                sea: 'Sea 3', 
-                price: 45.00, 
-                beli: 16000000, 
-                stock: 1, 
-                desc: '🌌 CONTA HIGH LEVEL\n- Dragon Talon V1 ou V2\n- Gravity V2 (Todas as Skills liberadas)\n- 1 Espada Mítica e 2 Espadas Lendárias\n- Pronta para craftar CDK (Cursed Dual Katana)\n- Human V1\n- 6 Milhões de Fragmentos.', 
-                reviews: [] 
-            },
-            { 
-                id: 4, 
-                title: 'Conta Light (Full Skills)', 
-                level: 1212, 
-                sea: 'Sea 2', 
-                price: 10.00, 
-                beli: 5000000, 
-                stock: 1, 
-                desc: '✨ CONTA SEA 2\n- Eletric Mas 1 V1\n- Light (Todas as Skills liberadas)\n- 1 Fruta Lendária\n- 1 Espada Lendária\n- Angel V2\n- 6 Milhões de Fragmentos.', 
-                reviews: [] 
-            }
+            {id:1,title:'Conta Dough + Shark Anchor',level:2611,sea:'Sea 3',price:35.00,beli:37000000,stock:1,desc:'🔥 CONTA SEA 3\n- Dragon Talon V1 ou V2\n- Dough V1 (não tem todas as skills)\n- Shark Anchor\n- 560 Mil Fragmentos\n- Angel V2\n- 6 Frutas Lendárias no inventário.',tags:['Dough','Shark Anchor','Sea 3','Angel V2'],rarity:'Lendária',reviews:[]},
+            {id:2,title:'Conta Sharkman + 3 Espadas',level:1745,sea:'Sea 2',price:15.00,beli:1000000,stock:1,desc:'⚔️ CONTA SEA 2\n- Sharkman Karate V1\n- Creation Mast 1\n- 3 Espadas Lendárias (com Shisui)\n- Human V1.',tags:['Sharkman','Espadas','Sea 2'],rarity:'Lendária',reviews:[]},
+            {id:3,title:'Conta Gravity V2 + Craft CDK',level:2650,sea:'Sea 3',price:28.00,beli:16000000,stock:1,desc:'🌌 CONTA HIGH LEVEL\n- Dragon Talon V1 ou V2\n- Gravity V2 (todas as skills liberadas)\n- 1 Espada Mítica e 2 Espadas Lendárias\n- Pronta para craftar CDK (Cursed Dual Katana)\n- Human V1\n- 6 Milhões de Fragmentos.',tags:['Gravity V2','CDK','High Level','Sea 3'],rarity:'Mítica',reviews:[]},
+            {id:4,title:'Conta Light (Full Skills)',level:1212,sea:'Sea 2',price:12.00,beli:5000000,stock:1,desc:'✨ CONTA SEA 2\n- Eletric Mas 1 V1\n- Light (todas as skills liberadas)\n- 1 Fruta Lendária\n- 1 Espada Lendária\n- Angel V2\n- 6 Milhões de Fragmentos.',tags:['Light','Full Skills','Sea 2'],rarity:'Lendária',reviews:[]}
         ];
+        products.forEach(p=>p.stock=1);
 
+        const APP_VERSION = '3.0';
+        if(localStorage.getItem('bloxaether_app_version') !== APP_VERSION){
+            localStorage.removeItem('bloxaether_cart');
+            localStorage.setItem('bloxaether_app_version', APP_VERSION);
+        }
         let cart = JSON.parse(localStorage.getItem('bloxaether_cart')) || [];
         let currentDiscount = 0;
-        const PIX_KEY = "13997985399";
-        const WHATSAPP_NUM = "5513996307983";
+        let favorites = JSON.parse(localStorage.getItem('bloxaether_favorites')) || [];
+        let orderHistory = JSON.parse(localStorage.getItem('bloxaether_orders')) || [];
+        let favoritesOnly = false;
+        let selectedRating = 5;
+        const PIX_KEY = '13997985399';
+        const WHATSAPP_NUM = '5513996307983';
+        const SUPPORT_DISPLAY = '13996307983';
 
-        function renderProducts(data) {
-            const grid = document.getElementById('productGrid');
-            grid.innerHTML = '';
-            
-            if (data.length === 0) {
-                grid.innerHTML = `<div style="grid-column: 1/-1; text-align: center; padding: 40px; color: #888;">Nenhuma conta encontrada com esses filtros.</div>`;
-                return;
-            }
-
-            data.forEach(p => {
-                const inCart = cart.find(item => item.id === p.id);
-                const actualStock = inCart ? p.stock - 1 : p.stock;
-
-                let stockStatus = actualStock > 0 
-                    ? `<div class="status-badge">DISPONÍVEL</div>` 
-                    : `<div class="status-badge sold">ESGOTADO</div>`;
-
-                grid.innerHTML += `
-                    <div class="product-card" onclick="openProductModal(${p.id})">
-                        ${stockStatus}
-                        <h3 class="product-title">${p.title}</h3>
-                        <p class="product-meta">Level: ${p.level} | ${p.sea}</p>
-                        <p class="product-meta" style="color:#00ffaa">💰 Beli: ${(p.beli / 1000000).toFixed(1)}M</p>
-                        <div class="product-price">R$ ${p.price.toFixed(2).replace('.', ',')}</div>
-                    </div>
-                `;
-            });
-            updateCartBadge();
+        function persist(){localStorage.setItem('bloxaether_cart',JSON.stringify(cart));localStorage.setItem('bloxaether_favorites',JSON.stringify(favorites));localStorage.setItem('bloxaether_orders',JSON.stringify(orderHistory));}
+        function availableStock(p){return Math.max(0,p.stock-(cart.some(i=>i.id===p.id)?1:0));}
+        function avgRating(p){return p.reviews.length?p.reviews.reduce((a,r)=>a+r.rating,0)/p.reviews.length:0;}
+        function stars(n){return '★'.repeat(Math.round(n))+'☆'.repeat(5-Math.round(n));}
+        function renderProducts(data){
+            const grid=document.getElementById('productGrid'); grid.innerHTML='';
+            document.getElementById('filterSummary').innerText=`${data.length} conta(s) encontrada(s) • ${data.filter(p=>availableStock(p)>0).length} disponível(is)`;
+            if(!data.length){grid.innerHTML='<div class="empty-state" style="grid-column:1/-1">Nenhuma conta encontrada.<br><button class="btn-neon" onclick="clearFilters()">Limpar filtros</button></div>';return;}
+            data.forEach(p=>{const fav=favorites.includes(p.id),stock=availableStock(p),rating=avgRating(p);grid.innerHTML+=`
+              <div class="product-card" onclick="openProductModal(${p.id})">
+                <button class="favorite" onclick="event.stopPropagation();toggleFavorite(${p.id})">${fav?'★':'☆'}</button>
+                <div class="status-badge ${stock?'':'sold'}">${stock?'DISPONÍVEL':'ESGOTADO'}</div>
+                <h3 class="product-title">${p.title}</h3><p class="product-meta">Level: ${p.level} | ${p.sea}</p>
+                <p class="product-meta" style="color:#00ffaa">💰 Beli: ${(p.beli/1000000).toFixed(1)}M</p>
+                <p class="product-meta"><span class="stars">${stars(rating)}</span> ${rating?rating.toFixed(1):'Novo'} (${p.reviews.length})</p>
+                <div class="tags">${p.tags.map(t=>`<span class="tag">${t}</span>`).join('')}</div>
+                <div class="product-price">R$ ${p.price.toFixed(2).replace('.',',')}</div>
+                <div class="card-actions"><button class="mini-btn" onclick="event.stopPropagation();openProductModal(${p.id})">👁 Detalhes</button><button class="mini-btn" ${stock?'':'disabled'} onclick="event.stopPropagation();addToCart(${p.id})">🛒 Carrinho</button></div>
+              </div>`;}); updateCartBadge();
         }
-
-        function filterProducts() {
-            const search = document.getElementById('searchInput').value.toLowerCase();
-            const sea = document.getElementById('seaFilter').value;
-            const minP = parseFloat(document.getElementById('minPrice').value) || 0;
-            const maxP = parseFloat(document.getElementById('maxPrice').value) || Infinity;
-            const minB = parseFloat(document.getElementById('minBeli').value) || 0;
-
-            const filtered = products.filter(p => {
-                return (p.title.toLowerCase().includes(search) || p.desc.toLowerCase().includes(search)) &&
-                       (sea === 'all' || p.sea === sea) &&
-                       (p.price >= minP && p.price <= maxP) &&
-                       (p.beli >= minB);
-            });
+        function filterProducts(){
+            const search=document.getElementById('searchInput').value.trim().toLowerCase(),sea=document.getElementById('seaFilter').value;
+            const minP=Math.max(0,parseFloat(document.getElementById('minPrice').value)||0),maxRaw=parseFloat(document.getElementById('maxPrice').value),maxP=isNaN(maxRaw)?Infinity:Math.max(0,maxRaw),minB=Math.max(0,parseFloat(document.getElementById('minBeli').value)||0);
+            const sort=document.getElementById('sortFilter').value;
+            let filtered=products.filter(p=>(!search||[p.title,p.desc,p.sea,...p.tags].join(' ').toLowerCase().includes(search))&&(sea==='all'||p.sea===sea)&&p.price>=minP&&p.price<=maxP&&p.beli>=minB&&(!favoritesOnly||favorites.includes(p.id)));
+            if(sort==='priceAsc')filtered.sort((a,b)=>a.price-b.price); if(sort==='priceDesc')filtered.sort((a,b)=>b.price-a.price); if(sort==='levelDesc')filtered.sort((a,b)=>b.level-a.level); if(sort==='beliDesc')filtered.sort((a,b)=>b.beli-a.beli);
             renderProducts(filtered);
         }
-
-        function openModal(id) {
-            document.getElementById(id).style.display = 'flex';
-            document.body.classList.add('modal-open');
-        }
-        function closeModal(id) {
-            document.getElementById(id).style.display = 'none';
-            document.body.classList.remove('modal-open');
-        }
-        function closeModalOutside(event, id) {
-            if (event.target.id === id) closeModal(id);
-        }
-
-        function openProductModal(id) {
-            const p = products.find(x => x.id === id);
-            if (!p) return;
-
-            const inCart = cart.find(item => item.id === p.id);
-            const actualStock = inCart ? p.stock - 1 : p.stock;
-
-            document.getElementById('modalTitle').innerText = p.title;
-            document.getElementById('modalLevel').innerText = `Level: ${p.level} | ${p.sea}`;
-            document.getElementById('modalBeli').innerText = `💰 ${(p.beli / 1000000).toFixed(1)}M Beli`;
-            document.getElementById('modalDesc').innerText = p.desc;
-            document.getElementById('modalPrice').innerText = `R$ ${p.price.toFixed(2).replace('.', ',')}`;
-            
-            const reviewsDiv = document.getElementById('modalReviews');
-            reviewsDiv.innerHTML = p.reviews.length ? p.reviews.map(r => `
-                <div class="review-box">
-                    <span class="stars">${'★'.repeat(r.rating)}${'☆'.repeat(5-r.rating)}</span>
-                    <strong style="color: #fff; margin-left: 10px;">${r.user}</strong>
-                    <p style="margin-top: 5px; color: var(--text-muted);">${r.text}</p>
-                </div>
-            `).join('') : '<p style="color: #666; margin-top:10px;">Ainda não há avaliações.</p>';
-
-            const btn = document.getElementById('btnAddToCart');
-            if (actualStock > 0) {
-                document.getElementById('modalStatus').className = 'status-badge';
-                document.getElementById('modalStatus').innerText = 'DISPONÍVEL';
-                btn.disabled = false;
-                btn.innerText = '🛒 Adicionar ao Carrinho';
-                btn.onclick = () => addToCart(p.id);
-            } else {
-                document.getElementById('modalStatus').className = 'status-badge sold';
-                document.getElementById('modalStatus').innerText = inCart ? 'JÁ NO CARRINHO' : 'ESGOTADO';
-                btn.disabled = true;
-                btn.innerText = 'Indisponível';
-            }
+        function clearFilters(){document.getElementById('searchInput').value='';document.getElementById('seaFilter').value='all';document.getElementById('minPrice').value='';document.getElementById('maxPrice').value='';document.getElementById('minBeli').value='';document.getElementById('sortFilter').value='default';favoritesOnly=false;document.getElementById('favFilterBtn').classList.remove('active');filterProducts();}
+        function toggleFavoritesFilter(){favoritesOnly=!favoritesOnly;document.getElementById('favFilterBtn').classList.toggle('active',favoritesOnly);filterProducts();}
+        function toggleFavorite(id){favorites=favorites.includes(id)?favorites.filter(x=>x!==id):[...favorites,id];persist();filterProducts();}
+        function openModal(id){document.getElementById(id).style.display='flex';document.body.classList.add('modal-open');if(id==='historyModal')renderHistory();}
+        function closeModal(id){document.getElementById(id).style.display='none';document.body.classList.remove('modal-open');}
+        function closeModalOutside(e,id){if(e.target.id===id)closeModal(id);}
+        function openProductModal(id){
+            const p=products.find(x=>x.id===id);if(!p)return; const stock=availableStock(p);
+            document.getElementById('modalTitle').innerText=p.title;document.getElementById('modalLevel').innerText=`Level: ${p.level} | ${p.sea}`;document.getElementById('modalBeli').innerText=`💰 ${(p.beli/1000000).toFixed(1)}M Beli`;document.getElementById('modalDesc').innerText=p.desc;document.getElementById('modalPrice').innerText=`R$ ${p.price.toFixed(2).replace('.',',')}`;
+            const box=document.getElementById('modalReviews'); box.innerHTML=p.reviews.length?p.reviews.map(r=>`<div class="review-box"><span class="stars">${stars(r.rating)}</span><strong style="color:#fff;margin-left:10px">${escapeHtml(r.user)}</strong><p style="margin-top:5px;color:var(--text-muted)">${escapeHtml(r.text)}</p></div>`).join(''):'<p style="color:#666;margin-top:10px">Ainda não há avaliações.</p>';
+            box.innerHTML+=`<div class="review-form"><b>⭐ Deixe sua avaliação</b><input id="reviewUser" maxlength="30" placeholder="Seu nome"><div class="stars-input">${[1,2,3,4,5].map(i=>`<button class="star-btn ${i<=selectedRating?'on':''}" onclick="setRating(${i})">★</button>`).join('')}</div><textarea id="reviewText" maxlength="300" placeholder="Como foi sua experiência?"></textarea><button class="btn-neon" onclick="submitReview(${p.id})">Publicar avaliação</button></div>`;
+            const btn=document.getElementById('btnAddToCart');btn.disabled=!stock;btn.innerText=stock?'🛒 Adicionar ao Carrinho':'Indisponível';btn.onclick=()=>{if(stock)addToCart(p.id)};document.getElementById('modalStatus').className='status-badge '+(stock?'':'sold');document.getElementById('modalStatus').innerText=stock?'DISPONÍVEL':'ESGOTADO';
             openModal('productModal');
         }
-
-        function addToCart(id) {
-            const p = products.find(x => x.id === id);
-            if (!cart.find(item => item.id === id) && p.stock > 0) {
-                cart.push(p);
-                saveCart();
-                closeModal('productModal');
-                renderProducts(products);
-                openCartModal();
-            }
+        function setRating(n){selectedRating=n;document.querySelectorAll('.star-btn').forEach((b,i)=>b.classList.toggle('on',i<n));}
+        function escapeHtml(v){return String(v).replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));}
+        function submitReview(id){const p=products.find(x=>x.id===id),user=document.getElementById('reviewUser').value.trim(),text=document.getElementById('reviewText').value.trim();if(!user||!text)return alert('Preencha nome e comentário.');p.reviews.push({rating:selectedRating,user,text});persist();openProductModal(id);alert('Avaliação publicada!');}
+        function addToCart(id){const p=products.find(x=>x.id===id);if(!p||availableStock(p)<=0)return alert('Esta conta está esgotada.');if(!cart.some(i=>i.id===id)){cart.push({...p});persist();closeModal('productModal');renderProducts(products);openCartModal();}}
+        function removeFromCart(id){cart=cart.filter(i=>i.id!==id);persist();renderCartItems();filterProducts();}
+        function updateCartBadge(){document.getElementById('cartCount').innerText=cart.length;}
+        function getCartSubtotal(){return cart.reduce((a,i)=>a+i.price,0)}
+        function getCartTotal(){const total=getCartSubtotal();return Math.max(0,total-(total*currentDiscount));}
+        function renderCartItems(){const list=document.getElementById('cartItems');if(!cart.length){list.innerHTML='<p class="empty-state">Seu carrinho está vazio.</p>';document.getElementById('btnCheckout').disabled=true;}else{list.innerHTML=cart.map(i=>`<div class="cart-item"><div><h4 style="color:#fff">${i.title}</h4><span style="color:var(--main-neon)">R$ ${i.price.toFixed(2).replace('.',',')}</span></div><button class="cart-remove" onclick="removeFromCart(${i.id})">🗑️</button></div>`).join('');document.getElementById('btnCheckout').disabled=false;}document.getElementById('cartTotal').innerText=`R$ ${getCartTotal().toFixed(2).replace('.',',')}`;document.getElementById('cartSubtotal').innerText=`R$ ${getCartSubtotal().toFixed(2).replace('.',',')}`;document.getElementById('cartDiscount').innerText=currentDiscount?`- ${(currentDiscount*100)}%`:'R$ 0,00';}
+        function openCartModal(){renderCartItems();openModal('cartModal');}
+        function applyCoupon(){const code=document.getElementById('couponCode').value.trim().toUpperCase();if(code==='VIP10'){currentDiscount=.10;alert('Cupom VIP10: 10% de desconto aplicado!')}else if(code==='AETHER5'){currentDiscount=.05;alert('Cupom AETHER5: 5% de desconto aplicado!')}else{currentDiscount=0;alert('Cupom inválido.')}renderCartItems();}
+        function openCheckout(){if(!cart.length)return;closeModal('cartModal');document.getElementById('pixTotalValue').innerText=`Valor a pagar: R$ ${getCartTotal().toFixed(2).replace('.',',')}`;openModal('checkoutModal');}
+        async function copyPix(){try{await navigator.clipboard.writeText(PIX_KEY);document.getElementById('copyFeedback').innerText='✓ Chave Pix copiada!';setTimeout(()=>document.getElementById('copyFeedback').innerText='',2000)}catch(e){prompt('Copie a chave Pix:',PIX_KEY)}}
+        function saveOrder(status='Aguardando comprovante'){const order={id:Math.floor(Math.random()*900000)+100000,date:new Date().toLocaleString('pt-BR'),items:cart.map(x=>x.title),total:getCartTotal(),status};orderHistory.unshift(order);persist();return order;}
+        function sendProof(){if(!cart.length)return;const order=saveOrder();const items=cart.map(c=>c.title).join(', '),total=order.total.toFixed(2);const msg=`Olá, vim pelo site BloxAether! 👋\
+\
+*Pedido:* #${order.id}\
+*Contas:* ${items}\
+*Valor Total:* R$ ${total}\
+\
+Segue meu comprovante Pix para liberação da conta.`;cart=[];currentDiscount=0;persist();renderProducts(products);closeModal('checkoutModal');window.open(`https://api.whatsapp.com/send?phone=${WHATSAPP_NUM}&text=${encodeURIComponent(msg)}`,'_blank');}
+        function renderHistory(){const el=document.getElementById('historyItems');if(!orderHistory.length){el.innerHTML='<div class="empty-state">Nenhum pedido registrado neste navegador.</div>';return}el.innerHTML=orderHistory.map(o=>`<div class="history-item"><b>Pedido #${o.id}</b> — ${o.status}<br><small>${o.date}</small><br>${o.items.join(', ')}<br><strong>R$ ${o.total.toFixed(2).replace('.',',')}</strong></div>`).join('');}
+        function addChatMessage(target, text, type){
+            const box=document.getElementById(target); if(!box)return;
+            const div=document.createElement('div'); div.className='chat-msg '+type;
+            div.innerHTML=escapeHtml(text).replace(/\n/g,'<br>')+'<small>'+new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'})+'</small>';
+            box.appendChild(div); box.scrollTop=box.scrollHeight;
         }
-
-        function removeFromCart(id) {
-            cart = cart.filter(item => item.id !== id);
-            saveCart();
-            renderCartItems();
-            renderProducts(products);
+        function supportBotReply(text){
+            const t=text.toLowerCase();
+            if(t.includes('compr')||t.includes('conta')) return 'Para comprar: escolha uma conta, veja os detalhes, adicione ao carrinho e finalize pelo PIX. Depois envie o comprovante para 13996307983.';
+            if(t.includes('pix')||t.includes('pagamento')) return 'O pagamento é via PIX. Chave: 13997985399. Pague exatamente o valor mostrado no checkout e guarde o comprovante.';
+            if(t.includes('entreg')||t.includes('receb')) return 'Após o pagamento, envie o comprovante para 13996307983. O atendimento usa esse número para confirmar o pedido e orientar a entrega.';
+            if(t.includes('avanç')||t.includes('avanc')||t.includes('humano')) return 'Vou te encaminhar para o Suporte Avançado. Ele também atende pelo número 13996307983.';
+            if(t.includes('estoque')||t.includes('esgot')) return 'Cada conta possui 1 unidade de estoque. Quando a conta entra no carrinho, ela fica reservada neste navegador.';
+            return 'Entendi. Posso ajudar com compra, PIX, estoque, entrega ou encaminhar você ao Suporte Avançado. Qual desses assuntos você precisa?';
         }
-
-        function saveCart() {
-            localStorage.setItem('bloxaether_cart', JSON.stringify(cart));
-            updateCartBadge();
+        function advancedBotReply(text){
+            const t=text.toLowerCase();
+            if(t.includes('comprov')||t.includes('pagamento')||t.includes('pix')) return 'Para agilizar: envie o comprovante do PIX para 13996307983 junto com o número do pedido e o nome da conta. O atendimento humano fará a conferência.';
+            if(t.includes('não recebi')||t.includes('nao recebi')||t.includes('entreg')) return 'Informe o número do pedido e o nome da conta. Depois fale com 13996307983 para verificarmos a entrega.';
+            if(t.includes('humano')||t.includes('atendente')) return 'Claro. Clique em “Falar com atendente no WhatsApp” para abrir o atendimento humano no 13996307983.';
+            if(t.includes('pedido')) return 'Abra “Meus pedidos” para consultar o histórico salvo neste navegador. Se precisar de conferência manual, envie o número do pedido para 13996307983.';
+            return 'Suporte Avançado recebeu sua mensagem. Para resolver casos de pagamento ou entrega, envie também seu número do pedido e fale com 13996307983.';
         }
-
-        function updateCartBadge() {
-            document.getElementById('cartCount').innerText = cart.length;
-        }
-
-        function getCartTotal() {
-            let total = cart.reduce((acc, item) => acc + item.price, 0);
-            return total - (total * currentDiscount);
-        }
-
-        function renderCartItems() {
-            const list = document.getElementById('cartItems');
-            if (cart.length === 0) {
-                list.innerHTML = '<p style="text-align:center; color: #888;">Seu carrinho está vazio.</p>';
-                document.getElementById('btnCheckout').disabled = true;
-            } else {
-                list.innerHTML = cart.map(item => `
-                    <div class="cart-item">
-                        <div>
-                            <h4 style="color:#fff;">${item.title}</h4>
-                            <span style="color:var(--main-neon);">R$ ${item.price.toFixed(2).replace('.', ',')}</span>
-                        </div>
-                        <button class="cart-remove" onclick="removeFromCart(${item.id})">🗑️</button>
-                    </div>
-                `).join('');
-                document.getElementById('btnCheckout').disabled = false;
-            }
-            document.getElementById('cartTotal').innerText = `R$ ${getCartTotal().toFixed(2).replace('.', ',')}`;
-        }
-
-        function openCartModal() {
-            renderCartItems();
-            openModal('cartModal');
-        }
-
-        function applyCoupon() {
-            const code = document.getElementById('couponCode').value.toUpperCase();
-            if (code === 'VIP10') {
-                currentDiscount = 0.10;
-                alert('Cupom de 10% aplicado!');
-            } else {
-                currentDiscount = 0;
-                alert('Cupom inválido.');
-            }
-            renderCartItems();
-        }
-
-        function openCheckout() {
-            if(cart.length === 0) return;
-            closeModal('cartModal');
-            document.getElementById('pixTotalValue').innerText = `Valor a pagar: R$ ${getCartTotal().toFixed(2).replace('.', ',')}`;
-            openModal('checkoutModal');
-        }
-
-        function copyPix() {
-            navigator.clipboard.writeText(PIX_KEY).then(() => {
-                alert('Chave Pix copiada com sucesso!');
-            });
-        }
-
-        function sendProof() {
-            const total = getCartTotal().toFixed(2);
-            const items = cart.map(c => c.title).join(', ');
-            const orderId = Math.floor(Math.random() * 1000000);
-            
-            const msg = `Olá, vim pelo site BloxAether! 👋\n\n*Pedido:* #${orderId}\n*Contas:* ${items}\n*Valor Total:* R$ ${total}\n\nSegue o meu comprovante Pix logo abaixo para liberação imediata:`;
-            const url = `https://api.whatsapp.com/send?phone=${WHATSAPP_NUM}&text=${encodeURIComponent(msg)}`;
-            
-            cart = [];
-            saveCart();
-            renderProducts(products);
-            closeModal('checkoutModal');
-            
-            window.open(url, '_blank');
-        }
-
-        window.onload = () => {
-            renderProducts(products);
-        };
+        function sendSupportMessage(){const input=document.getElementById('supportInput'),text=input.value.trim();if(!text)return;addChatMessage('supportMessages',text,'user');input.value='';setTimeout(()=>addChatMessage('supportMessages',supportBotReply(text),'bot'),350);}
+        function quickSupport(text){document.getElementById('supportInput').value=text;sendSupportMessage();}
+        function sendAdvancedMessage(){const input=document.getElementById('advancedInput'),text=input.value.trim();if(!text)return;addChatMessage('advancedMessages',text,'user');input.value='';setTimeout(()=>addChatMessage('advancedMessages',advancedBotReply(text),'bot'),350);}
+        function quickAdvanced(text){document.getElementById('advancedInput').value=text;sendAdvancedMessage();}
+        function openAdvancedSupport(){closeModal('supportModal');openModal('advancedSupportModal');initAdvancedChat();}
+        function openHumanWhatsApp(){window.open('https://api.whatsapp.com/send?phone=5513996307983&text='+encodeURIComponent('Olá, preciso de atendimento avançado no BloxAether.'),'_blank');}
+        function initSupportChat(){const box=document.getElementById('supportMessages');if(box&&!box.children.length)addChatMessage('supportMessages','Olá! 👋 Sou o assistente do BloxAether. Como posso ajudar?','bot');}
+        function initAdvancedChat(){const box=document.getElementById('advancedMessages');if(box&&!box.children.length)addChatMessage('advancedMessages','Olá! 🚀 Sou o assistente do Suporte Avançado. Posso ajudar com pagamento, comprovante, pedido e entrega.','bot');}
+        const originalOpenModal=openModal;
+        openModal=function(id){originalOpenModal(id);if(id==='supportModal')initSupportChat();if(id==='advancedSupportModal')initAdvancedChat();};
+        window.onload=()=>{renderProducts(products);updateCartBadge();};
     </script>
 </body>
 </html>
